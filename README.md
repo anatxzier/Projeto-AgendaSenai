@@ -37,7 +37,7 @@
         </a>
         </td>
         <td align="center">
-        <a href="https://github.com/nat-paz">
+        <a href="https://github.com/natpazs">
             <img src="https://avatars.githubusercontent.com/u/134384648?v=4" width="115px;" alt="Natália"/><br>
             <sub>
             <b>Natália Paz</b>
