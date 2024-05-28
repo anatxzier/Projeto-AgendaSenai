@@ -1,0 +1,12 @@
+
+<h1> oi </h1>
+{% if user.is_authenticated %}
+    {% if user_is_coordenador %}
+        <p>Bem-vindo, Coordenador!</p>
+    {% else %}
+        <p>Você não tem permissão para ver este conteúdo.</p>
+    {% endif %}
+{% else %}
+    <p>Por favor, faça login para acessar este conteúdo.</p>
+{% endif %}
+

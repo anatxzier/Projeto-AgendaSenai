@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sua Página</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+        .container {
+            background-color: #fff;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start; 
+            border-bottom: 3px solid red;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        .container img {
+            margin-right: 10px; 
+            width: 100px; 
+        }
+
+        .titulo {
+            border-left: 3px solid #000;
+            border-radius: 1px;
+            padding-left: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar bg-body-tertiary">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="{{ dados_agenda.0.logo.url }}" alt="imagem">
+        </a>
+        <p class="titulo">{{ dados_agenda.0.titulo }}</p>
+    </div>
+</nav>
+
+</body>
+</html>
