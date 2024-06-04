@@ -1,0 +1,321 @@
+{% extends 'index.html' %}
+
+{% block title%}
+Salas
+{% endblock %}
+
+
+{% block body %}
+<style>
+    .search-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+    }
+
+    .outfit {
+        font-family: "Outfit", sans-serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+    }
+
+    .search-box {
+        display: flex;
+        align-items: center;
+        background-color: #ffffff;
+        border-radius: 40px;
+        height: 35px;
+        padding: 10px;
+    }
+
+    .search-text {
+        border: none;
+        background: none;
+        outline: none;
+        font-size: 16px;
+        width: 0;
+        transition: 0.4s;
+
+    }
+
+
+    .search-btn {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        align-self: center;
+    }
+
+    .search-box:hover>.search-text {
+        width: 320px;
+        padding-left: 20px;
+    }
+
+    .fixed-size-card {
+        width: 18rem;
+        height: 20rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .vertical-line {
+        width: 8px;
+        /* Largura da linha */
+        height: 150px;
+        /* Altura da linha */
+        margin: 0 auto;
+        /* Centralizar a linha */
+        margin-right: 10px;
+        border-radius: 50px;
+        background-color: #C53F3F;
+    }
+
+    .animated-button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 10px 25px;
+        border: 4px solid;
+        border-color: transparent;
+        font-size: 14px;
+        background-color: inherit;
+        border-radius: 100px;
+        font-weight: 600;
+        color: #9B0000;
+        box-shadow: 0 0 0 2px #9B0000;
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button svg {
+        position: absolute;
+        width: 18px;
+        fill: #9B0000;
+        z-index: 9;
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button .arr-1 {
+        right: 16px;
+    }
+
+    .animated-button .arr-2 {
+        left: -25%;
+    }
+
+    .animated-button .circle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        background-color: #9B0000;
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button .text {
+        position: relative;
+        z-index: 1;
+        transform: translateX(-12px);
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button:hover {
+        box-shadow: 0 0 0 12px transparent;
+        color: #FFFFFF;
+        border-radius: 12px;
+    }
+
+    .animated-button:hover .arr-1 {
+        right: -25%;
+    }
+
+    .animated-button:hover .arr-2 {
+        left: 16px;
+    }
+
+    .animated-button:hover .text {
+        transform: translateX(12px);
+    }
+
+    .animated-button:hover svg {
+        fill: #FFFFFF;
+    }
+
+    .animated-button:active {
+        scale: 0.95;
+        box-shadow: 0 0 0 4px #9B0000;
+    }
+
+    .animated-button:hover .circle {
+        width: 220px;
+        height: 220px;
+        opacity: 1;
+    }
+
+    .card-button {
+        transform: translate(-50%, 125%);
+        width: 60%;
+        border-radius: 1rem;
+        border: none;
+        background-color: #9B0000;
+        color: #fff;
+        font-size: 1rem;
+        padding: .5rem 1rem;
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        opacity: 0;
+        transition: 0.3s ease-out;
+    }
+
+    .card:hover {
+        border-color: #9B0000;
+        box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    .card:hover .card-button {
+        transform: translate(-50%, -20%);
+        opacity: 1;
+    }
+</style>
+
+<body style="background-color: #f5f5f5;">
+    <div class="navbar" style="background-color: #A2000F;">
+        <div class="container-fluid">
+            <div style="display: flex; align-items: center;">
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" class="search-text" id="searchInput" placeholder="Pesquisar sala">
+                        <a class="search-btn"><span type="submit" style="color: #4d4c4cc5"
+                                class="material-symbols-outlined">
+                                search
+                            </span></a>
+                    </div>
+                </div>
+                <a class="navbar-brand" style="color: #FFFFFF; font-size: 18px; padding-left: 20px; ">Salas</a>
+            </div>
+            <a class="navbar-brand"
+                style="color: #FFFFFF; font-size: 18px; display: flex; align-items: center;">Adicionar
+                nova sala <span class="material-symbols-outlined" style="padding-left: 5px;">
+                    add
+                </span></a>
+        </div>
+    </div>
+    <main
+        style="display: flex ; flex-direction: row; flex-wrap: wrap; justify-content: space-between; margin: 30px 50px;">
+        {% for item in dados_sala %}
+        <div>
+            <div style="display:flex; align-items: center; margin: 10px;" data-nome="{{ item.nome }}">
+                <div class="vertical-line"></div>
+                <div class="card fixed-size-card" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal{{ forloop.counter }}"
+                    style="width: 18rem; position: relative; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                    <img src="{{ item.foto.url }}" class="card-img-top" alt="Sala"
+                        style="filter: brightness(40%); width: 100%; height: 100%; object-fit: cover;">
+                    <div class="card-body d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle"
+                        style="z-index: 1;">
+                        <p class="card-text outfit" style="color: white; font-size: 30px; font-weight: 500;">
+                            {{item.nome}}</p>
+                    </div>
+                    <div class="card-border-bottom-rounded"></div>
+                    <button class="card-button">Mais infos</button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal{{ forloop.counter }}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel{{ forloop.counter }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content" style="background-color: #d5d5d5;">
+                            <div
+                                style="display: flex; flex-direction: row; justify-content: space-between; padding: 15px;">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel{{ forloop.counter }}"
+                                    style="align-self: center;">{{ item.nome }}</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body"
+                                style="display: flex; justify-content: center; background-color: #d5d5d5;">
+                                <img src="{{ item.foto.url }}" class="card-img-top" alt="..."
+                                    style="filter: brightness(80%); width: 50%; height: 50%; object-fit: cover; display:flex; justify-content: center; border-radius: 10px;">
+                            </div>
+                            <div
+                                style="display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; flex-direction: column;">
+                                <div style="width: 240px;">
+                                    <h6>Corredor</h6>
+                                    <p>{{ item.corredor }}</p>
+                                </div>
+                                <div style="width: 240px;">
+                                    <h6>Descrição</h6>
+                                    <p>{{ item.descricao }}</p>
+                                </div>
+                                <div style="width: 240px;">
+                                    <h6>Capacidade</h6>
+                                    <p>{{ item.capacidade }}</p>
+                                </div>
+                            </div>
+                            <div style="padding: 15px; display: flex; justify-content: end; background-color: #d5d5d5;">
+                                <button class="animated-button">
+                                    <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
+                                        </path>
+                                    </svg>
+                                    <span class="text">Agendar</span>
+                                    <span class="circle"></span>
+                                    <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </main>
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const filter = this.value.toLowerCase();
+            const cards = document.querySelectorAll('.card-wrapper');
+            let matchFound = false;
+
+            // Filter cards
+            cards.forEach(function (card) {
+                const nome = card.getAttribute('data-nome').toLowerCase();
+                if (nome.includes(filter)) {
+                    card.style.display = 'flex';
+                    matchFound = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Show no results message if no match found
+            if (!matchFound) {
+                const noResultsMessage = document.createElement('div');
+                noResultsMessage.id = 'noResults';
+                noResultsMessage.textContent = 'Nenhum resultado encontrado';
+                noResultsMessage.style.color = '#A2000F';
+                noResultsMessage.style.marginTop = '20px';
+                noResultsMessage.style.textAlign = 'center';
+                document.querySelector('main').appendChild(noResultsMessage);
+            } else {
+                const existingMessage = document.getElementById('noResults');
+                if (existingMessage) {
+                    existingMessage.remove();
+                }
+            }
+        });
+    </script>
+</body>
+{% endblock %}

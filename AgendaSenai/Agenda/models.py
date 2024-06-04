@@ -29,8 +29,8 @@ class Login(models.Model):
 
 class Sala(models.Model):
     nome = models.CharField(max_length=20)
+    corredor = models.TextField(max_length=50)
     descricao = models.TextField(max_length=500)
-    equipamento = models.TextField(max_length=500)
     capacidade = models.IntegerField()
     foto = models.ImageField(upload_to="imgSala/")
 
@@ -54,5 +54,5 @@ class Usuario(models.Model):
     foto_user = models.ImageField(upload_to="imgUser/")
         
     def __str__(self):
-        return self.nome
+        return str(self.nome) 
 

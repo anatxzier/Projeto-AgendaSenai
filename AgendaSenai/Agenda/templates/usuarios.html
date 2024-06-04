@@ -1,0 +1,172 @@
+{% extends 'index.html' %}
+
+{% block title%}
+usuarios
+{% endblock %}
+
+
+{% block body %}
+<style>
+    .containernav2 {
+        display: flex;
+        max-width: 100%;
+        max-height: 30%;
+        background-color: #9B0000;
+    }
+
+    .search-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        flex-grow: 1;
+    }
+    
+    .search-box {
+        display: flex;
+        align-items: center;
+        background-color: #e0e0e0; 
+        border-radius: 20px; 
+        padding: 5px 10px;
+        width: 400px;
+    }
+    
+    .search-box input {
+        border: none;
+        background: none;
+        outline: none;
+        width: 100%;
+        padding: 5px;
+    }
+    
+    .search-box input::placeholder {
+        color: #000;
+    }
+    
+    .search-box button {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .search-box button img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .ContMain {
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 100%;
+        max-height: 100%;
+        background-color: #e0e0e0;
+        justify-content: center;
+    }
+
+    .Profile, .Profile2 {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin: 30px;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .Profile div, .Profile2 div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 20%;
+    }
+
+    .Profile div img, .Profile2 div img {
+        max-width: 80%;
+        border-radius: 50%;
+    }
+
+    .Profile div p, .Profile2 div p {
+        font-size: 1.1rem;
+        font-family: "Inter";
+        text-align: center;
+        width: 100%;
+    }
+</style>
+</head>
+<body>
+
+    <div class="navbar" style="background-color: #A2000F;">
+        <div class="container-fluid">
+            <div style="display: flex; align-items: center;">
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" class="search-text" id="searchInput" placeholder="Pesquisar sala">
+                        <a class="search-btn"><span type="submit" style="color: #4d4c4cc5"
+                                class="material-symbols-outlined">
+                                search
+                            </span></a>
+                    </div>
+                </div>
+                <a class="navbar-brand" style="color: #FFFFFF; font-size: 18px; padding-left: 20px; ">Instrutor</a>
+            </div>
+            <a class="navbar-brand"
+                style="color: #FFFFFF; font-size: 18px; display: flex; align-items: center;">Adicionar
+                nova instrutor <span class="material-symbols-outlined" style="padding-left: 5px;">
+                    add
+                </span></a>
+        </div>
+    </div>
+
+<main class="ContMain">
+    <div class="Profile">
+        <div>
+            <img src="{{dados_usuarios.0.foto_user.url}}" alt="Instrutor">
+            <p>{{dados_usuarios.0.nome}}</p>
+        </div>
+        <div>
+            <img src="{{dados_usuarios.1.foto_user.url}}" alt="Instrutor">
+            <p>{{dados_usuarios.1.nome}}</p>
+        </div>
+        <div>
+            <img src="./img/Frame.png" alt="Instrutor">
+            <p>Nome completo do instrutor</p>
+        </div>
+        <div>
+            <img src="./img/Frame.png" alt="Instrutor">
+            <p>Nome completo do instrutor</p>
+        </div>
+    </div>
+    <div class="Profile2">
+        <div>
+            <img src="./img/Frame.png" alt="Instrutor">
+            <p>Nome completo do instrutor</p>
+        </div>
+        <div>
+            <img src="./img/Frame.png" alt="Instrutor">
+            <p>Nome completo do instrutor</p>
+        </div>
+        <div>
+            <img src="./img/Frame.png" alt="Instrutor">
+            <p>Nome completo do instrutor</p>
+        </div>
+        <div>
+            <img src="./img/Frame.png" alt="Instrutor">
+            <p>Nome completo do instrutor</p>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,79 +1,195 @@
 {% extends 'index.html' %}
 
 {% block title %}
-    Agendamento
+Cadastro
 {% endblock %}
 
 {% block body %}
-    <style>
-        body {
-            background-color: #eaccadc0;
-            font-family: Arial, sans-serif;
-        }
-        .card {
-            max-width: 450px;
-            margin: 50px auto;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            background-color: #eaccadc0;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        input[type="text"], input[type="email"], input[type="password"], input[type="number"], select, textarea {
-            width: 400px;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #a9a9a9;
-            border-radius: 5px;
-            box-sizing: border-box;
-            background-color: transparent;
-            justify-content: center;
-            align-items: center;
-        }
-        input[type="submit"] {
-            padding: 10px 20px;
-            border: 1px solid #a9a9a9;
-            background-color: transparent;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 5px;
+{% load static %}
 
-        }
-        input[type="submit"]:hover {
-            background-color: #f3dbc36c;
-            color: #a9a9a9;
-        }
-        .alert{
-            color:#d9534f;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-        .titulo{
-            font-size: 20px;
-            margin-bottom: 18px;
-            align-self: center;
-        }
-    </style>
+<style>
+    .container2 {
+        display: flex;
+        height: 100vh;
+        justify-content: space-between;
+    }
 
-    {% if error %}
-    <div class="card">
-        <p style="color: red; align-self: center;">{{ error }}</p>
-    </div>        
-    {% endif %}
+    .bg {
+        width: 40%;
+        background-color: brown;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-    <div class="card">
-        <h2 class="titulo">Faça seu Cadastro</h2>
-        <form action="cadastro" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="Submit">
-        </form>        
+    .bg img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .carde {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 100px;
+    }
+
+    .carde form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .carde form label {
+        margin-bottom: 5px;
+        font-size: 16px;
+    }
+
+    .carde form input {
+        border: none;
+        border-bottom: 1px solid black;
+        outline: none;
+        padding: 3px 0;
+        font-size: 16px;
+        width: 400px;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        background-color: #d9534f;
+        border: none;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 120px;
+        color: #fff;
+    }
+
+    .animated-button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 5px 36px;
+        border: 4px solid;
+        border-color: transparent;
+        font-size: 16px;
+        background-color: inherit;
+        border-radius: 100px;
+        font-weight: 600;
+        color: rgb(0, 0, 0);
+        box-shadow: 0 0 0 2px rgb(0, 0, 0);
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button svg {
+        position: absolute;
+        width: 24px;
+        fill: rgb(0, 0, 0);
+        z-index: 9;
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button .arr-1 {
+        right: 16px;
+    }
+
+    .animated-button .arr-2 {
+        left: -25%;
+    }
+
+    .animated-button .circle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 5px;
+        opacity: 0;
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button .text {
+        position: relative;
+        z-index: 1;
+        transform: translateX(-12px);
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button:hover {
+        box-shadow: 0 0 0 12px transparent;
+        color: #212121;
+        border-radius: 5px;
+    }
+
+    .animated-button:hover .arr-1 {
+        right: -25%;
+    }
+
+    .animated-button:hover .arr-2 {
+        left: 16px;
+    }
+
+    .animated-button:hover .text {
+        transform: translateX(12px);
+    }
+
+    .animated-button:hover svg {
+        fill: #212121;
+    }
+
+    .animated-button:active {
+        scale: 0.95;
+        box-shadow: 0 0 0 4px rgb(0, 0, 0);
+    }
+
+    .animated-button:hover .circle {
+        width: 220px;
+        height: 220px;
+        opacity: 1;
+    }
+
+    .botoes {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        gap: 20px;
+    }
+</style>
+
+<div class="container2">
+    <div class="bg">
+        <img src="{% static 'images/Frame.png' %}" alt="Image">
     </div>
-        
-    
+    <div class="carde">
+        <form action="{% url 'cadastro' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="botoes">
+                <button type="reset" class="btn">Excluir</button>
+                <button type="submit" class="animated-button">
+                    <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+                    </svg>
+                    <span class="text">Salvar</span>
+                    <span class="circle"></span>
+                    <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+                    </svg>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 {% endblock %}
