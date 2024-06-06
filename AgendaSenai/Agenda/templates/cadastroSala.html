@@ -16,56 +16,45 @@ Cadastro
     }
 
     .bg {
-        width: 40%;
-        background: linear-gradient(45deg, #A2000F, #790404, #A2000F);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 0 0 2000px rgba(255, 255, 255, 0.1);
-        /* Corrigindo as sobras brancas */
-        position: relative;
-        overflow: hidden;
-    }
+    width: 40%;
+    background: linear-gradient(45deg, #A2000F, #790404,#A2000F);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 0 0 2000px rgba(255, 255, 255, 0.1); /* Corrigindo as sobras brancas */
+    position: relative;
+    overflow: hidden;
+}
 
-    .bg::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0));
-        mix-blend-mode: overlay;
-    }
+.bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), rgba(0,0,0,0));
+    mix-blend-mode: overlay;
+}
 
-    .bg::after {
-        content: '';
-        position: absolute;
-        top: -50px;
-        left: -50px;
-        width: 150px;
-        height: 150px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        filter: blur(50px);
-    }
+.bg::after {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    filter: blur(50px);
+}
 
-    .bg::before {
-        clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
-        background: linear-gradient(45deg, #8b0000, rgb(165, 4, 4), #b80101);
-        /* Alterando o tom de vermelho */
-    }
+.bg::before {
+    clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+    background: linear-gradient(45deg, #FFFFFF, rgb(130, 4, 10), #FFFFFF); /* Alterando o tom de vermelho */
+}
 
-    /* 
-    .bg {
-        width: 40%;
-        background-color: brown;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-    } */
 
     .bg img {
         max-width: 100%;
@@ -78,7 +67,7 @@ Cadastro
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        padding: 100px;
+        padding:100px;
     }
 
     .carde form {
@@ -106,11 +95,9 @@ Cadastro
         width: 400px;
         margin-bottom: 7px;
     }
-
     .carde form input[type="file"] {
-        display: none;
+    display: none;
     }
-
     .carde form label.upload-label {
         align-items: center;
         align-self: center;
@@ -138,7 +125,6 @@ Cadastro
         transition: 0.3s ease-out;
         transform: scaleY(1);
     }
-
     .carde form label.upload-label::after {
         content: '';
         position: absolute;
@@ -155,7 +141,6 @@ Cadastro
         transform: translateY(-25px);
         height: 0;
     }
-
     .carde form label.upload-label:hover::after {
         transform: scaleX(0);
         transition-delay: 0.15s;
@@ -172,7 +157,6 @@ Cadastro
         align-self: center;
         margin-left: 15px;
     }
-
     .btn {
         background-color: #8b0000;
         border: none;
@@ -280,79 +264,67 @@ Cadastro
         gap: 20px;
         margin-top: 10px;
     }
-
+    
     .bg img {
         width: 200px;
         height: 200px;
         object-fit: cover;
         border-radius: 50%;
     }
-
-    .erro {
-        color: #8b0000;
-        font-size: 16px;
+    .erro{
+        color:#8b0000;
+        font-size: 14px;
         margin-bottom: 10px;
         margin-top: 10px;
     }
 
-    .imagem-upload {
-        max-width: 200px;
-        /* Define a largura máxima desejada */
-        max-height: 200px;
-        /* Define a altura máxima desejada */
-        /* Adicione outras propriedades de estilo conforme necessário */
+    input[type="number"] {
+        border: none;
+        border-bottom: 1px solid black;
+        outline: none;
+        padding: 2px 0;
+        font-size: 16px;
+        width: 400px;
+        margin-bottom: 7px;
     }
 </style>
 
 <div class="container2">
     <div class="bg">
-        <img src="{% static 'admin/img/default.jpg' %}" alt="Imagem Padrão">
+        <img src="{% static 'admin/img/saladefault.png' %}" alt="Imagem Padrão">
     </div>
     <div class="carde">
-
-        {% if error_message %}
-        <div class="erro">{{ error_message }}</div>
-        {% endif %}
-
         <form action="{% url 'cadastro' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <label for="{{ form.user.id_for_label }}">{{ form.user.label }}</label>
-            {{ form.user }}
+            <label for="{{ form.nome_sala.id_for_label }}">{{ form.nome_sala.label }}</label>
+            {{ form.nome_sala }}
+            
+            <label for="{{ form.corredor.id_for_label }}">{{ form.corredor.label }}</label>
+            {{ form.corredor }}
+            
+            <label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }}</label>
+            {{ form.descricao }}
+            
+            <label class="capacid" for="{{ form.capacidade.id_for_label }}">{{ form.capacidade.label }}</label>
+            {{ form.capacidade }}
 
-            <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
-            {{ form.first_name }}
-
-            <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
-            {{ form.last_name }}
-
-            <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
-            {{ form.email }}
-
-            <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
-            {{ form.password }}
-
-            <label for="{{ form.cpf.id_for_label }}">{{ form.cpf.label }}</label>
-            {{ form.cpf }}
-
-            <label for="{{ form.foto.id_for_label }}" class="upload-label">
-                <span id="file-name">Escolha a Foto de Perfil</span>
-            </label>
+            <label for="{{ form.foto.id_for_label }}" style="margin-top: 10px;" class="upload-label"><span id="file-name">Escolha a Foto da Sala</span></label>
             {{ form.foto }}
+
+            {% if error_message %}
+                <div class="erro">{{ error_message }}</div>
+            {% endif %}
 
             <div class="botoes">
                 <button type="reset" class="btn">Excluir</button>
                 <button type="submit" class="animated-button">
                     <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
-                        </path>
+                        <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
                     </svg>
                     <span class="text">Salvar</span>
                     <span class="circle"></span>
                     <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
-                        </path>
+                        <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
                     </svg>
                 </button>
             </div>
@@ -360,18 +332,10 @@ Cadastro
     </div>
 </div>
 <script>
-    document.getElementById('{{ form.foto.id_for_label }}').addEventListener('change', function (event) {
-        const fileName = event.target.files[0] ? event.target.files[0].name : 'Escolha a Foto de Perfil';
+    document.getElementById('{{ form.foto.id_for_label }}').addEventListener('change', function(event) {
+        const fileName = event.target.files[0] ? event.target.files[0].name : 'Escolha a Foto Sala';
         document.getElementById('file-name').textContent = fileName;
     });
 </script>
-
-<script>
-    document.getElementById("{{ form.foto.id_for_label }}").addEventListener("change", function(event) {
-        var fileName = event.target.value.split('\\').pop(); // Pega apenas o nome do arquivo, removendo o caminho
-        document.getElementById("file-name").textContent = fileName; // Atualiza o texto do label com o nome do arquivo selecionado
-    });
-</script>
-
 
 {% endblock %}

@@ -10,7 +10,6 @@ usuarios
 
 
 <style>
-
     .containernav2 {
         display: flex;
         max-width: 100%;
@@ -25,7 +24,7 @@ usuarios
         padding: 10px;
         flex-grow: 1;
     }
-    
+
     .search-box {
         display: flex;
         align-items: center;
@@ -67,10 +66,12 @@ usuarios
         background-color: #e0e0e0;
         justify-content: center;
         align-items: start;
+        
     }
 
-    
-    .Profile, .Profile2 {
+
+    .Profile,
+    .Profile2 {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -79,11 +80,12 @@ usuarios
         justify-content: center;
         gap: 20px;
         width: 100%;
-        max-width: unset; 
-        height: auto; 
+        max-width: unset;
+        height: auto;
     }
 
-    .Profile div, .Profile2 div {
+    .Profile div,
+    .Profile2 div {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -91,61 +93,62 @@ usuarios
         width: 20%;
     }
 
-    .Profile div img, .Profile2 div img {
+    .Profile div img,
+    .Profile2 div img {
         max-width: 80%;
         border-radius: 50%;
     }
 
-    .Profile div p, .Profile2 div p {
+    .Profile div p,
+    .Profile2 div p {
         font-size: 1.1rem;
         font-family: "Inter";
         text-align: center;
         width: 100%;
+
     }
 
     button {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center;
-    background-color: #eee;
-    border: none;
-    padding: 4rem;
-    font-size: 1rem;
-    width: 10rem;
-    height: 10rem;
-    border-radius: 50%; 
-    color: #8B0000;
-    box-shadow: 0 0.4rem #dfd9d9;
-    cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #eee;
+        border: none;
+        padding: 4rem;
+        font-size: 1rem;
+        width: 10rem;
+        height: 10rem;
+        border-radius: 50%;
+        color: #8B0000;
+        box-shadow: 0 0.4rem #dfd9d9;
+        cursor: pointer;
 
-}
+    }
 
-button:active {
-    color: #8B0000;
-    box-shadow: 0 0.2rem #dfd9d9;
-    transform: translateY(0.2rem);
-}
+    button:active {
+        color: #8B0000;
+        box-shadow: 0 0.2rem #dfd9d9;
+        transform: translateY(0.2rem);
+    }
 
-button:hover:not(:disabled) {
-    background: #8B0000;
-    color: #ffffff;
-    text-shadow: 0 0.1rem #000000;
-}
+    button:hover:not(:disabled) {
+        background: #8B0000;
+        color: #ffffff;
+        text-shadow: 0 0.1rem #000000;
+    }
 
-button:disabled {
-    cursor: auto;
-    color: grey;
-}
+    button:disabled {
+        cursor: auto;
+        color: grey;
+    }
 
-button span.material-symbols-outlined {
-    text-align: center;
-}
-
-
-
+    button span.material-symbols-outlined {
+        text-align: center;
+    }
 </style>
 </head>
+
 <body>
 
     <div class="navbar" style="background-color: #A2000F;">
@@ -163,58 +166,60 @@ button span.material-symbols-outlined {
                 <a class="navbar-brand" style="color: #FFFFFF; font-size: 18px; padding-left: 20px; ">Instrutor</a>
             </div>
             <a href="{% url 'cadastro'%}" class="navbar-brand"
-                style="color: #FFFFFF; font-size: 18px; display: flex; align-items: center;">Adicionar
-                nova instrutor <span class="material-symbols-outlined" style="padding-left: 5px;">
+                style="color: #FFFFFF; font-size: 18px; display: flex; align-items: center;">Adicionar instrutor <span class="material-symbols-outlined" style="padding-left: 5px;">
                     add
                 </span></a>
         </div>
     </div>
 
-<main class="ContMain">
-    <div class="Profile">
-        {% for usuario in dados_usuarios %}
-        <div>
-            <a href="{% url 'perfil' usuario.id %}">
-            <img src="{{ usuario.foto_user.url }}" alt="Instrutor">
-            <p>{{ usuario.nome }}</p>
-            </a>
-        </div>
-        {% endfor %}
+    <main class="ContMain">
+        <div class="Profile">
+            {% for usuario in dados_usuarios %}
+            <div>
+                <a style="text-decoration: none; color: #000000;" href="{% url 'perfil' usuario.id %}">
+                    <img src="{{ usuario.foto_user.url }}" alt="Instrutor">
+                    <p style="padding-top: 10px;">{{ usuario.nome }}</p>
+                </a>
+            </div>
+            {% endfor %}
 
-        <form action="{% url 'cadastro' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">
-                <span class="material-symbols-outlined" style="font-size: 50px; text-align: center;">
-                    person_add
+            <form action="{% url 'cadastro' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">
+                    <span class="material-symbols-outlined" style="font-size: 50px; text-align: center;">
+                        person_add
                     </span>
-            </button>
-        </form>
+                </button>
+            </form>
         </div>
-    </div>
-</main>
+        </div>
+    </main>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            var searchText = this.value.toLowerCase();
-            var profiles = document.querySelectorAll('.Profile div p');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('searchInput').addEventListener('keyup', function () {
+                var searchText = this.value.toLowerCase();
+                var profiles = document.querySelectorAll('.Profile div p');
 
-            profiles.forEach(function(profile) {
-                var profileName = profile.textContent.toLowerCase();
-                var parentProfile = profile.closest('.Profile div');
+                profiles.forEach(function (profile) {
+                    var profileName = profile.textContent.toLowerCase();
+                    var parentProfile = profile.closest('.Profile div');
 
-                if (profileName.includes(searchText)) {
-                    parentProfile.style.display = 'flex';
-                } else {
-                    parentProfile.style.display = 'none';
-                }
+                    if (profileName.includes(searchText)) {
+                        parentProfile.style.display = 'flex';
+                    } else {
+                        parentProfile.style.display = 'none';
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
 
 

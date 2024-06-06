@@ -18,7 +18,36 @@ Homepage
         max-width: 100%;
     }
 
+    .text {
+        color:  #A2000F;
+        text-decoration: none;
+    }
     .left {
+    position: relative;
+    background-color: #A2000F;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px;
+    width: 50%;
+    overflow: hidden;
+    z-index: 1; /* Adicionado para garantir que o pseudo-elemento fique por baixo do texto */
+}
+
+.left::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 70%; /* Aumentado para cobrir mais área */
+    height: 120%; /* Aumentado para cobrir mais área */
+    background-color: #8b0000;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+    z-index: -1; /* Mantido para garantir que o pseudo-elemento fique por baixo do texto */
+}
+
+    /* .left {
         position: relative;
         background-color: #A2000F;
         color: white;
@@ -27,7 +56,7 @@ Homepage
         justify-content: center;
         padding: 50px;
         width: 50%;
-    }
+    } */
 
     .title {
         font-size: 65px;
@@ -143,6 +172,7 @@ Homepage
 
     .animated-button:hover .text {
         transform: translateX(12px);
+        color: #FFFFFF;
     }
 
     .animated-button:hover svg {
@@ -176,7 +206,11 @@ Homepage
                     d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
                 </path>
             </svg>
-            <span class="text">Agendar</span>
+            {% if user.is_authenticated %}
+            <a class="text" href="agenda">Agendar</a>
+            {% else %}
+            <a class="text" href="login">Entrar</a>
+            {% endif %}
             <span class="circle"></span>
             <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
                 <path

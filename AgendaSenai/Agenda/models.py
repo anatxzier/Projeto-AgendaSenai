@@ -32,7 +32,7 @@ class Sala(models.Model):
     corredor = models.TextField(max_length=50)
     descricao = models.TextField(max_length=500)
     capacidade = models.IntegerField()
-    foto = models.ImageField(upload_to="imgSala/")
+    foto = models.ImageField(upload_to="imgSala/" , default="imgSala/saladefault.png")
 
     def __str__(self):
         return self.nome

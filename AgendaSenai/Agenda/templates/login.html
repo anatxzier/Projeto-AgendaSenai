@@ -36,9 +36,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        
     }
 
-    .login-container form label {
+    /* .login-container form label {
         width: 112%;
         text-align: left;
         margin-bottom: 5px;
@@ -49,13 +50,50 @@
         border: 1px solid #ccc;
         border-radius: 5px;
         padding: 10px;
-        width: 110%; 
+        width: 100%; 
         font-size: 16px;
+        margin-bottom: 10px; 
+        margin-left: 0;
+    }
+    .login-container .input-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: 0;
+    } */
+    .login-container form {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .login-container form label {
+        width: 100%; 
+        text-align: left;
+        margin-bottom: 5px;
+    }
+
+    .login-container form input {
+        background-color: #e0e0e0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        border-top-left-radius: 5px;
+        padding: 10px;
+        width: 100%; 
+        font-size: 16px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-self: center;
+    }
+
+    .login-container .input-group {
+        width: 70%; 
         margin-bottom: 10px; 
     }
 
-    .login-container form input[type="password"] {
-        width: 112%; /
+    .login-container .btn-primary {
+        width: 50%;
     }
 
     .login-container .form-group input::placeholder {
@@ -71,7 +109,6 @@
         border-radius: 5px;
         cursor: pointer;
         margin-top: 20px;
-        margin-left: 25px;
         
     }
 
@@ -93,7 +130,14 @@
     <h1>Digite seu email e senha para começarmos</h1>
     <form action="login" method="post">
         {% csrf_token %}
-        {{ form }}
+        <div class="input-group"> 
+            <label for="{{ form.user.id_for_label }}">{{ form.user.label }}</label>
+            {{ form.user }} 
+        </div> 
+        <div class="input-group"> 
+            <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+            {{ form.password }} 
+        </div> 
         <button type="submit" class="btn btn-primary">Entrar</button>
     </form>
     {% if error %}

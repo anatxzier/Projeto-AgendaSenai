@@ -184,20 +184,21 @@ Salas
         transform: translate(-50%, -20%);
         opacity: 1;
     }
+
     .botao {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center;
-    background-color: #eee;
-    border: none;
-    padding: 4rem;
-    font-size: 1rem;
-    width: 100%;
-    height: 100%;
-    color: #8B0000;
-    box-shadow: 0 0.4rem #dfd9d9;
-    cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #eee;
+        border: none;
+        padding: 4rem;
+        font-size: 1rem;
+        width: 100%;
+        height: 100%;
+        color: #8B0000;
+        box-shadow: 0 0.4rem #dfd9d9;
+        cursor: pointer;
 
     }
 
@@ -221,8 +222,6 @@ Salas
     .botao span.material-symbols-outlined {
         text-align: center;
     }
-
-    
 </style>
 
 <body style="background-color: #f5f5f5;">
@@ -239,7 +238,8 @@ Salas
                     </div>
                 </div>
                 <form method="get" id="filterForm" style="margin-right: 15px;">
-                    <select style="border-radius: 20px; margin-left: 15px;" class="form-select" aria-label="Default select example">
+                    <select style="border-radius: 20px; margin-left: 15px;" class="form-select"
+                        aria-label="Default select example">
                         <option selected>Filtrar por corredor</option>
                         {% for corredor in corredores%}
                         <option value="{{ corredor }}">{{ corredor }}</option>
@@ -249,24 +249,29 @@ Salas
                 <a class="navbar-brand" style="color: #FFFFFF; font-size: 18px; padding-left: 20px;">Salas</a>
             </div>
             {% if user.is_authenticated %}
-                {% if user_is_coordenador %}
-                    <a class="navbar-brand"
-                        style="color: #FFFFFF; font-size: 18px; display: flex; align-items: center;">Adicionar
-                        nova sala <span class="material-symbols-outlined" style="padding-left: 5px;">
-                            add
-                        </span></a>
-                {% else %}
-                    <div></div>
-                {% endif %}   
+            {% if user_is_coordenador %}
+            <a class="navbar-brand" href="{% url 'cadastroSala'%}"
+                style="color: #FFFFFF; font-size: 18px; display: flex; align-items: center;">Adicionar
+                nova sala <span class="material-symbols-outlined" style="padding-left: 5px;">
+                    add
+                </span></a>
+            {% else %}
+            <div></div>
+            {% endif %}
             {% else%}
-                <div><div>
-            {% endif %}     
+            <div>
+                <div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
-    <main style="display: flex; flex-wrap: wrap; justify-content: center; margin-top: 30px;">
+    <main
+        style="display: flex; justify-content: center; margin-top: 30px; flex-wrap: wrap ; flex-direction: row;">
         {% for item in dados_sala %}
         <div style="margin: 10px; width: 400px;">
-            <div style="display:flex; align-items: center; margin: 10px; margin-right:40px; justify-content: center;" data-nome="{{ item.nome }}">
+            <div style="display:flex; align-items: center; margin: 10px; margin-right:40px; justify-content: center;"
+                data-nome="{{ item.nome }}">
                 <div class="vertical-line"></div>
                 <div class="card fixed-size-card" data-bs-toggle="modal"
                     data-bs-target="#exampleModal{{ forloop.counter }}"
@@ -334,39 +339,34 @@ Salas
                     </div>
                 </div>
             </div>
-            
         </div>
-        
         {% endfor %}
-        <div style="display:flex; align-items: center; margin: 10px; margin-right:40px; justify-content: center;" data-nome="{{ item.nome }}">
-            <div class="vertical-line"></div>
-            <form class="card fixed-size-card" style="color: #eee" action="" method="post">
-                <button class="botao"type="submit">
-                    <span style="font-size: 50px; text-align: center; border: none;" class="material-symbols-outlined">
-                        add_circle
+        {% if user.is_authenticated %}
+        {% if user_is_coordenador %}
+        <div style="margin: 10px; width: 400px;">
+            <div style="display:flex; align-items: center; margin-right: 45px; margin-top: 10px;">
+                <div class="vertical-line"></div>
+                <form class="card fixed-size-card" style="color: #eee; width: 285px; border-radius: 8px;"
+                    action=" {% url 'cadastroSala' %}" method="get">
+                    <button class="botao" type="submit">
+                        <p>Adicionar Sala</p>
+                        <span style="font-size: 50px; text-align: center; border: none;"
+                            class="material-symbols-outlined">
+                            add_circle
                         </span>
-                </button>
-            </form>
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div></div>
+        {% endif %}
+        {% else%}
+        <div>
+            <div>
+                {% endif %}
+            </div>
         </div>
     </main>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const searchInput = document.getElementById('searchInput');
-            const cards = document.querySelectorAll('.fixed-size-card');
-    
-            searchInput.addEventListener('input', function () {
-                const searchTerm = searchInput.value.toLowerCase();
-    
-                cards.forEach(card => {
-                    const cardName = card.getAttribute('data-nome').toLowerCase();
-                    if (cardName.includes(searchTerm)) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 {% endblock %}

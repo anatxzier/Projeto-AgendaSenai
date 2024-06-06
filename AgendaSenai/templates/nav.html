@@ -30,7 +30,7 @@
 
     }
 
-    .link{
+    .link {
         color: #000;
         text-decoration: none;
         display: flex;
@@ -67,25 +67,44 @@
 <nav>
     <div class="containerNAV ">
         <div class="d-flex flex-direction-row">
-            <a class="navbar-brand d-flex align-items-center" href="#">
+            <a class="navbar-brand d-flex align-items-center" href="/">
                 <img src="{{ dados_agenda.0.logo.url }}" alt="Logo" class="d-inline-block align-text-top">
             </a>
             <p class="tituloNAV">{{ dados_agenda.0.titulo }}</p>
         </div>
 
-        <div style="margin-right: 3rem;">
+        <div style="margin-right: 3rem; display: flex; flex-direction: row; gap: 10px">
             {% if user.is_authenticated %}
-            {% if user_is_coordenador %}
-            <p>Bem-vindo, Coordenador!</p>
+                {% if user_is_coordenador %}
+                    <a href="usuarios" class="link"><span class="material-symbols-outlined">
+                        manage_accounts
+                        </span> Instrutores</a>
+                    <a href="agenda" class="link"><span class="material-symbols-outlined">
+                        calendar_month
+                    </span> Agenda </a>
+                    <a href="" class="link"> <img src="{{perfil_usuario.foto_user.url}}"
+                        style="display: flex; border: 0px; width: 50px; height: 50px; margin: 0; padding: 0px; margin-right: 5px;"
+                        alt="foto"> Bem-vindo, {{userr.username}}</a>
+
+                    <a href="logout" class="link"><span class="material-symbols-outlined">
+                        logout
+                    </span> </a>
                 {% else %}
-                    
-                <a href="" class="link">Bem-vindo, {{userr.username}} {{perfil_usuario.cpf}}</a>
-                    
+                    <a href="agenda" class="link"><span class="material-symbols-outlined">
+                            calendar_month
+                        </span> Agenda </a>
+                    <a href="" class="link"> <img src="{{perfil_usuario.foto_user.url}}"
+                            style="display: flex; border: 0px; width: 50px; height: 50px; margin: 0; padding: 0px; margin-right: 5px;"
+                            alt="foto"> Bem-vindo, {{userr.username}}</a>
+
+                    <a href="logout" class="link"><span class="material-symbols-outlined">
+                            logout
+                        </span> </a>
                 {% endif %}
             {% else %}
-                <a href="login" class="link" ><span class="material-symbols-outlined">
-                        account_circle
-                    </span> Entrar</a>
+            <a href="login" class="link"><span class="material-symbols-outlined">
+                    account_circle
+                </span> Entrar</a>
             {% endif %}
         </div>
     </div>
