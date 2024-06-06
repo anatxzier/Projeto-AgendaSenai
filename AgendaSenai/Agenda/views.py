@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login,logout as auth_logout
 from .forms import FormLogin, FormCadastro, FormsAgendarData
 from .models import Sala, Agenda, Homepage, Usuario
@@ -6,6 +6,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
 from django.utils import timezone
+from django.http import Http404
 
 
 def homepage(request):
@@ -14,15 +15,35 @@ def homepage(request):
     context["dados_home"] = dados_home
     dados_agenda = Agenda.objects.all()
     context["dados_agenda"] = dados_agenda
+    dados_usuario = Usuario.objects.all()
+    context["dados_usuario"] = dados_usuario
+    user = request.user
+    context["userr"] = user
+    print(user.username)
+    perfil_usuario = Usuario.objects.filter(nome=user.username).first()
+    context['perfil_usuario'] = perfil_usuario
+
+    
+    user_is_coordenador = request.user.groups.filter(name='Coordenador').exists()
+    context['user_is_coordenador']= user_is_coordenador
+    
     return render(request, 'homepage.html',context)
 
 
-def agenda(request):
+def agenda(request, id):
     context = {}
     dados_sala = Sala.objects.all().order_by('nome')
+    corredores = Sala.objects.values_list('corredor', flat=True).distinct().order_by('corredor')
     context['dados_sala'] = dados_sala
+    context['corredores'] = corredores
     dados_agenda = Agenda.objects.all()
-    context["dados_agenda"] = dados_agenda   
+    context["dados_agenda"] = dados_agenda  
+    usuario = get_object_or_404(Usuario, pk=id)
+    return render(request, 'perfil.html', {'usuario': usuario})
+
+    user_is_coordenador = request.user.groups.filter(name='Coordenador').exists()
+    context['user_is_coordenador']= user_is_coordenador
+
     return render(request, 'agendacoor.html', context)
 
 def usuarios(request):
@@ -33,7 +54,18 @@ def usuarios(request):
     context["dados_agenda"] = dados_agenda
     return render(request,'usuarios.html', context)
 
-@login_required
+def perfil(request, id):
+    context = {}
+    dados_usuarios = Usuario.objects.all()
+    context['dados_usuarios'] = dados_usuarios
+    dados_agenda = Agenda.objects.all()
+    context['dados_agenda'] = dados_agenda
+    usuario = get_object_or_404(Usuario, id=id)
+    context['usuario'] = usuario
+    return render(request, 'perfil.html', context)
+
+
+
 def teste(request):
     context = {}
     if request.method == 'POST':
@@ -74,9 +106,10 @@ def login(request):
             
             if user is not None:
                 auth_login(request, user)
-                user_is_coordenador = False
                 user_is_coordenador = request.user.groups.filter(name='Coordenador').exists()
-                return render(request, 'teste.html', {'user_is_coordenador': user_is_coordenador})
+
+                context['user_is_coordenador']= user_is_coordenador
+                return render(request, 'teste.html', context)
             else:
                 form = FormLogin()
                 context['form'] = form
@@ -100,26 +133,27 @@ def cadastro(request):
     context["dados_sala"] = dados_sala
 
     if request.method == "POST":
-        form = FormCadastro(request.POST)
+        form = FormCadastro(request.POST, request.FILES)
         if form.is_valid():
-            
             var_first_name = form.cleaned_data['first_name']
             var_last_name = form.cleaned_data['last_name']
             var_user = form.cleaned_data['user']
             var_email = form.cleaned_data['email']
             var_password = form.cleaned_data['password']
+            var_cpf = form.cleaned_data['cpf']
 
-            var_cpf = form.cleaned_data['CPF']
-            
+            # Verifica se o usuário enviou uma foto; caso contrário, usa a imagem padrão
+            foto_user = form.cleaned_data['foto_user'] if 'foto_user' in request.FILES else 'imgUser/default.jpg'
+
             # Cria o usuário
             user = User.objects.create_user(username=var_user, email=var_email, password=var_password)
             user.first_name = var_first_name
             user.last_name = var_last_name
             user.save()
-            # 
-            usuario = Usuario(nome = user, )
 
-
+            # Cria o perfil do usuário
+            usuario = Usuario(cpf=var_cpf, nome=user, foto_user=foto_user)
+            usuario.save()
 
             # Adiciona o usuário ao grupo
             group = Group.objects.get(name='Professor')
@@ -130,11 +164,12 @@ def cadastro(request):
             context['form'] = form
     else:
         form = FormCadastro()
-        
         context['form'] = form
-        return render(request, "cadastro.html", context)
+    
+    return render(request, "cadastro.html", context)
 
 @login_required
 def logout(request):
     auth_logout(request)
     return render(request, "teste.html")
+

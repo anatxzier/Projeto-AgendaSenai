@@ -49,9 +49,9 @@ class Agendamento(models.Model):
         return self.nome
 
 class Usuario(models.Model):
-    cpf = models.IntegerField()
+    cpf = models.CharField(max_length=11,unique=True)
     nome = models.ForeignKey(User, on_delete=models.CASCADE)
-    foto_user = models.ImageField(upload_to="imgUser/")
+    foto_user = models.ImageField(upload_to="imgUser/", default= "imgUser/default.jpg")
         
     def __str__(self):
         return str(self.nome) 

@@ -10,6 +10,8 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
     .login-container {
+        display: flex;
+        flex-direction: column;
         background-color: #fff;
         padding: 40px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -76,6 +78,14 @@
     .login-container .btn-primary:hover {
         background-color: #c9302c;
     }
+
+    @media (max-width: 768px) {
+    .login-container {
+        max-width: 80%; 
+        padding: 20px; 
+   
+    }
+}
 </style>
 
 <div class="login-container">

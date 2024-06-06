@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Visualizar perfil
+{% endblock %}
+
+{% block body %}
+
+<div class="containerPerfil">
+    <div class="campoInfo">
+        <img src="{{ usuario.foto_user.url }}" alt="Foto de perfil">
+        {% csrf_token %}
+        <p>Nome: {{ usuario.nome }}</p>
+        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+        {{ form.email }}
+        <p>CPF: {{ usuario.cpf }}</p>
+    </div>
+</div>
+
+{% endblock %}

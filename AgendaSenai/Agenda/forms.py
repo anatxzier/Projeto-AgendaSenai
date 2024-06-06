@@ -13,7 +13,8 @@ class FormCadastro(forms.Form):
     last_name = forms.CharField(label="Sobrenome", max_length=40)
     email = forms.EmailField(label="Email", max_length=60)
     password = forms.CharField(label='Senha', widget=forms.PasswordInput)
-    
+    cpf = forms.CharField(label="CPF", max_length=11)
+    foto = forms.ImageField(label="Foto de Perfil", required=False)
 
 class FormsAgendarData(forms.Form):
     data = forms.DateTimeField(label='Data e Hora do Agendamento',

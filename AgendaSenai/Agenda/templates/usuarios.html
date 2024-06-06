@@ -6,11 +6,15 @@ usuarios
 
 
 {% block body %}
+
+
+
 <style>
+
     .containernav2 {
         display: flex;
         max-width: 100%;
-        max-height: 30%;
+        height: 100%;
         background-color: #9B0000;
     }
 
@@ -25,44 +29,47 @@ usuarios
     .search-box {
         display: flex;
         align-items: center;
-        background-color: #e0e0e0; 
-        border-radius: 20px; 
-        padding: 5px 10px;
-        width: 400px;
+        background-color: #ffffff;
+        border-radius: 40px;
+        height: 35px;
+        padding: 10px;
     }
-    
-    .search-box input {
+
+    .search-text {
         border: none;
         background: none;
         outline: none;
-        width: 100%;
-        padding: 5px;
+        font-size: 16px;
+        width: 0;
+        transition: 0.4s;
+
     }
-    
-    .search-box input::placeholder {
-        color: #000;
+
+
+    .search-btn {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        align-self: center;
     }
-    
-    .search-box button {
-        background: none;
-        border: none;
-        cursor: pointer;
+
+    .search-box:hover>.search-text {
+        width: 320px;
+        padding-left: 20px;
     }
-    
-    .search-box button img {
-        width: 20px;
-        height: 20px;
-    }
+
 
     .ContMain {
         display: flex;
         flex-wrap: wrap;
         max-width: 100%;
-        max-height: 100%;
+        height: 100vh;
         background-color: #e0e0e0;
         justify-content: center;
+        align-items: start;
     }
 
+    
     .Profile, .Profile2 {
         display: flex;
         flex-direction: row;
@@ -71,6 +78,9 @@ usuarios
         align-items: center;
         justify-content: center;
         gap: 20px;
+        width: 100%;
+        max-width: unset; 
+        height: auto; 
     }
 
     .Profile div, .Profile2 div {
@@ -92,6 +102,48 @@ usuarios
         text-align: center;
         width: 100%;
     }
+
+    button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    background-color: #eee;
+    border: none;
+    padding: 4rem;
+    font-size: 1rem;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%; 
+    color: #8B0000;
+    box-shadow: 0 0.4rem #dfd9d9;
+    cursor: pointer;
+
+}
+
+button:active {
+    color: #8B0000;
+    box-shadow: 0 0.2rem #dfd9d9;
+    transform: translateY(0.2rem);
+}
+
+button:hover:not(:disabled) {
+    background: #8B0000;
+    color: #ffffff;
+    text-shadow: 0 0.1rem #000000;
+}
+
+button:disabled {
+    cursor: auto;
+    color: grey;
+}
+
+button span.material-symbols-outlined {
+    text-align: center;
+}
+
+
+
 </style>
 </head>
 <body>
@@ -110,7 +162,7 @@ usuarios
                 </div>
                 <a class="navbar-brand" style="color: #FFFFFF; font-size: 18px; padding-left: 20px; ">Instrutor</a>
             </div>
-            <a class="navbar-brand"
+            <a href="{% url 'cadastro'%}" class="navbar-brand"
                 style="color: #FFFFFF; font-size: 18px; display: flex; align-items: center;">Adicionar
                 nova instrutor <span class="material-symbols-outlined" style="padding-left: 5px;">
                     add
@@ -120,42 +172,46 @@ usuarios
 
 <main class="ContMain">
     <div class="Profile">
+        {% for usuario in dados_usuarios %}
         <div>
-            <img src="{{dados_usuarios.0.foto_user.url}}" alt="Instrutor">
-            <p>{{dados_usuarios.0.nome}}</p>
+            <a href="{% url 'perfil' usuario.id %}">
+            <img src="{{ usuario.foto_user.url }}" alt="Instrutor">
+            <p>{{ usuario.nome }}</p>
+            </a>
         </div>
-        <div>
-            <img src="{{dados_usuarios.1.foto_user.url}}" alt="Instrutor">
-            <p>{{dados_usuarios.1.nome}}</p>
-        </div>
-        <div>
-            <img src="./img/Frame.png" alt="Instrutor">
-            <p>Nome completo do instrutor</p>
-        </div>
-        <div>
-            <img src="./img/Frame.png" alt="Instrutor">
-            <p>Nome completo do instrutor</p>
-        </div>
-    </div>
-    <div class="Profile2">
-        <div>
-            <img src="./img/Frame.png" alt="Instrutor">
-            <p>Nome completo do instrutor</p>
-        </div>
-        <div>
-            <img src="./img/Frame.png" alt="Instrutor">
-            <p>Nome completo do instrutor</p>
-        </div>
-        <div>
-            <img src="./img/Frame.png" alt="Instrutor">
-            <p>Nome completo do instrutor</p>
-        </div>
-        <div>
-            <img src="./img/Frame.png" alt="Instrutor">
-            <p>Nome completo do instrutor</p>
+        {% endfor %}
+
+        <form action="{% url 'cadastro' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">
+                <span class="material-symbols-outlined" style="font-size: 50px; text-align: center;">
+                    person_add
+                    </span>
+            </button>
+        </form>
         </div>
     </div>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            var searchText = this.value.toLowerCase();
+            var profiles = document.querySelectorAll('.Profile div p');
+
+            profiles.forEach(function(profile) {
+                var profileName = profile.textContent.toLowerCase();
+                var parentProfile = profile.closest('.Profile div');
+
+                if (profileName.includes(searchText)) {
+                    parentProfile.style.display = 'flex';
+                } else {
+                    parentProfile.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
