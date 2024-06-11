@@ -32,15 +32,16 @@ class Sala(models.Model):
     corredor = models.TextField(max_length=50)
     descricao = models.TextField(max_length=500)
     capacidade = models.IntegerField()
-    foto = models.ImageField(upload_to="imgSala/" , default="imgSala/saladefault.png")
+    foto_sala = models.ImageField(upload_to="imgSala/" , default="imgSala/saladefault.png")
 
     def __str__(self):
         return self.nome
 
 class Agendamento(models.Model):
     nome = models.ForeignKey(User, on_delete=models.CASCADE)
-    data_inicio = models.DateTimeField(default=timezone.now)
-    data_fim = models.DateTimeField(default=timezone.now)
+    data = models.DateField(default=timezone.now)
+    # hora_inicio = models.TimeField(default=timezone.localtime().time)
+    # hora_fim = models.TimeField(default=timezone.localtime().time)
     sala = models.ForeignKey(Sala,on_delete=models.CASCADE)
     turma = models.TextField(max_length= 30)
     assunto = models.TextField(max_length=200)

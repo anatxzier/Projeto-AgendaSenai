@@ -31,12 +31,24 @@
     }
 
     .link {
-        color: #000;
-        text-decoration: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    color: #000;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+    transition: font-size 0.3s ease; /* Adiciona uma transição suave para o aumento do tamanho da fonte */
+    }
 
+    .link:hover,
+    .link:focus {
+        font-size: 1.1em; /* Aumenta o tamanho da fonte quando o mouse passa por cima */
+        text-decoration: none; /* Garante que o link não fique sublinhado */
+        color: #000; /* Mantém a cor preta */
+    }
+
+    .icn{
+        margin-right: 8px;
     }
 
     @media (max-width: 768px) {
@@ -76,33 +88,33 @@
         <div style="margin-right: 3rem; display: flex; flex-direction: row; gap: 10px">
             {% if user.is_authenticated %}
                 {% if user_is_coordenador %}
-                    <a href="usuarios" class="link"><span class="material-symbols-outlined">
+                    <a href="/usuarios" class="link"><span class="material-symbols-outlined icn">
                         manage_accounts
                         </span> Instrutores</a>
-                    <a href="agenda" class="link"><span class="material-symbols-outlined">
+                    <a href="/agenda" class="link"><span class="material-symbols-outlined icn">
                         calendar_month
                     </span> Agenda </a>
-                    <a href="" class="link"> <img src="{{perfil_usuario.foto_user.url}}"
+                    <a href="/perfil/{{perfil_usuario.id}}" class="link"> <img src="{{perfil_usuario.foto_user.url}}"
                         style="display: flex; border: 0px; width: 50px; height: 50px; margin: 0; padding: 0px; margin-right: 5px;"
                         alt="foto"> Bem-vindo, {{userr.username}}</a>
 
-                    <a href="logout" class="link"><span class="material-symbols-outlined">
+                    <a href="/logout" class="link"><span class="material-symbols-outlined icn">
                         logout
                     </span> </a>
                 {% else %}
-                    <a href="agenda" class="link"><span class="material-symbols-outlined">
+                    <a href="agenda" class="link"><span class="material-symbols-outlined icn">
                             calendar_month
                         </span> Agenda </a>
                     <a href="" class="link"> <img src="{{perfil_usuario.foto_user.url}}"
                             style="display: flex; border: 0px; width: 50px; height: 50px; margin: 0; padding: 0px; margin-right: 5px;"
                             alt="foto"> Bem-vindo, {{userr.username}}</a>
 
-                    <a href="logout" class="link"><span class="material-symbols-outlined">
+                    <a href="logout" class="link"><span class="material-symbols-outlined icn">
                             logout
                         </span> </a>
                 {% endif %}
             {% else %}
-            <a href="login" class="link"><span class="material-symbols-outlined">
+            <a href="login" class="link"><span class="material-symbols-outlined icn">
                     account_circle
                 </span> Entrar</a>
             {% endif %}

@@ -287,14 +287,6 @@ Cadastro
         object-fit: cover;
         border-radius: 50%;
     }
-
-    .erro {
-        color: #8b0000;
-        font-size: 16px;
-        margin-bottom: 10px;
-        margin-top: 10px;
-    }
-
     .imagem-upload {
         max-width: 200px;
         /* Define a largura máxima desejada */
@@ -302,6 +294,60 @@ Cadastro
         /* Define a altura máxima desejada */
         /* Adicione outras propriedades de estilo conforme necessário */
     }
+    .modal {
+        display: none; /* Inicialmente oculta */
+        position: fixed; /* Permanece na mesma posição na tela */
+        z-index: 1; /* Coloca a modal na frente de outros elementos */
+        left: 0;
+        top: 0;
+        width: 100%px; /* Largura total */
+        height: 100%px; /* Altura total */
+        overflow: auto; /* Permite rolar a página quando a modal está aberta */
+        background-color: rgba(0, 0, 0, 0.4); /* Fundo semi-transparente */
+    }
+
+    /* Estilo para o conteúdo da modal */
+    .modal-content {
+        background-color: #fefefe; /* Fundo branco */
+        margin: 15% auto; /* Centraliza a modal verticalmente */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 400px; /* Largura da modal */
+        height: 300px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Estilo para o botão 'OK' */
+    #okButton {
+        background-color: #8b0000; /* Cor de fundo verde */
+        color: white; /* Cor do texto */
+        padding: 10px 20px; /* Espaçamento interno */
+        font-size: 20px; /* Tamanho da fonte */
+        border: none; /* Remove a borda */
+        cursor: pointer; /* Muda o cursor ao passar por cima */
+        width: 150px;
+        border-radius: 5px;
+    }
+    .botaoo {
+        width: 150px;
+        height: 60px;
+        border: 3px solid #8b0000;
+        border-radius: 45px;
+        transition: all 0.3s;
+        cursor: pointer;
+        background: white;
+        font-size: 15px;
+        font-weight: 550;
+        font-family: 'Montserrat', sans-serif;
+}
+
+    .botaoo:hover {
+        background: #8b0000;
+        color: white;
+        font-size: 20px;
+}
+
 </style>
 
 <div class="container2">
@@ -311,7 +357,14 @@ Cadastro
     <div class="carde">
 
         {% if error_message %}
-        <div class="erro">{{ error_message }}</div>
+            <!-- Modal -->
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <p>{{ error_message }}</p>
+                    <button id="okButton">OK</button>
+                </div>
+            </div>
+            <!-- Fim da Modal -->
         {% endif %}
 
         <form action="{% url 'cadastro' %}" method="post" enctype="multipart/form-data">
@@ -340,7 +393,9 @@ Cadastro
             {{ form.foto }}
 
             <div class="botoes">
-                <button type="reset" class="btn">Excluir</button>
+                <button class="botaoo" type="button" href="javascript:void(0)" id="backButton">
+                    Cancelar
+                </button>
                 <button type="submit" class="animated-button">
                     <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -373,5 +428,30 @@ Cadastro
     });
 </script>
 
+<script>
+    // Pega a modal
+    var modal = document.getElementById("myModal");
+
+    // Pega o botão "OK"
+    var okButton = document.getElementById("okButton");
+
+    // Quando clicar no botão "OK", redireciona para outra página
+    okButton.onclick = function() {
+        window.location.href = "cadastro";
+    }
+
+    // Quando a página carregar, verifica se há uma mensagem de erro para mostrar a modal
+    window.onload = function() {
+        var errorMessage = "{{ error_message }}";
+        if (errorMessage) {
+            modal.style.display = "block";
+        }
+    }
+</script>
+<script>
+    document.getElementById('backButton').addEventListener('click', function() {
+        window.history.back();
+    });
+</script>
 
 {% endblock %}

@@ -1,0 +1,197 @@
+{% extends 'index.html' %}
+
+{% block title%}
+Agendamento
+{% endblock %}
+
+
+{% block body %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+    .container_home {
+        display: flex;
+        background-color: white;
+        overflow: hidden;
+        max-width: 100%;
+        max-height: 100%;
+        max-width: 100%;
+    }
+
+    .text {
+        color:  #A2000F;
+        text-decoration: none;
+    }
+    .left {
+    position: relative;
+    background-color: #A2000F;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px;
+    width: 50%;
+    overflow: hidden;
+    z-index: 1; /* Adicionado para garantir que o pseudo-elemento fique por baixo do texto */
+}
+
+.left::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 70%; /* Aumentado para cobrir mais área */
+    height: 120%; /* Aumentado para cobrir mais área */
+    background-color: #8b0000;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+    z-index: -1; /* Mantido para garantir que o pseudo-elemento fique por baixo do texto */
+}
+
+    /* .left {
+        position: relative;
+        background-color: #A2000F;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 50px;
+        width: 50%;
+    } */
+
+    .title {
+        font-size: 65px;
+        margin-bottom: 20px;
+    }
+
+    .description {
+        font-size: 20px;
+        text-align: center;
+        line-height: 30px;
+    }
+
+    .right {
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+    }
+
+    .right img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: white;
+        border: 2px solid #A2000F;
+        border-radius: 5px;
+        color: #A2000F;
+        font-size: 1em;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .outfit {
+        font-family: "Outfit", sans-serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+    }
+
+    .animated-button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 16px 36px;
+        border: 4px solid;
+        border-color: transparent;
+        font-size: 16px;
+        background-color: inherit;
+        border-radius: 100px;
+        font-weight: 600;
+        color: #9B0000;
+        box-shadow: 0 0 0 2px #9B0000;
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button svg {
+        position: absolute;
+        width: 24px;
+        fill: #9B0000;
+        z-index: 9;
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button .arr-1 {
+        right: 16px;
+    }
+
+    .animated-button .arr-2 {
+        left: -25%;
+    }
+
+    .animated-button .circle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        background-color: #9B0000;
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button .text {
+        position: relative;
+        z-index: 1;
+        transform: translateX(-12px);
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button:hover {
+        box-shadow: 0 0 0 12px transparent;
+        color: #FFFFFF;
+        border-radius: 12px;
+    }
+
+    .animated-button:hover .arr-1 {
+        right: -25%;
+    }
+
+    .animated-button:hover .arr-2 {
+        left: 16px;
+    }
+
+    .animated-button:hover .text {
+        transform: translateX(12px);
+        color: #FFFFFF;
+    }
+
+    .animated-button:hover svg {
+        fill: #FFFFFF;
+    }
+
+    .animated-button:active {
+        scale: 0.95;
+        box-shadow: 0 0 0 4px #9B0000;
+    }
+
+    .animated-button:hover .circle {
+        width: 220px;
+        height: 220px;
+        opacity: 1;
+    }
+</style>
+
+<div class="container_home">
+   
+</div>
+{% endblock %}

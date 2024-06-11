@@ -1,9 +1,8 @@
 {% extends 'index.html' %}
 
-{% block title%}
+{% block title %}
 Salas
 {% endblock %}
-
 
 {% block body %}
 <style>
@@ -36,9 +35,7 @@ Salas
         font-size: 16px;
         width: 0;
         transition: 0.4s;
-
     }
-
 
     .search-btn {
         width: 25px;
@@ -53,7 +50,7 @@ Salas
     }
 
     .fixed-size-card {
-        width: 14rem;
+        width: 100%;
         height: 18rem;
         position: relative;
         overflow: hidden;
@@ -61,11 +58,8 @@ Salas
 
     .vertical-line {
         width: 8px;
-        /* Largura da linha */
         height: 150px;
-        /* Altura da linha */
         margin: 0 auto;
-        /* Centralizar a linha */
         margin-right: 10px;
         border-radius: 50px;
         background-color: #C53F3F;
@@ -88,6 +82,7 @@ Salas
         cursor: pointer;
         overflow: hidden;
         transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        text-decoration: none;
     }
 
     .animated-button svg {
@@ -96,14 +91,17 @@ Salas
         fill: #9B0000;
         z-index: 9;
         transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        text-decoration: none;
     }
 
     .animated-button .arr-1 {
         right: 16px;
+        text-decoration: none;
     }
 
     .animated-button .arr-2 {
         left: -25%;
+        text-decoration: none;
     }
 
     .animated-button .circle {
@@ -117,6 +115,7 @@ Salas
         border-radius: 50%;
         opacity: 0;
         transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        text-decoration: none;
     }
 
     .animated-button .text {
@@ -124,39 +123,51 @@ Salas
         z-index: 1;
         transform: translateX(-12px);
         transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        text-decoration: none;
     }
 
     .animated-button:hover {
         box-shadow: 0 0 0 12px transparent;
         color: #FFFFFF;
         border-radius: 12px;
+        text-decoration: none;
     }
 
     .animated-button:hover .arr-1 {
         right: -25%;
+        text-decoration: none;
     }
 
     .animated-button:hover .arr-2 {
         left: 16px;
+        text-decoration: none;
     }
 
     .animated-button:hover .text {
         transform: translateX(12px);
+        text-decoration: none;
     }
 
     .animated-button:hover svg {
         fill: #FFFFFF;
+        text-decoration: none;
     }
 
     .animated-button:active {
         scale: 0.95;
         box-shadow: 0 0 0 4px #9B0000;
+        text-decoration: none;
     }
 
     .animated-button:hover .circle {
         width: 220px;
         height: 220px;
         opacity: 1;
+        text-decoration: none;
+    }
+
+    .card {
+        background-color: #d5d5d5;
     }
 
     .card-button {
@@ -199,7 +210,6 @@ Salas
         color: #8B0000;
         box-shadow: 0 0.4rem #dfd9d9;
         cursor: pointer;
-
     }
 
     .botao:active {
@@ -222,6 +232,25 @@ Salas
     .botao span.material-symbols-outlined {
         text-align: center;
     }
+
+    .sala-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: calc(33.33% - 20px);
+        box-sizing: border-box;
+    }
+
+    .back-arrow {
+        display: none;
+        color: #FFFFFF;
+        font-size: 18px;
+        margin-left: 15px;
+        cursor: pointer;
+    }
+    
 </style>
 
 <body style="background-color: #f5f5f5;">
@@ -229,19 +258,22 @@ Salas
         <div class="container-fluid">
             <div style="display: flex; align-items: center;">
                 <div class="search-container">
+                    <a class="navbar-brand back-arrow" id="backArrow">
+                        <span class="material-symbols-outlined" style="color:#FFFFFF">arrow_back</span>
+                    </a>
                     <div class="search-box">
                         <input type="text" class="search-text" id="searchInput" placeholder="Pesquisar sala">
-                        <a class="search-btn"><span type="submit" style="color: #4d4c4cc5"
-                                class="material-symbols-outlined">
-                                search
-                            </span></a>
+                        <a class="search-btn" id="searchBtn">
+                            <span type="submit" style="color: #4d4c4cc5" class="material-symbols-outlined">search</span>
+                        </a>
                     </div>
                 </div>
                 <form method="get" id="filterForm" style="margin-right: 15px;">
-                    <select style="border-radius: 20px; margin-left: 15px;" class="form-select"
+                    <select id="corredorFilter" style="border-radius: 20px; margin-left: 15px;" class="form-select"
                         aria-label="Default select example">
-                        <option selected>Filtrar por corredor</option>
-                        {% for corredor in corredores%}
+                        <option selected disabled>Filtrar por corredor</option>
+                        <option value="all">Todas as Salas</option>
+                        {% for corredor in corredores %}
                         <option value="{{ corredor }}">{{ corredor }}</option>
                         {% endfor %}
                     </select>
@@ -250,77 +282,76 @@ Salas
             </div>
             {% if user.is_authenticated %}
             {% if user_is_coordenador %}
-            <a class="navbar-brand" href="{% url 'cadastroSala'%}"
-                style="color: #FFFFFF; font-size: 18px; display: flex; align-items: center;">Adicionar
-                nova sala <span class="material-symbols-outlined" style="padding-left: 5px;">
-                    add
-                </span></a>
-            {% else %}
-            <div></div>
+            <a class="navbar-brand" href="{% url 'cadastrosala' %}"
+                style="color: #FFFFFF; font-size: 18px; display: flex; align-items: center;">
+                Adicionar nova sala <span class="material-symbols-outlined" style="padding-left: 5px;">add</span>
+            </a>
             {% endif %}
-            {% else%}
-            <div>
-                <div>
-                    {% endif %}
-                </div>
-            </div>
+            {% endif %}
         </div>
     </div>
-    <main
-        style="display: flex; justify-content: center; margin-top: 30px; flex-wrap: wrap ; flex-direction: row;">
-        {% for item in dados_sala %}
-        <div style="margin: 10px; width: 400px;">
-            <div style="display:flex; align-items: center; margin: 10px; margin-right:40px; justify-content: center;"
-                data-nome="{{ item.nome }}">
-                <div class="vertical-line"></div>
-                <div class="card fixed-size-card" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal{{ forloop.counter }}"
-                    style="width: 18rem; position: relative; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
-                    <img src="{{ item.foto.url }}" class="card-img-top" alt="Sala"
-                        style="filter: brightness(40%); width: 100%; height: 100%; object-fit: cover;">
-                    <div class="card-body d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle"
-                        style="z-index: 1;">
-                        <p class="card-text outfit" style="color: white; font-size: 30px; font-weight: 500;">
-                            {{item.nome}}</p>
-                    </div>
-                    <div class="card-border-bottom-rounded"></div>
-                    <button class="card-button">Mais infos</button>
-                </div>
 
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal{{ forloop.counter }}" tabindex="-1"
-                    aria-labelledby="exampleModalLabel{{ forloop.counter }}" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content" style="background-color: #d5d5d5;">
-                            <div
-                                style="display: flex; flex-direction: row; justify-content: space-between; padding: 15px;">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel{{ forloop.counter }}"
-                                    style="align-self: center;">{{ item.nome }}</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+    <main id="mainContent"
+        style="display: flex; justify-content: center; margin-top: 30px; flex-wrap: wrap; margin-right: 25px;">
+        {% for item in dados_sala %}
+        <div class="sala-card" data-nome="{{ item.nome }}">
+            <div class="vertical-line"></div>
+            <div class="card fixed-size-card" data-bs-toggle="modal" data-bs-target="#exampleModal{{ forloop.counter }}"
+                style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; border-top-right-radius: 15px; width: 300px;">
+                <img src="{{ item.foto_sala.url }}" class="card-img-top" alt="..."
+                    style="filter: brightness(50%); width: 100%; height: 100%; object-fit: cover;">
+                <div class="card-body d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle"
+                    style="z-index: 1;">
+                    <p class="card-text outfit" style="color: white; font-size: 30px; font-weight: 500;">{{ item.nome }}
+                    </p>
+                </div>
+                <button class="card-button">Mais infos</button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal{{ forloop.counter }}" tabindex="-1"
+                aria-labelledby="exampleModalLabel{{ forloop.counter }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="background-color: #d5d5d5;">
+                        <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 15px;">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel{{ forloop.counter }}"
+                                style="align-self: center;">{{ item.nome }}</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body"
+                            style="display: flex; justify-content: center; background-color: #d5d5d5;">
+                            <img src="{{ item.foto_sala.url }}" class="card-img-top" alt="..."
+                                style="filter: brightness(80%); width: 50%; height: 50%; object-fit: cover; display: flex; justify-content: center; border-radius: 10px;">
+                        </div>
+                        <div
+                            style="display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; flex-direction: column;">
+                            <div style="width: 240px;">
+                                <h6>Corredor</h6>
+                                <p class="corredor">{{ item.corredor }}</p>
                             </div>
-                            <div class="modal-body"
-                                style="display: flex; justify-content: center; background-color: #d5d5d5;">
-                                <img src="{{ item.foto.url }}" class="card-img-top" alt="..."
-                                    style="filter: brightness(80%); width: 50%; height: 50%; object-fit: cover; display:flex; justify-content: center; border-radius: 10px;">
+                            <div style="width: 240px;">
+                                <h6>Descrição</h6>
+                                <p>{{ item.descricao }}</p>
                             </div>
-                            <div
-                                style="display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; flex-direction: column;">
-                                <div style="width: 240px;">
-                                    <h6>Corredor</h6>
-                                    <p>{{ item.corredor }}</p>
-                                </div>
-                                <div style="width: 240px;">
-                                    <h6>Descrição</h6>
-                                    <p>{{ item.descricao }}</p>
-                                </div>
-                                <div style="width: 240px;">
-                                    <h6>Capacidade</h6>
-                                    <p>{{ item.capacidade }}</p>
-                                </div>
+                            <div style="width: 240px;">
+                                <h6>Capacidade</h6>
+                                <p>{{ item.capacidade }}</p>
+                            </div>
+                        </div>
+                        <div
+                            style="display:flex; justify-content: space-between; align-items: center; margin-left: 8px">
+                            <div>
+                                <span type="button" class="material-symbols-outlined editarr" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    edit
+                                </span>
+                                <span type="button" data-bs-toggle="modal" data-bs-target="#modalExcluir{{ forloop.counter }}"
+                                    class="excluirr material-symbols-outlined">
+                                    delete
+                                </span>
                             </div>
                             <div style="padding: 15px; display: flex; justify-content: end; background-color: #d5d5d5;">
-                                <button class="animated-button">
+                                <a href="{% url 'cadastrosala' %}" class="animated-button">
                                     <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
                                         <path
                                             d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
@@ -333,40 +364,187 @@ Salas
                                             d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
                                         </path>
                                     </svg>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="modal modal-container fade" id="modalEditar{{ forloop.counter }}" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel2">Editar</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{% url 'atualizarsala' %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="{{ form.nome_sala.id_for_label }}">{{ form.nome_sala.label }}</label>
+                                    {{ form.nome_sala }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="{{ form.corredor.id_for_label }}">{{ form.corredor.label }}</label>
+                                    {{ form.corredor }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }}</label>
+                                    {{ form.descricao }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="{{ form.capacidade.id_for_label }}">{{ form.capacidade.label }}</label>
+                                    {{ form.capacidade }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="{{ form.foto.id_for_label }}">{{ form.foto.label }}</label>
+                                    {{ form.foto }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalExcluir{{ forloop.counter }}" tabindex="-1" aria-labelledby="exampleModalLabel1"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel1">Excluir</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="deleteForm" action="{% url 'deletarsala' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="nome_sala" value="{{ item.nome }}">
+                                <p>Tem certeza de que deseja excluir esta sala?</p>
+                                <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         {% endfor %}
-        {% if user.is_authenticated %}
-        {% if user_is_coordenador %}
-        <div style="margin: 10px; width: 400px;">
-            <div style="display:flex; align-items: center; margin-right: 45px; margin-top: 10px;">
-                <div class="vertical-line"></div>
-                <form class="card fixed-size-card" style="color: #eee; width: 285px; border-radius: 8px;"
-                    action=" {% url 'cadastroSala' %}" method="get">
-                    <button class="botao" type="submit">
-                        <p>Adicionar Sala</p>
-                        <span style="font-size: 50px; text-align: center; border: none;"
-                            class="material-symbols-outlined">
-                            add_circle
-                        </span>
-                    </button>
-                </form>
-            </div>
+
+        {% if user.is_authenticated and user_is_coordenador %}
+        <div class="sala-card">
+            <div class="vertical-line"></div>
+            <form class="card fixed-size-card" style="color: #eee; width: 300px; height: 18rem; border-radius: 8px;"
+                action="{% url 'cadastrosala' %}" method="get">
+                <button class="botao" type="submit">
+                    <p>Adicionar Sala</p>
+                    <span style="font-size: 50px; text-align: center; border: none;"
+                        class="material-symbols-outlined">add_circle</span>
+                </button>
+            </form>
         </div>
-        {% else %}
-        <div></div>
         {% endif %}
-        {% else%}
-        <div>
-            <div>
-                {% endif %}
-            </div>
-        </div>
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Função para verificar se a seta de voltar deve ser exibida
+            function showBackArrow() {
+                const salaCards = document.querySelectorAll('.sala-card');
+                let filteredCount = 0;
+
+                salaCards.forEach(function (card) {
+                    if (card.style.display !== 'none') {
+                        filteredCount++;
+                    }
+                });
+
+                if (filteredCount < salaCards.length) {
+                    document.getElementById('backArrow').style.display = 'block';
+                } else {
+                    document.getElementById('backArrow').style.display = 'none';
+                }
+            }
+
+            // Adicionar evento de clique à seta de voltar
+            document.getElementById('backArrow').addEventListener('click', function () {
+                const salaCards = document.querySelectorAll('.sala-card');
+                salaCards.forEach(function (card) {
+                    card.style.display = 'flex';
+                });
+                document.getElementById('backArrow').style.display = 'none';
+                document.getElementById('searchInput').value = '';
+                document.getElementById('corredorFilter').selectedIndex = 0; // Redefinir para o placeholder
+            });
+
+            // Adicionar evento de mudança ao filtro de corredor
+            document.getElementById('corredorFilter').addEventListener('change', function () {
+                const corredorSelecionado = this.value.toLowerCase();
+                const salaCards = document.querySelectorAll('.sala-card');
+
+                salaCards.forEach(function (card) {
+                    const salaCorredorElement = card.querySelector('.corredor');
+                    if (salaCorredorElement) {
+                        const salaCorredor = salaCorredorElement.textContent.toLowerCase();
+                        if (corredorSelecionado === '' || corredorSelecionado === 'all' || salaCorredor.includes(corredorSelecionado)) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    }
+                });
+
+                showBackArrow(); // Chamar a função para mostrar/ocultar a seta de voltar
+            });
+
+            // Adicionar evento de clique ao botão de pesquisa
+            document.getElementById('searchBtn').addEventListener('click', function () {
+                filterSalas();
+                showBackArrow();
+            });
+
+            // Adicionar evento de pressionar Enter à caixa de pesquisa
+            document.getElementById('searchInput').addEventListener('input', function () {
+                const searchText = this.value.toLowerCase().trim();
+                const salaCards = document.querySelectorAll('.sala-card');
+
+                salaCards.forEach(function (card) {
+                    const salaNomeAttr = card.getAttribute('data-nome');
+                    if (salaNomeAttr) {
+                        const salaNome = salaNomeAttr.toLowerCase();
+
+                        if (salaNome.includes(searchText)) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    }
+                    showBackArrow();
+                });
+            });
+
+            $(document).ready(function () {
+                $('#modalExcluir{{ forloop.counter }}').on('show.bs.modal', function () {
+                    $('#exampleModal{{ forloop.counter }}').modal('hide');
+                });
+            });
+            
+            $(document).ready(function () {
+                $('#modalEditar{{ forloop.counter }}').on('show.bs.modal', function () {
+                    $('#exampleModal{{ forloop.counter }}').modal('hide');
+                });
+            });
+        });
+
+
+
+    </script>
+
 </body>
 {% endblock %}

@@ -1,16 +1,22 @@
 {% extends 'index.html' %}
 
 {% block title %}
-    Visualizar perfil
+Visualizar perfil
 {% endblock %}
 
 {% block body %}
-
+<div class="seta">
+<a type="button" href="javascript:void(0)" id="backButton" style="margin-left: 30px; background-color: #f5f5f5; margin-top: 5px; size: 40px" class="material-symbols-outlined">
+    arrow_back
+</a>
+</div>
 <div class="containerPerfil">
     <div class="campoInfo">
     </div>
     <div class="conteudo">
-        <img src="{{ usuario.foto_user.url }}" alt="Foto de perfil">
+        <div class="divft">
+            <img class="fotinha" src="{{ usuario.foto_user.url }}" alt="Foto de perfil">
+        </div>
         {% csrf_token %}
         <div class="info-container">
             <div class="info-column">
@@ -25,17 +31,121 @@
                 <label for="CPF">CPF</label>
                 <p>{{ usuario.cpf }}</p>
             </div>
+            <div>
+                <span type="button" class="material-symbols-outlined editarr" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    edit
+                </span>
+                {% if perfil_usuario.id != usuario.id %}
+                <span type="button" data-bs-toggle="modal" data-bs-target="#modalExcluir" class="excluirr material-symbols-outlined">
+                    delete
+                </span>
+                {% endif %}
+            </div>
+        </div>
+        
+    </div>
+</div>
+<!-- Modal editar -->
+<div class="modal modal-container fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'atualizar' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ form.nome.id_for_label }}">{{ form.nome.label }}</label>
+                        {{ form.nome }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.sobrenome.id_for_label }}">{{ form.sobrenome.label }}</label>
+                        {{ form.sobrenome }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.foto.id_for_label }}">{{ form.foto.label }}</label>
+                        {{ form.foto }}
+                    </div>
+                    <div>
+                        {{ form.username }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Modal do excluir -->
+<div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel1">Excluir</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="deleteForm" action="{% url 'deletar' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="username" value="{{ usuario.nome }}">
+                    <p>Tem certeza de que deseja excluir este usuário?</p>
+                    <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <style>
+    .seta a {
+        text-decoration: none;
+        color: inherit; 
+    }
+    .seta{
+        
+        background-color: #f5f5f5;
+        gap: 20px
+    }
+    .central{
+        justify-content: cente;
+    }
+    .divft{
+        margin-right: 0px;
+        max-width: 220px;
+    }
+    .fotinha{
+        max-width: 220px;
+        min-width: 220px;
+        max-height: 220px;
+        min-height: 220px;
+    }
+    .editarr{
+        color: #ffffff;
+    }
+    .excluirr{
+        color: red;
+    }
     .containerPerfil {
         background-color: #f5f5f5;
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
+        align-content: center;
         padding-top: 4rem;
         box-sizing: border-box;
     }
@@ -43,10 +153,12 @@
     .campoInfo {
         background-color: #9B0000;
         width: 100%;
-        height: 50vh;
+        height: 60vh;
         position: absolute;
         bottom: 0;
         left: 0;
+        margin-bottom: 0;
+        padding-bottom: 0;
     }
 
     .conteudo {
@@ -57,11 +169,12 @@
         justify-content: center;
         max-width: 90%;
         box-sizing: border-box;
-        
+
     }
 
     .conteudo img {
         width: 60%;
+        max-width: 30%;
         border-radius: 50%;
         box-shadow: 5px -3px 20px black;
     }
@@ -69,16 +182,20 @@
     .info-container {
         display: flex;
         justify-content: space-between;
+        justify-self: center;
         width: 100%;
-        max-width: 800px; 
+        max-width: 800px;
         margin-top: 20px;
         margin-left: 50px;
+        padding: 0px;
+        
+        
 
     }
 
     .info-column {
         flex: 1;
-        margin-right: 20px; 
+        margin-right: 20px;
     }
 
     .conteudo p {
@@ -97,6 +214,55 @@
     .conteudo label {
         color: #f5f5f5;
     }
+
+    .modal-body form input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        border: none;
+        border-bottom: 1px solid black;
+        outline: none;
+        padding: 2px 0;
+        font-size: 16px;
+        width: 100%;
+        margin-bottom: 7px;
+    }
+    @keyframes moveBorder {
+    0% {
+        border: 3px solid transparent;
+        border-left-color: red;
+    }
+    25% {
+        border: 3px solid transparent;
+        border-top-color: red;
+    }
+    50% {
+        border: 3px solid transparent;
+        border-right-color: red;
+    }
+    75% {
+        border: 3px solid transparent;
+        border-bottom-color: red;
+    }
+    100% {
+        border: 3px solid transparent;
+        border-left-color: red;
+    }
+}
+
+.modal-content {
+    animation: moveBorder 3s infinite ease-in-out;
+}
+
 </style>
+<script>
+    document.getElementById('{{ form.foto.id_for_label }}').addEventListener('change', function (event) {
+        const fileName = event.target.files[0] ? event.target.files[0].name : 'Escolha a Foto de Perfil';
+        document.getElementById('file-name').textContent = fileName;
+    });
+
+    document.getElementById('backButton').addEventListener('click', function() {
+        window.history.back();
+    });
+</script>
 
 {% endblock %}

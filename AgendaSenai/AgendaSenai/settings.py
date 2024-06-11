@@ -132,3 +132,4 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'

@@ -12,8 +12,8 @@ class FormCadastro(forms.Form):
     first_name = forms.CharField(label='Nome', max_length= 20)
     last_name = forms.CharField(label="Sobrenome", max_length=40)
     email = forms.EmailField(label="Email", max_length=60)
-    password = forms.CharField(label='Senha', widget=forms.PasswordInput)
-    cpf = forms.CharField(label="CPF", max_length=11)
+    password = forms.CharField(label='Senha', widget=forms.PasswordInput, min_length=8)
+    cpf = forms.CharField(label="CPF", min_length=11,max_length=11)
     foto = forms.ImageField(label="Foto de Perfil", required=False)
 
 class FormCadastroSala(forms.Form):
@@ -27,4 +27,23 @@ class FormsAgendarData(forms.Form):
     data = forms.DateTimeField(label='Data e Hora do Agendamento',
                                widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
                                input_formats=['%Y-%m-%d %H:%M:%S'])
+
+class FormsEdição(forms.Form):
+    nome = forms.CharField(label="Nome:",max_length=15)
+    sobrenome = forms.CharField(label="Sobrenome:", max_length=50)
+    foto = forms.ImageField(label="Foto de usuário:", required=False)
+    email = forms.EmailField(label="Email:", max_length=60)
+    username = forms.CharField(widget=forms.HiddenInput())
     
+
+
+
+
+
+class FormsAgendamento(forms.Form):
+    assunto = forms.CharField(label="Assunto:", max_length=200)
+    data = forms.DateField(label='Dia do Agendamento', widget=forms.DateTimeInput(attrs={'type': 'date'}))
+    hora_entrada = forms.TimeField(label="Hora de entrada", widget=forms.DateTimeInput(attrs={'type': 'time'}))
+    hora_saida = forms.TimeField(label="Hora de saída", widget=forms.DateTimeInput(attrs={'type': 'time'}))
+    turma = forms.CharField(label="Turma:", max_length=100)
+

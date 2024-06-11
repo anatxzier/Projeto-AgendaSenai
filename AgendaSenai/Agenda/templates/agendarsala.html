@@ -1,0 +1,142 @@
+{% extends 'index.html' %}
+
+{% block title %}
+AgendarSala
+{% endblock %}
+
+{% block body %}
+
+<div class="ContainerAg">
+    <div class="sidebar">
+    </div>
+    <div class="contAgendar">
+        <div class="cont2"> 
+            <h1>Agendamento da Sala</h1>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label for="{{ form.data.id_for_label }}">{{ form.data.label }}</label>
+        {{ form.data }}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.hora_entrada.id_for_label }}">{{ form.hora_entrada.label }}</label>
+        {{ form.hora_entrada }}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.hora_saida.id_for_label }}">{{ form.hora_saida.label }}</label>
+        {{ form.hora_saida }}
+
+    
+    <div class="form-group">
+        <label for="{{ form.turma.id_for_label }}">{{ form.turma.label }}</label>
+        {{ form.turma }}
+    
+
+    <div class="form-group">
+        <label for="{{ form.assunto.id_for_label }}">{{ form.assunto.label }}</label>
+        {{ form.assunto }}
+
+        {% for error in form.assunto.errors %}
+            <p class="text-danger">{{ error }}</p>
+        {% endfor %}
+    </div>
+
+
+    </div>
+    <button class="botaoo" type="button" href="javascript:void(0)" id="backButton">
+        Cancelar
+    </button>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+
+                
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('backButton').addEventListener('click', function() {
+        window.history.back();
+    });
+</script>
+
+<style>
+    .botaoo {
+        width: 150px;
+        height: 60px;
+        border: 3px solid #8b0000;
+        border-radius: 45px;
+        transition: all 0.3s;
+        cursor: pointer;
+        background: white;
+        font-size: 15px;
+        font-weight: 550;
+        font-family: 'Montserrat', sans-serif;
+}
+
+    .botaoo:hover {
+        background: #8b0000;
+        color: white;
+        font-size: 20px;
+}
+
+    
+.ContainerAg {
+    display: flex;
+}
+
+.contAgendar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1; 
+}
+
+.cont2 h1 {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    text-align: center; 
+}
+
+.sidebar {
+    width: 20%;
+    height: 100vh;
+    background: linear-gradient(45deg, #A2000F, #790404, #A2000F);
+}
+
+.cont2 form {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .cont2 form label {
+        margin-bottom: 5px;
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .cont2 form input {
+        border: none;
+        border-radius: 5px;
+        background-color: #d9d9d9;
+        padding: 10px 0;
+        font-size: 16px;
+        width: 80%;
+        margin-bottom: 7px;
+    }
+
+
+
+    
+
+</style>
+
+{% endblock %}

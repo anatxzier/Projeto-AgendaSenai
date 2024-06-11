@@ -287,6 +287,25 @@ Cadastro
         width: 400px;
         margin-bottom: 7px;
     }
+    .botaoo {
+        width: 150px;
+        height: 60px;
+        border: 3px solid #8b0000;
+        border-radius: 45px;
+        transition: all 0.3s;
+        cursor: pointer;
+        background: white;
+        font-size: 15px;
+        font-weight: 550;
+        font-family: 'Montserrat', sans-serif;
+}
+
+    .botaoo:hover {
+        background: #8b0000;
+        color: white;
+        font-size: 18px;
+}
+
 </style>
 
 <div class="container2">
@@ -294,7 +313,7 @@ Cadastro
         <img src="{% static 'admin/img/saladefault.png' %}" alt="Imagem Padrão">
     </div>
     <div class="carde">
-        <form action="{% url 'cadastro' %}" method="post" enctype="multipart/form-data">
+        <form action="{% url 'cadastrosala' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <label for="{{ form.nome_sala.id_for_label }}">{{ form.nome_sala.label }}</label>
             {{ form.nome_sala }}
@@ -316,7 +335,9 @@ Cadastro
             {% endif %}
 
             <div class="botoes">
-                <button type="reset" class="btn">Excluir</button>
+                <button class="botaoo" type="button" href="javascript:void(0)" id="backButton">
+                    Cancelar
+                </button>
                 <button type="submit" class="animated-button">
                     <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
                         <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
@@ -335,6 +356,11 @@ Cadastro
     document.getElementById('{{ form.foto.id_for_label }}').addEventListener('change', function(event) {
         const fileName = event.target.files[0] ? event.target.files[0].name : 'Escolha a Foto Sala';
         document.getElementById('file-name').textContent = fileName;
+    });
+</script>
+<script>
+    document.getElementById('backButton').addEventListener('click', function() {
+        window.history.back();
     });
 </script>
 
