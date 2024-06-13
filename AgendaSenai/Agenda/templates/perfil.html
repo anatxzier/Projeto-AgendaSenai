@@ -6,9 +6,10 @@ Visualizar perfil
 
 {% block body %}
 <div class="seta">
-    <a type="button" href="javascript:void(0)" id="backButton" style="margin-left: 30px; background-color: #f5f5f5; margin-top: 5px; size: 40px" class="material-symbols-outlined">
+    <a type="button" href="javascript:void(0)" id="backButton" class="material-symbols-outlined">
         arrow_back
     </a>
+    <p>Voltar</p>
 </div>
 <div class="containerPerfil">
     <div class="campoInfo">
@@ -129,13 +130,28 @@ Visualizar perfil
     margin-left: 0px;
     margin-right: 0px;
 }
-    .seta a {
+.seta a {
         text-decoration: none;
-        color: inherit; 
+        color: inherit;
+        padding-top: 10px;
+        background-color: t;
+        padding-left: 20px;
+
     }
+
+    .seta p {
+        padding-top: 9px;
+        font-size: 18px;
+        margin-left: 5px;
+
+    }
+
     .seta {
+        display: flex;
+        flex-direction: row;
         background-color: #f5f5f5;
-        gap: 20px;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
     }
     .central {
         justify-content: center;
@@ -195,6 +211,7 @@ Visualizar perfil
         width: 60%;
         max-width: 30%;
         border-radius: 50%;
+        margin-top: 0px;
         box-shadow: 5px -3px 20px black;
     }
 

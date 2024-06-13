@@ -16,44 +16,46 @@ Cadastro
     }
 
     .bg {
-    width: 40%;
-    background: linear-gradient(45deg, #A2000F, #790404,#A2000F);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 0 0 2000px rgba(255, 255, 255, 0.1); /* Corrigindo as sobras brancas */
-    position: relative;
-    overflow: hidden;
-}
+        width: 40%;
+        background: linear-gradient(45deg, #A2000F, #790404, #A2000F);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 0 0 2000px rgba(255, 255, 255, 0.1);
+        /* Corrigindo as sobras brancas */
+        position: relative;
+        overflow: hidden;
+    }
 
-.bg::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1), rgba(0,0,0,0));
-    mix-blend-mode: overlay;
-}
+    .bg::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0));
+        mix-blend-mode: overlay;
+    }
 
-.bg::after {
-    content: '';
-    position: absolute;
-    top: -50px;
-    left: -50px;
-    width: 150px;
-    height: 150px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    filter: blur(50px);
-}
+    .bg::after {
+        content: '';
+        position: absolute;
+        top: -50px;
+        left: -50px;
+        width: 150px;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        filter: blur(50px);
+    }
 
-.bg::before {
-    clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
-    background: linear-gradient(45deg, #FFFFFF, rgb(130, 4, 10), #FFFFFF); /* Alterando o tom de vermelho */
-}
+    .bg::before {
+        clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+        background: linear-gradient(45deg, #FFFFFF, rgb(130, 4, 10), #FFFFFF);
+        /* Alterando o tom de vermelho */
+    }
 
 
     .bg img {
@@ -67,7 +69,7 @@ Cadastro
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        padding:100px;
+        padding: 100px;
     }
 
     .carde form {
@@ -85,19 +87,27 @@ Cadastro
     }
 
     .carde form input[type="text"],
-    input[type="email"],
-    input[type="password"] {
+    .carde form input[type="email"],
+    .carde form input[type="password"] {
         border: none;
         border-bottom: 1px solid black;
         outline: none;
         padding: 2px 0;
         font-size: 16px;
-        width: 400px;
+        width: 90%;
+        /* Ajustando a largura para 90% */
         margin-bottom: 7px;
     }
-    .carde form input[type="file"] {
-    display: none;
+
+
+    .carde form input[name='capacidade'] {
+        width: 90%;
     }
+
+    .carde form input[type="file"] {
+        display: none;
+    }
+
     .carde form label.upload-label {
         align-items: center;
         align-self: center;
@@ -125,6 +135,7 @@ Cadastro
         transition: 0.3s ease-out;
         transform: scaleY(1);
     }
+
     .carde form label.upload-label::after {
         content: '';
         position: absolute;
@@ -141,6 +152,7 @@ Cadastro
         transform: translateY(-25px);
         height: 0;
     }
+
     .carde form label.upload-label:hover::after {
         transform: scaleX(0);
         transition-delay: 0.15s;
@@ -157,6 +169,7 @@ Cadastro
         align-self: center;
         margin-left: 15px;
     }
+
     .btn {
         background-color: #8b0000;
         border: none;
@@ -264,15 +277,16 @@ Cadastro
         gap: 20px;
         margin-top: 10px;
     }
-    
+
     .bg img {
         width: 200px;
         height: 200px;
         object-fit: cover;
         border-radius: 50%;
     }
-    .erro{
-        color:#8b0000;
+
+    .erro {
+        color: #8b0000;
         font-size: 14px;
         margin-bottom: 10px;
         margin-top: 10px;
@@ -287,6 +301,7 @@ Cadastro
         width: 400px;
         margin-bottom: 7px;
     }
+
     .botaoo {
         width: 150px;
         height: 60px;
@@ -297,18 +312,69 @@ Cadastro
         background: white;
         font-size: 15px;
         font-weight: 550;
+        color: #000000;
         font-family: 'Montserrat', sans-serif;
-}
+        text-decoration: none;
+    }
 
     .botaoo:hover {
         background: #8b0000;
         color: white;
         font-size: 18px;
-}
-.asterisco{
-    color: rgb(211, 5, 5);
-}
+    }
 
+    .asterisco {
+        color: rgb(211, 5, 5);
+
+    }
+
+    .alert {
+        padding: 15px;
+        margin-bottom: 10px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        align-items: center;
+        align-self: center;
+        justify-content: center;
+    }
+
+    .alert-success {
+        color: #3c763d;
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+    }
+
+    .alert-error {
+        color: #FFFFFF;
+        background-color: rgba(139, 0, 0, 0.7);
+        ;
+        border-color: #8b0000;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .container2 {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bg {
+            display: none;
+        }
+
+        .carde {
+            width: 50%;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .carde form input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[name='capacidade'] {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
 </style>
 
 <div class="container2">
@@ -318,37 +384,55 @@ Cadastro
     <div class="carde">
         <form action="{% url 'cadastrosala' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <label for="{{ form.nome_sala.id_for_label }}">{{ form.nome_sala.label }} <span class="asterisco">*</span></label>
+            <label for="{{ form.nome_sala.id_for_label }}">{{ form.nome_sala.label }} <span
+                    class="asterisco">*</span></label>
             {{ form.nome_sala }}
-            
-            <label for="{{ form.corredor.id_for_label }}">{{ form.corredor.label }} <span class="asterisco">*</span></label>
+
+            <label for="{{ form.corredor.id_for_label }}">{{ form.corredor.label }} <span
+                    class="asterisco">*</span></label>
             {{ form.corredor }}
-            
-            <label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }} <span class="asterisco">*</span></label>
+
+            <label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }} <span
+                    class="asterisco">*</span></label>
             {{ form.descricao }}
-            
-            <label class="capacid" for="{{ form.capacidade.id_for_label }}">{{ form.capacidade.label }} <span class="asterisco">*</span></label>
+
+            <label class="capacid" for="{{ form.capacidade.id_for_label }}">{{ form.capacidade.label }} <span
+                    class="asterisco">*</span></label>
             {{ form.capacidade }}
 
-            <label for="{{ form.foto.id_for_label }}" style="margin-top: 10px;" class="upload-label"><span id="file-name">Escolha a Foto da Sala</span></label>
+            <label for="{{ form.foto.id_for_label }}" style="margin-top: 10px;" class="upload-label"><span
+                    id="file-name">Escolha a Foto da Sala</span></label>
             {{ form.foto }}
-
             {% if error_message %}
-                <div class="erro">{{ error_message }}</div>
+            <div id="alert-container" class="erro alert alert-error" style="text-align: center;">{{ error_message }}
+            </div>
             {% endif %}
 
+            {% if messages %}
+            {% for message in messages %}
+            <div id="alert-container" class="alert alert-success">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
             <div class="botoes">
-                <button class="botaoo" type="button" href="javascript:void(0)" id="backButton">
+                <button class="botaoo" type="button" id="backButton" onclick="voltarParaAgenda()">
                     Cancelar
                 </button>
+                
+                
                 <button type="submit" class="animated-button">
                     <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+                        <path
+                            d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
+                        </path>
                     </svg>
                     <span class="text">Salvar</span>
                     <span class="circle"></span>
                     <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+                        <path
+                            d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
+                        </path>
                     </svg>
                 </button>
             </div>
@@ -356,15 +440,22 @@ Cadastro
     </div>
 </div>
 <script>
-    document.getElementById('{{ form.foto.id_for_label }}').addEventListener('change', function(event) {
+    document.getElementById('{{ form.foto.id_for_label }}').addEventListener('change', function (event) {
         const fileName = event.target.files[0] ? event.target.files[0].name : 'Escolha a Foto Sala';
         document.getElementById('file-name').textContent = fileName;
     });
 </script>
 <script>
-    document.getElementById('backButton').addEventListener('click', function() {
-        window.history.back();
-    });
+    function voltarParaAgenda() {
+        window.location.href = "{% url 'agenda' %}";
+    }
+    // Função para remover a mensagem de sucesso após 5 segundos
+    setTimeout(function () {
+        var alertContainer = document.getElementById('alert-container');
+        if (alertContainer) {
+            alertContainer.style.display = 'none';
+        }
+    }, 2500);
 </script>
 
 {% endblock %}

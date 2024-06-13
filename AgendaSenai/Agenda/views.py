@@ -11,6 +11,8 @@ from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 from datetime import datetime
+from django.utils import timezone
+from datetime import timedelta
 
 
 from .forms import FormCadastro
@@ -51,7 +53,8 @@ def agenda(request):
     context['dados_sala'] = dados_sala
     context['corredores'] = corredores
     dados_agenda = Agenda.objects.all()
-    context["dados_agenda"] = dados_agenda  
+    context["dados_agenda"] = dados_agenda
+    
     if request.user.is_authenticated:
         user = request.user
         context["userr"] = user
@@ -319,7 +322,6 @@ def cadastro(request):
     
 
 def cadastroSala(request):
-
     context = {}
     context["dados_agenda"] = Agenda.objects.all()
     context["dados_sala"] = Sala.objects.all()
@@ -327,7 +329,6 @@ def cadastroSala(request):
     if request.user.is_authenticated:
         user = request.user
         context["userr"] = user
-        
         
         # Buscar o perfil do usuário autenticado
         perfil_usuario = get_object_or_404(Usuario, nome=user)
@@ -343,20 +344,25 @@ def cadastroSala(request):
     if request.method == "POST":
         form = FormCadastroSala(request.POST, request.FILES)
         if form.is_valid():
-                var_nome_sala = form.cleaned_data['nome_sala']
-                var_corredor = form.cleaned_data['corredor']
-                var_descricao = form.cleaned_data['descricao']
-                var_capacidade = form.cleaned_data['capacidade']
+            var_nome_sala = form.cleaned_data['nome_sala']
+            var_corredor = form.cleaned_data['corredor']
+            var_descricao = form.cleaned_data['descricao']
+            var_capacidade = form.cleaned_data['capacidade']
 
-                # Verifica se o usuário enviou uma foto; caso contrário, usa a cor padrão
-                foto_sala = form.cleaned_data['foto'] if 'foto' in request.FILES else 'imgSala/saladefault.png'
+            # Verifica se o usuário enviou uma foto; caso contrário, usa a cor padrão
+            foto_sala = form.cleaned_data['foto'] if 'foto' in request.FILES else 'imgSala/saladefault.png'
 
+            # Verifica se já existe uma sala com o mesmo nome
+            if Sala.objects.filter(nome__iexact=var_nome_sala).exists():
+                context['error_message'] = f"Já existe uma sala com o nome '{var_nome_sala}'. Por favor, escolha outro nome."
+                context['form'] = form
+                return render(request, "cadastroSala.html", context)
+            else:
                 sala = Sala(nome=var_nome_sala, corredor=var_corredor, descricao=var_descricao, capacidade=var_capacidade, foto_sala=foto_sala)
                 sala.save()
 
-                
-
-                return redirect('agenda')
+                messages.success(request, 'Sala cadastrada com sucesso!')
+                return redirect('cadastrosala')
         else:
             context['form'] = form
             return render(request, "cadastroSala.html", context)
@@ -364,6 +370,8 @@ def cadastroSala(request):
         form = FormCadastroSala()
         context['form'] = form
         return render(request, "cadastroSala.html", context)
+    
+
 
 def atualizarsala(request):
     if request.method == 'POST':
@@ -422,36 +430,47 @@ def agendarsala(request):
     if request.user.is_authenticated:
         user = request.user
         context["userr"] = user
-        
+
         # Buscar o perfil do usuário autenticado
         perfil_usuario = get_object_or_404(Usuario, nome=user)
         context['perfil_usuario'] = perfil_usuario
 
         user_is_coordenador = user.groups.filter(name='Coordenador').exists()
         context['user_is_coordenador'] = user_is_coordenador
-        
+
     else:
         context["userr"] = None
         context['perfil_usuario'] = None
         context['user_is_coordenador'] = False
-        
 
     if request.method == 'POST':
-        data = request.POST.get('selected_date')
-        data = datetime.strptime(data, '%d/%m/%Y').date()
-        print(data)
-        print(type(data))
+
+        if request.POST.get('sala_id'):
+            sala_id = request.POST.get('sala_id')
+            form_inicial = {
+                'sala': sala_id
+            }
         
-        form_incial ={
-            "data": data
-        }
-        
-        form = FormsAgendamento(initial=form_incial)
-        context["form"] = form
+        form = FormsAgendamento(request.POST)
         if form.is_valid():
-            form.save()
-        return render(request, 'agendarsala.html', context)
+            var_salaid = form.cleaned_data['sala']
+            var_data = form.cleaned_data['data']
+            var_assunto = form.cleaned_data['assunto']
+            var_hora_entrada = form.cleaned_data['hora_entrada']
+            var_hora_saida = form.cleaned_data['hora_saida']
+            var_turma = form.cleaned_data['turma']
+
+            sala = get_object_or_404(Sala, id=var_salaid)
+
+            agendamento = Agendamento(nome=user, data=var_data, hora_inicio=var_hora_entrada, hora_fim=var_hora_saida, sala=sala, turma=var_turma, assunto=var_assunto)
+            agendamento.save()
+            
+            return redirect(f'calendario/{var_salaid}')
+        else:
+            context["form"] = form
+            return render(request, 'agendarsala.html', context)
     else:
+        # Método GET, inicializa um formulário vazio
         form = FormsAgendamento()
         context["form"] = form
         return render(request, 'agendarsala.html', context)

@@ -62,7 +62,7 @@ usuarios
         display: flex;
         flex-wrap: wrap;
         max-width: 100%;
-        height: 100vh;
+        min-height: 100vh;
         background-color: #e0e0e0;
         justify-content: center;
         align-items: start;
@@ -159,6 +159,55 @@ usuarios
         cursor: pointer;
     }
 
+    .Profile {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+
+}
+
+    .profile-item {
+        margin: 10px;
+        text-align: center;
+    }
+
+    .profile-item a {
+        text-decoration: none;
+        color: #000000;
+    }
+
+    .profile-image {
+        width: 100px; 
+        height: 100px;
+        border-radius: 50%;
+    }
+
+    .profile-name {
+        padding-top: 10px;
+    }
+
+    .add-button-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .add-button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    @media screen and (max-width: 828px){
+        
+        .Profile{
+            gap: 50px
+        }
+        
+    }
+
+
 </style>
 </head>
 
@@ -193,26 +242,26 @@ usuarios
     <main class="ContMain">
         <div class="Profile div">
             {% for usuario in dados_usuarios %}
-            <div>
-                <a style="text-decoration: none; color: #000000;" href="{% url 'perfil' usuario.id %}">
-                    <img src="{{ usuario.foto_user.url }}" alt="Instrutor">
-                    <p style="padding-top: 10px;">{{ usuario.nome }}</p>
+            <div class="profile-item">
+                <a href="{% url 'perfil' usuario.id %}">
+                    <img class="profile-image" src="{{ usuario.foto_user.url }}" alt="Instrutor">
+                    <p class="profile-name">{{ usuario.nome }}</p>
                 </a>
             </div>
             {% endfor %}
             {% if user.is_authenticated and user_is_coordenador %}
-            <form action="{% url 'cadastro' %}" method="post">
-                {% csrf_token %}
-                <button type="submit">
-                    <span class="material-symbols-outlined" style="font-size: 50px; text-align: center;">
-                        person_add
-                    </span>
-                </button>
-            </form>
+            <div class="add-button-container">
+                <form action="{% url 'cadastro' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="add-button">
+                        <span class="material-symbols-outlined">person_add</span>
+                    </button>
+                </form>
+            </div>
             {% endif %}
         </div>
-        </div>
     </main>
+    
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

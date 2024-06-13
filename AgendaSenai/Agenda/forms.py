@@ -1,7 +1,9 @@
 from django import forms
 from django.utils import timezone
 from datetime import timedelta
-
+from django.core.exceptions import ValidationError
+from .models import Agendamento
+from datetime import datetime, timedelta, time
 
 class FormLogin(forms.Form):
     user = forms.CharField(label='Usuário', max_length=20)
@@ -31,9 +33,55 @@ class FormsEdição(forms.Form):
     username = forms.CharField(widget=forms.HiddenInput())
 
 class FormsAgendamento(forms.Form):
-    assunto = forms.CharField(label="Assunto:", max_length=200)
-    data = forms.DateField(label='Data', widget=forms.DateTimeInput(attrs={'type': 'date'}))
-    hora_entrada = forms.TimeField(label="Hora de entrada", widget=forms.DateTimeInput(attrs={'type': 'time'}))
-    hora_saida = forms.TimeField(label="Hora de saída", widget=forms.DateTimeInput(attrs={'type': 'time'}))
-    turma = forms.CharField(label="Turma:", max_length=100)
+    assunto = forms.CharField(label="Assunto:", max_length=200, error_messages={'required': ''})
+    data = forms.DateField(label='Data', widget=forms.DateInput(attrs={'type': 'date'}),  error_messages={'required': ''})
+    hora_entrada = forms.TimeField(label="Hora de entrada", widget=forms.TimeInput(attrs={'type': 'time'}), error_messages={'required': ''})
+    hora_saida = forms.TimeField(label="Hora de saída", widget=forms.TimeInput(attrs={'type': 'time'}), error_messages={'required': ''})
+    turma = forms.CharField(label="Turma:", max_length=100, error_messages={'required': ''})
+    sala = forms.CharField(widget=forms.HiddenInput())
+    def clean_data(self):
+        data = self.cleaned_data['data']
+        hoje = datetime.now().date()
+        dois_meses_futuro = hoje + timedelta(days=60)
 
+        if data < hoje:
+            raise forms.ValidationError("Não é possível agendar para uma data anterior ao dia atual.")
+        if data > dois_meses_futuro:
+            raise forms.ValidationError("Não é possível agendar para mais de dois meses no futuro.")
+
+        return data
+
+    def clean_hora_entrada(self):
+        hora_entrada = self.cleaned_data['hora_entrada']
+        if hora_entrada < time(7, 0) or hora_entrada > time(18, 0):
+            raise forms.ValidationError("O horário de entrada deve ser entre 07:00 e 18:00.")
+        return hora_entrada
+
+    def clean_hora_saida(self):
+        hora_saida = self.cleaned_data['hora_saida']
+        if hora_saida < time(7, 0) or hora_saida > time(18, 0):
+            raise forms.ValidationError("O horário de saída deve ser entre 07:00 e 18:00.")
+        return hora_saida
+
+    def clean(self):
+        cleaned_data = super().clean()
+        data = cleaned_data.get('data')
+        hora_entrada = cleaned_data.get('hora_entrada')
+        hora_saida = cleaned_data.get('hora_saida')
+        sala = cleaned_data.get('sala')
+
+        if hora_entrada and hora_saida and hora_entrada >= hora_saida:
+            self.add_error('hora_saida', "O horário de saída deve ser após o horário de entrada.")
+
+        # Verificar se o horário já está ocupado
+        if data and hora_entrada and hora_saida and sala:
+            agendamentos_conflitantes = Agendamento.objects.filter(
+                sala=sala,
+                data=data,
+                hora_inicio__lt=hora_saida,
+                hora_fim__gt=hora_entrada
+            )
+            if agendamentos_conflitantes.exists():
+                raise forms.ValidationError("Já existe um agendamento para essa sala nesse horário.")
+
+        return cleaned_data

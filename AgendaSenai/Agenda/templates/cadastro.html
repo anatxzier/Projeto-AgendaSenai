@@ -94,7 +94,7 @@ Cadastro
         outline: none;
         padding: 2px 0;
         font-size: 16px;
-        width: 400px;
+        width: 90%;
         margin-bottom: 7px;
     }
 
@@ -336,6 +336,27 @@ Cadastro
 .asterisco{
     color: rgb(211, 5, 5);
 }
+
+@media only screen and (max-width: 768px) {
+        .container2 {
+            flex-direction: column;
+            align-items: center;
+        }
+        .bg {
+            display: none;
+        }
+        .carde {
+            width: 50%;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .carde form input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
 </style>
 
 <div class="container2">

@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 {% block title %}
-Calendário
+Calendário - {{ sala.nome }}
 {% endblock %}
 
 {% block body %}
@@ -15,11 +15,7 @@ Calendário
     </div>
     <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
         <div style="padding-top: 10px; font-size: 17px;">
-            <p style="text-align: center; margin-right: 50px;">Nome da Sala</p>
-            <!-- Aqui você pode exibir dinamicamente o nome da sala, se necessário -->
-            <!-- {% for salas in nome_sala %}
-            <p>{{ salas.nome_sala }}</p>
-            {% endfor %} -->
+            <h1 style="text-align: center; margin-right: 50px;" >Sala {{ sala.nome }}</h1>
         </div>
     </div>
 </div>
@@ -57,6 +53,7 @@ Calendário
 <form id="dateForm" action="{% url 'agendarsala' %}" method="post">
     {% csrf_token %}
     <input type="hidden" name="selected_date" id="selected_date">
+    <input type="hidden" name="sala_id" id="sala_id" value="{{sala.id}}">
 </form>
 
 <style>
@@ -186,9 +183,9 @@ Calendário
     }
 
     .today-date {
-        display: flex;
-        justify-content: space-between;
+        display: block;
         margin-bottom: 20px;
+        font-weight: 300;
     }
 
     .event-day {

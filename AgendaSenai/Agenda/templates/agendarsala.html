@@ -5,65 +5,106 @@ AgendarSala
 {% endblock %}
 
 {% block body %}
+{% load static %}
 
 <div class="ContainerAg">
     <div class="sidebar">
+        <img src="{% static 'admin/img/agendarr.png' %}" alt="Imagem Padrão">
     </div>
     <div class="contAgendar">
         <div class="cont2">
             <h1>Agendamento da Sala</h1>
 
-            <form method="post">
+            <form action="{% url 'agendarsala' %}" method="post">
                 {% csrf_token %}
 
+                {% if form.non_field_errors %}
+                <div class="error-message">
+                    {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
 
                 <div class="form-pair">
                     <div class="form-group">
                         <div>
-                        <label for="{{ form.data.id_for_label }}">{{ form.data.label }}
-                        </label>
-                    </div>
+                            <label for="{{ form.data.id_for_label }}">{{ form.data.label }}</label>
+                        </div>
                         {{ form.data }}
+                        {% if form.data.errors %}
+                        <div class="error-message">
+                            {% for error in form.data.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="form-group">
-
                         <label for="{{ form.turma.id_for_label }}">{{ form.turma.label }}</label>
-
                         {{ form.turma }}
+                        {% if form.turma.errors %}
+                        <div class="error-message">
+                            {% for error in form.turma.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                     </div>
-
-
-                </div>
-
-                <div class="form-pair">
-                    <div class="form-group">
-
-                        <label for="{{ form.hora_entrada.id_for_label }}">{{ form.hora_entrada.label }}</label>
-
-                        {{ form.hora_entrada }}
+                    <div>
+                        {{ form.sala }}
                     </div>
-
-
-                    <div class="form-group">
-                        <label for="{{ form.hora_saida.id_for_label }}">{{ form.hora_saida.label }}</label>
-                        {{ form.hora_saida }}
-                    </div>
-
                 </div>
 
                 <div class="form-pair">
                     <div class="form-group">
                         <label for="{{ form.assunto.id_for_label }}">{{ form.assunto.label }}</label>
+                        {{ form.assunto }}
+                        {% if form.assunto.errors %}
+                        <div class="error-message">
+                            {% for error in form.assunto.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% if form.assunto.value %}
+                    {% if form.data.value and form.hora_entrada.value and form.hora_saida.value %}
+                    {% if form.hora_entrada.errors or form.hora_saida.errors %}
+                    <div class="error-message">
+                        Já existe um agendamento para essa sala nesse horário.
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                    {% endif %}
+                </div>
 
-                        {{ form.assunto}}
-                        {% for error in form.assunto.errors %}
-                        <p class="text-danger">{{ error }}</p>
-                        {% endfor %}
+                <div class="form-pair">
+                    <div class="form-group">
+                        <label for="{{ form.hora_entrada.id_for_label }}">{{ form.hora_entrada.label }}</label>
+                        {{ form.hora_entrada }}
+                        {% if form.hora_entrada.errors %}
+                        <div class="error-message">
+                            {% for error in form.hora_entrada.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.hora_saida.id_for_label }}">{{ form.hora_saida.label }}</label>
+                        {{ form.hora_saida }}
+                        {% if form.hora_saida.errors %}
+                        <div class="error-message">
+                            {% for error in form.hora_saida.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
 
                 <div class="btnagenda">
-
                     <button type="submit" class="animated-button">
                         <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -83,7 +124,6 @@ AgendarSala
                         Cancelar
                     </button>
                 </div>
-
             </form>
         </div>
     </div>
@@ -99,8 +139,13 @@ AgendarSala
 
 
 <style>
+    .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+    }
 
-    .icones{
+    .icones {
         display: flex;
         flex-direction: column;
     }
@@ -147,9 +192,52 @@ AgendarSala
     }
 
     .sidebar {
-        width: 20%;
+        width: 40%;
         height: 100vh;
-        background: linear-gradient(45deg, #A2000F, #790404, #A2000F);
+        background: linear-gradient(45deg, #A2000F, #790404, #dd0d22);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        overflow: hidden;
+    }
+
+    .sidebar img {
+        max-width: 350px;
+        max-height: 350px;
+        z-index: 4;
+
+
+
+    }
+
+    .sidebar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 40%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0));
+        mix-blend-mode: overlay;
+    }
+
+    .sidebar::after {
+        content: '';
+        position: absolute;
+        top: -50px;
+        left: -50px;
+        width: 150px;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        filter: blur(50px);
+    }
+
+    .sidebar::before {
+        clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+        background: linear-gradient(45deg, #8b0000, rgb(165, 4, 4), #e41d1d);
+
     }
 
     .cont2 form {
@@ -193,9 +281,7 @@ AgendarSala
 
     }
 
-    .form-group span
-
-    .btn {
+    .form-group span .btn {
         background-color: #8b0000;
         border: none;
         padding: 10px;
@@ -302,20 +388,15 @@ AgendarSala
     }
 
     @media screen and (max-width: 400px) {
-        .sidebar{
+        .sidebar {
             display: none;
         }
 
-        .contAgendar{
+        .contAgendar {
             margin: 50px;
         }
-        
+
     }
-
-
-
-
-    
 </style>
 
 {% endblock %}

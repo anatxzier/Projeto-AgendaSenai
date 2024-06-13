@@ -251,6 +251,24 @@ Salas
         cursor: pointer;
     }
 
+    .filefoto {
+        margin-bottom: 10px;
+    }
+
+    ::-webkit-file-upload-button{
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        background-color: #F8F9FA;
+
+    }
+
+    ::-webkit-file-upload-button:hover{
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        background-color: #d3d4d5;
+    }
     
 
     @media (max-width: 660px) {
@@ -305,7 +323,7 @@ Salas
                         {% endfor %}
                     </select>
                 </form>
-                <a class="navbar-brand" style="color: #FFFFFF; font-size: 18px; padding-left: 20px;">Salas</a>
+                <a class="navbar-brand" href="{% url 'agenda' %}" style="color: #FFFFFF; font-size: 18px; padding-left: 20px;">Salas</a>
             </div>
             {% if user.is_authenticated %}
             {% if user_is_coordenador %}
@@ -405,19 +423,13 @@ Salas
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel2{{ forloop.counter }}">Editar</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel2{{ forloop.counter }}">Editar sala</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body imgfile">
                             <!-- Formulário de Edição -->
                             <form action="{% url 'atualizarsala' %}" method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                <input type="hidden" name="sala_id" value="{{ item.id }}"> <!-- Passa o ID da sala -->
-                                <div class="mb-3">
-                                    <label for="id_nome_sala">Nome da Sala</label>
-                                    <input type="text" id="id_nome_sala" name="nome_sala" value="{{ item.nome }}"
-                                        class="form-control">
-                                </div>
                                 <div class="mb-3">
                                     <label for="id_corredor">Corredor</label>
                                     <input type="text" id="id_corredor" name="corredor" value="{{ item.corredor }}"
@@ -433,20 +445,22 @@ Salas
                                     <input type="number" id="id_capacidade" name="capacidade"
                                         value="{{ item.capacidade }}" class="form-control">
                                 </div>
-                                <div class="mb-3" style="display: flex;">
+                                <div class="mb-3">
                                     <div>
-                                        <a href="{{ item.foto_sala.url }}" id="currentPhotoLink" target="_blank"
-                                            class="btn btn-light">Foto atual</a>
+                                    <label>Visualize a foto atual:</label>
                                     </div>
                                     <div>
-                                        <label for="{{ item.foto_sala.id_foto}}">{{ item.foto_sala.label }}</label>
-                                        <input type="file" id="id_foto" name="foto" class="form-control-file"
-                                            style="display: none;">
-                                        <button type="button" class="btn btn-light" style="margin-left: 0px;"
-                                            id="uploadButton">Escolher nova foto</button>
-                                        <span id="fileName" class="file-name"></span>
+                                    <a href="{{ item.foto_sala.url }}" id="currentPhotoLink" target="_blank"
+                                        class="btn btn-light">Foto atual</a>
                                     </div>
                                 </div>
+                                <div class="filefoto">
+                                    <label>Escolha uma nova foto:</label>
+                                    <label for="id_foto_{{ item.foto_sala.id_foto }}">{{ item.foto_sala.label }}</label>
+                                    <input type="file" id="id_foto_{{ item.foto_sala.id_foto }}" name="foto" class="form-control-file">
+                                    <span class="fileName file-name"></span>
+                                </div>
+                               
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Cancelar</button>
@@ -579,10 +593,6 @@ Salas
                 $('#modalExcluir{{ forloop.counter }}').on('show.bs.modal', function () {
                     $('#exampleModal{{ forloop.counter }}').modal('hide');
                 });
-            });
-
-            $('#modalEditar{{ forloop.counter }}').on('show.bs.modal', function () {
-                $('#exampleModal{{ forloop.counter }}').modal('hide');
             });
 
             $('.editarr').click(function () {
