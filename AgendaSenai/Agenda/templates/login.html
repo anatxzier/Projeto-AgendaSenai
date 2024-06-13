@@ -9,6 +9,12 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
+    .geralcont{
+        display: flex;
+        justify-content: center;
+        margin-top: 4%;
+    }
+
     .login-container {
         display: flex;
         flex-direction: column;
@@ -18,10 +24,6 @@
         width: 100%;
         max-width: 50%;
         text-align: center;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
     }
 
     .login-container h1 {
@@ -118,13 +120,20 @@
 
     @media (max-width: 768px) {
     .login-container {
-        max-width: 80%; 
+        max-width: 60%; 
         padding: 20px; 
+
+    }
+        .login-container h1 {
+        font-size: 1.2rem;
+
+
    
     }
 }
 </style>
 
+<div class="geralcont">
 <div class="login-container">
     <h1>Bem-vindo!</h1>
     <h1>Digite seu email e senha para começarmos</h1>
@@ -144,5 +153,5 @@
         <p>{{ error }}</p>
     {% endif %}
 </div>
-
+</div>
 {% endblock %}

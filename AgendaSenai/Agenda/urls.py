@@ -14,13 +14,14 @@ urlpatterns = [
     path('perfil/<int:id>/', views.perfil, name='perfil'),
     path('deletar', views.deletar, name="deletar"),
     path('atualizar', views.atualizar, name="atualizar"),
-    path('agendarsala', views.agendarsala, name='agendarsala'),
+    path('agendarsala', views.agendarsala, name="agendarsala"),
     path('deletarsala', views.deletarsala, name="deletarsala"),
     path('atualizarsala', views.atualizarsala, name="atualizarsala"),
     ## calendário
-    path('calendario', views.calendario, name='calendario'),
+    path('calendario/<int:id>', views.calendario, name='calendario'),
     # path('agendamento', views.agendamento, name='agendamento')
-    path('agendar', views.agendar, name='agendar')
+    
+    path('eventos/<int:sala_id>/', views.eventos, name='eventos')
 
     ## calendario
 

@@ -5,6 +5,24 @@ Calendário
 {% endblock %}
 
 {% block body %}
+<div style="display: flex; flex-direction: row;;">
+
+    <div class="seta">
+        <a type="button" href="javascript:void(0)" id="backButton" class="material-symbols-outlined">
+            arrow_back
+        </a>
+        <p>Voltar</p>
+    </div>
+    <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+        <div style="padding-top: 10px; font-size: 17px;">
+            <p style="text-align: center; margin-right: 50px;">Nome da Sala</p>
+            <!-- Aqui você pode exibir dinamicamente o nome da sala, se necessário -->
+            <!-- {% for salas in nome_sala %}
+            <p>{{ salas.nome_sala }}</p>
+            {% endfor %} -->
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="calendar">
         <div class="month">
@@ -23,7 +41,6 @@ Calendário
         </div>
         <div class="days"></div>
         <div class="goto-today">
-
             <button id="schedule-btn" class="schedule-btn">Agendar</button>
             <button class="today-btn">Hoje</button>
         </div>
@@ -34,137 +51,198 @@ Calendário
             <div class="event-date"></div>
         </div>
         <div class="events"></div>
-        
     </div>
 </div>
 
-<form id="dateForm" action="{% url 'agendar' %}" method="post">
+<form id="dateForm" action="{% url 'agendarsala' %}" method="post">
     {% csrf_token %}
     <input type="hidden" name="selected_date" id="selected_date">
 </form>
 
 <style>
+    .seta a {
+        text-decoration: none;
+        color: inherit;
+        padding-top: 10px;
+        background-color: transparent;
+        padding-left: 20px;
+
+    }
+
+    .seta p {
+        padding-top: 9px;
+        font-size: 18px;
+        margin-left: 5px;
+
+    }
+
+    .seta {
+        display: flex;
+        flex-direction: row;
+    }
+
     .container {
-    width: 80%;
-    margin: 50px auto;
-    display: flex;
-    justify-content: space-between;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-    overflow: hidden;
-}
+        width: 80%;
+        margin: 50px auto;
+        display: flex;
+        justify-content: space-between;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
 
-.calendar {
-    width: 70%;
-    padding: 20px;
-}
+    .calendar {
+        width: 70%;
+        padding: 20px;
+    }
 
-.month {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    .month {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-.date {
-    font-size: 24px;
-    font-weight: bold;
-}
+    .date {
+        font-size: 24px;
+        font-weight: bold;
+    }
 
-.weekdays, .days {
-    display: flex;
-    justify-content: space-between;
-}
+    .weekdays,
+    .days {
+        display: flex;
+        justify-content: space-between;
+    }
 
-.weekdays div, .days div {
-    width: 14.28%;
-    text-align: center;
-    padding: 10px 0;
-}
+    .weekdays div,
+    .days div {
+        width: 14.28%;
+        text-align: center;
+        padding: 10px 0;
+    }
 
-.days {
-    flex-wrap: wrap;
-}
+    .days {
+        flex-wrap: wrap;
+    }
 
-.day {
-    cursor: pointer;
-    border: 1px solid #f0f0f0;
-    padding: 10px 0;
-    transition: background-color 0.3s;
-}
+    .day {
+        cursor: pointer;
+        border: 1px solid #f0f0f0;
+        padding: 10px 0;
+        transition: background-color 0.3s;
+    }
 
-.day:hover {
-    background-color: #f0f0f0;
-}
+    .day:hover {
+        background-color: #f0f0f0;
+    }
 
-.today {
-    background-color: #ffc107;
-    color: #fff;
-}
+    .today {
+        background-color: #dd4242;
+        color: #fff;
+    }
 
-.event {
-    background-color: #28a745;
-    color: #fff;
-}
+    .event {
+        background-color: rgb(139, 31, 31);
+        color: #fff;
+    }
 
-.goto-today {
-    text-align: right;
-    margin-top: 20px;
-}
+    .goto-today {
+        text-align: right;
+        margin-top: 20px;
+    }
 
-.today-btn {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
+    .today-btn {
+        padding: 10px 20px;
+        background-color: #dd4242;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
 
-.today-btn:hover {
-    background-color: #0056b3;
-}
+    .today-btn:hover {
+        background-color: #8b0000;
+    }
 
-.event-list {
-    width: 30%;
-    padding: 20px;
-    border-left: 1px solid #f0f0f0;
-}
+    .schedule-btn {
+        padding: 10px 20px;
+        background-color: #f0f0f0;
+        color: #000;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
 
-.today-date {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
+    .schedule-btn:hover {
+        background-color: #b0b0b0;
+    }
 
-.event-day {
-    font-size: 24px;
-    font-weight: bold;
-}
+    .event-list {
+        width: 30%;
+        padding: 20px;
+        border-left: 1px solid #f0f0f0;
+    }
 
-.event-date {
-    font-size: 20px;
-    color: #777;
-}
+    .today-date {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
 
-.events {
-    max-height: 300px;
-    overflow-y: auto;
-}
+    .event-day {
+        font-size: 24px;
+        font-weight: bold;
+    }
 
-.event {
-    background-color: #007bff;
-    color: #fff;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-}
+    .event-date {
+        font-size: 20px;
+        color: #777;
+    }
 
-.no-event {
-    text-align: center;
-    color: #777;
-}
+    .events {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .event {
+        background-color: #dd4242;
+        color: #fff;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .no-event {
+        text-align: center;
+        color: #777;
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+    }
+
+    .title i {
+        margin-right: 10px;
+        /* Espaço entre a bolinha e o título */
+    }
+
+    .event-title {
+        font-size: 40px;
+        /* Tamanho da fonte do título */
+        /* Adicione qualquer estilização adicional para o título */
+    }
+
+    .event-time,
+    .event-user,
+    .event-class {
+        margin-top: 5px;
+        /* Espaçamento entre as informações do evento */
+        font-size: 1em;
+        /* Tamanho da fonte das informações do evento */
+    }
 </style>
 
 <script>
@@ -179,19 +257,21 @@ Calendário
             eventDate = document.querySelector(".event-date"),
             eventsContainer = document.querySelector(".events"),
             scheduleBtn = document.getElementById("schedule-btn");
-    
+
+
         let today = new Date();
         let activeDay = today.getDate();
         let month = today.getMonth();
         let year = today.getFullYear();
-    
+
         const months = [
             "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         ];
-    
-        const eventsArr = [];
-        getEvents();
-    
+
+
+        // Obtém o ID da sala a partir do contexto Django
+        const sala_id = '{{ sala.id }}'
+
         function initCalendar() {
             const firstDay = new Date(year, month, 1);
             const lastDay = new Date(year, month + 1, 0);
@@ -200,26 +280,16 @@ Calendário
             const lastDate = lastDay.getDate();
             const day = firstDay.getDay();
             const nextDays = 7 - lastDay.getDay() - 1;
-    
+
             date.innerHTML = months[month] + " " + year;
-    
+
             let days = "";
-    
+
             for (let x = day; x > 0; x--) {
                 days += `<div class="day prev-date">${prevDays - x + 1}</div>`;
             }
-    
+
             for (let i = 1; i <= lastDate; i++) {
-                let event = false;
-                eventsArr.forEach((eventObj) => {
-                    if (
-                        eventObj.day === i &&
-                        eventObj.month === month + 1 &&
-                        eventObj.year === year
-                    ) {
-                        event = true;
-                    }
-                });
                 if (
                     i === today.getDate() &&
                     year === today.getFullYear() &&
@@ -227,28 +297,20 @@ Calendário
                 ) {
                     activeDay = i;
                     getActiveDay(i);
-                    updateEvents(i);
-                    if (event) {
-                        days += `<div class="day today active event">${i}</div>`;
-                    } else {
-                        days += `<div class="day today active">${i}</div>`;
-                    }
+                    loadEvents(i);
+                    days += `<div class="day today active">${i}</div>`;
                 } else {
-                    if (event) {
-                        days += `<div class="day event">${i}</div>`;
-                    } else {
-                        days += `<div class="day">${i}</div>`;
-                    }
+                    days += `<div class="day">${i}</div>`;
                 }
             }
-    
+
             for (let j = 1; j <= nextDays; j++) {
                 days += `<div class="day next-date">${j}</div>`;
             }
             daysContainer.innerHTML = days;
             addListener();
         }
-    
+
         function prevMonth() {
             month--;
             if (month < 0) {
@@ -257,7 +319,7 @@ Calendário
             }
             initCalendar();
         }
-    
+
         function nextMonth() {
             month++;
             if (month > 11) {
@@ -266,24 +328,24 @@ Calendário
             }
             initCalendar();
         }
-    
+
         prev.addEventListener("click", prevMonth);
         next.addEventListener("click", nextMonth);
-    
+
         todayBtn.addEventListener("click", () => {
             today = new Date();
             month = today.getMonth();
             year = today.getFullYear();
             initCalendar();
         });
-    
+
         function addListener() {
             const days = document.querySelectorAll(".day");
             days.forEach((day) => {
                 day.addEventListener("click", (e) => {
                     activeDay = Number(e.target.innerHTML);
                     getActiveDay(e.target.innerHTML);
-                    updateEvents(Number(e.target.innerHTML));
+                    loadEvents(Number(e.target.innerHTML));
                     days.forEach((day) => {
                         day.classList.remove("active");
                     });
@@ -319,66 +381,82 @@ Calendário
                 });
             });
         }
-    
-        function updateEvents(day) {
-            let events = "";
-            eventsArr.forEach((item) => {
-                if (
-                    item.day === day &&
-                    item.month === month + 1 &&
-                    item.year === year
-                ) {
-                    item.events.forEach((event) => {
-                        events += `<div class="event">
-                                        <div class="title">
-                                            <i class="fas fa-circle"></i>
-                                            <h3 class="event-title">${event.title}</h3>
-                                        </div>
-                                        <div class="event-time">
-                                            <span class="event-time">${event.time}</span>
-                                        </div>
-                                    </div>`;
-                    });
-                }
-            });
-            if (events === "") {
-                events = `<div class="no-event">
-                                <h3>Sem eventos</h3>
-                            </div>`;
-            }
-            eventsContainer.innerHTML = events;
-            saveEvents();
+
+        function loadEvents(day) {
+            const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            fetch(`/eventos/${sala_id}?data=${formattedDate}`)
+                .then(response => response.json())
+                .then(data => {
+                    let events = "";
+                    if (data.eventos && data.eventos.length > 0) {
+                        data.eventos.forEach(evento => {
+                            events += `<div class="event">
+                                            <div class="title">
+                                                <i class="fas fa-circle"></i>
+                                                <h3 class="event-title">${evento.assunto}</h3>
+                                            </div>
+                                            <div class="event-time">
+                                                <span class="event-time">${evento.hora_inicio} - ${evento.hora_fim}</span>
+                                            </div>
+                                            <div class="event-user">
+                                                <span class="event-user">${evento.nome}</span>
+                                            </div>
+                                            <div class="event-class">
+                                                <span class="event-class">${evento.turma}</span>
+                                            </div>
+                                        </div>`;
+                        });
+                    } else {
+                        events = `<div class="no-event"><h3>Sem eventos</h3></div>`;
+                    }
+                    eventsContainer.innerHTML = events;
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar eventos:', error);
+                    eventsContainer.innerHTML = `<div class="no-event"><h3>Erro ao carregar eventos</h3></div>`;
+                });
         }
-    
+
         function getActiveDay(date) {
             const day = new Date(year, month, date);
-            const options = {
-                weekday: "long",
-            };
+            const options = { weekday: "long" };
             const dayName = new Intl.DateTimeFormat("pt-BR", options).format(day);
             eventDay.innerHTML = dayName;
             eventDate.innerHTML = date + " " + months[month] + " " + year;
         }
-    
+
         function saveEvents() {
             localStorage.setItem("events", JSON.stringify(eventsArr));
         }
-    
+
         function getEvents() {
             if (localStorage.getItem("events") === null) {
                 return;
             }
             eventsArr.push(...JSON.parse(localStorage.getItem("events")));
         }
-    
+
         // Adicione um evento de clique no botão "Agendar"
         scheduleBtn.addEventListener("click", () => {
             const selectedDate = eventDate.innerHTML;
-            document.getElementById("selected_date").value = selectedDate;
+            const [day, monthName, year] = selectedDate.split(' ');
+            const monthIndex = months.indexOf(monthName);
+            const formattedDate = `${day.padStart(2, '0')}/${(monthIndex + 1).toString().padStart(2, '0')}/${year}`;
+            document.getElementById("selected_date").value = formattedDate;
             document.getElementById("dateForm").submit();
         });
-    
+
         initCalendar();
     });
-    </script>
-    {% endblock %}
+
+    document.getElementById('backButton').addEventListener('click', function () {
+        window.history.back();
+    });
+
+
+
+
+
+</script>
+
+{% endblock %}

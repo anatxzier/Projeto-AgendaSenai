@@ -1,12 +1,16 @@
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login,logout as auth_logout
-from .forms import FormLogin, FormCadastro, FormsAgendarData, FormCadastroSala, FormsEdição, FormsAgendamento
+from .forms import FormLogin, FormCadastro, FormCadastroSala, FormsEdição, FormsAgendamento
 from .models import Sala, Agenda, Homepage, Usuario, Agendamento
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse 
 from django.views.decorators.cache import never_cache
 from django.core.cache import cache
+from django.db.models.functions import Lower
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+from datetime import datetime
 
 
 from .forms import FormCadastro
@@ -41,8 +45,9 @@ def homepage(request):
 
 def agenda(request):
     context = {}
-    dados_sala = Sala.objects.all().order_by('nome')
+    dados_sala = Sala.objects.annotate(nome_lower=Lower('nome')).order_by('nome_lower')
     corredores = Sala.objects.values_list('corredor', flat=True).distinct().order_by('corredor')
+    corredores = sorted(set(corredor.upper() for corredor in corredores))
     context['dados_sala'] = dados_sala
     context['corredores'] = corredores
     dados_agenda = Agenda.objects.all()
@@ -102,9 +107,12 @@ def atualizar(request):
                 user.email = form.cleaned_data['email']
                 user.save() 
                 
+                
+                print("request.FILES:", request.FILES)
                 if 'foto' in request.FILES:
                     usuario = get_object_or_404(Usuario, nome=user) 
-                    usuario.foto_user = request.FILES['foto']
+                    usuario.foto_user = form.cleaned_data['foto']
+                    usuario.save()
                 
 
                 return redirect("usuarios")
@@ -348,7 +356,7 @@ def cadastroSala(request):
 
                 
 
-                return redirect('cadastrosala')
+                return redirect('agenda')
         else:
             context['form'] = form
             return render(request, "cadastroSala.html", context)
@@ -367,11 +375,11 @@ def atualizarsala(request):
                 sala.corredor = form.cleaned_data['corredor']
                 sala.descricao = form.cleaned_data['descricao']
                 sala.capacidade = form.cleaned_data['capacidade']
-            
                 
                 if 'foto' in request.FILES:
-                    sala.foto_sala = request.FILES['foto']
+                    sala.foto_sala = form.cleaned_data['foto']
                 sala.save() 
+
                 return redirect("agenda")
             except Sala.DoesNotExist:
                 print("A sala não existe")
@@ -403,40 +411,109 @@ def logout(request):
     #return render(request, "teste.html")
 
 def agendarsala(request):
-        context = {}
-        dados_home = Homepage.objects.all()
-        context["dados_home"] = dados_home
-        dados_agenda = Agenda.objects.all()
-        context["dados_agenda"] = dados_agenda
-        dados_usuario = Usuario.objects.all()
-        context["dados_usuario"] = dados_usuario
-        dados_agendamento = Agendamento.objects.all()
-        context["dados_agendamento"] = dados_agendamento
+    context = {}
+    dados_agenda = Agenda.objects.all()
+    context["dados_agenda"] = dados_agenda
+    dados_usuario = Usuario.objects.all()
+    context["dados_usuario"] = dados_usuario
+    dados_agendamento = Agendamento.objects.all()
+    context["dados_agendamento"] = dados_agendamento
+
+    if request.user.is_authenticated:
+        user = request.user
+        context["userr"] = user
         
-        if request.method == 'POST':
-            form = FormsAgendamento(request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('pagina_sucesso')
-        else:
-            form = FormsAgendamento()
+        # Buscar o perfil do usuário autenticado
+        perfil_usuario = get_object_or_404(Usuario, nome=user)
+        context['perfil_usuario'] = perfil_usuario
 
-        return render(request, 'agendarsala.html', {'form': form})
+        user_is_coordenador = user.groups.filter(name='Coordenador').exists()
+        context['user_is_coordenador'] = user_is_coordenador
+        
+    else:
+        context["userr"] = None
+        context['perfil_usuario'] = None
+        context['user_is_coordenador'] = False
+        
 
-
-def agendar(request):
     if request.method == 'POST':
         data = request.POST.get('selected_date')
+        data = datetime.strptime(data, '%d/%m/%Y').date()
         print(data)
-    return redirect('calendario')
+        print(type(data))
+        
+        form_incial ={
+            "data": data
+        }
+        
+        form = FormsAgendamento(initial=form_incial)
+        context["form"] = form
+        if form.is_valid():
+            form.save()
+        return render(request, 'agendarsala.html', context)
+    else:
+        form = FormsAgendamento()
+        context["form"] = form
+        return render(request, 'agendarsala.html', context)
+
+   
+
+
+
 
 ##calendario
-def calendario(request):
+def calendario(request, id):
     context = {}
     context["dados_agenda"] = Agenda.objects.all()
-    context["dados_sala"] = Sala.objects.all()
+    
+    if request.user.is_authenticated:
+        user = request.user
+        context["userr"] = user
+        
+        # Buscar o perfil do usuário autenticado
+        perfil_usuario = get_object_or_404(Usuario, nome=user)
+        context['perfil_usuario'] = perfil_usuario
+
+        user_is_coordenador = user.groups.filter(name='Coordenador').exists()
+        context['user_is_coordenador'] = user_is_coordenador
+        
+    else:
+        context["userr"] = None
+        context['perfil_usuario'] = None
+        context['user_is_coordenador'] = False
+
+        
+    
+    sala = get_object_or_404(Sala, id=id)
+    context['sala']= sala
+    agendamentos = Agendamento.objects.filter(sala=sala)
+    context['agendamentos'] = agendamentos
 
     return render(request,'calendar.html',context)
 
+
+
+@require_GET  # Certifica-se de que essa view só aceita requisições GET
+def eventos(request, sala_id):
+    data = request.GET.get('data')  # Obtém a data dos parâmetros da URL
+    if data:
+        try:
+            data = datetime.strptime(data, '%Y-%m-%d').date()  # Converte a string da data para um objeto datetime
+        except ValueError:
+            return JsonResponse({'error': 'Invalid date format'}, status=400)  # Retorna um erro se o formato da data for inválido
+        
+        agendamentos = Agendamento.objects.filter(sala__id=sala_id, data=data)  # Filtra os agendamentos pela sala e data
+        eventos = [
+            {
+                'nome': agendamento.nome.username,
+                'hora_inicio': agendamento.hora_inicio.strftime('%H:%M'),
+                'hora_fim': agendamento.hora_fim.strftime('%H:%M'),
+                'assunto': agendamento.assunto,
+                'turma': agendamento.turma,
+            }
+            for agendamento in agendamentos
+        ]  # Constrói uma lista de eventos para retornar como JSON
+        return JsonResponse({'eventos': eventos})  # Retorna os eventos como JSON
+    return JsonResponse({'error': 'No date provided'}, status=400)  # Retorna um erro se a data não for fornecida
 
 ##calendario

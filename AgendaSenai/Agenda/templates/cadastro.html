@@ -54,18 +54,8 @@ Cadastro
     .bg::before {
         clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
         background: linear-gradient(45deg, #8b0000, rgb(165, 4, 4), #b80101);
-        /* Alterando o tom de vermelho */
+       
     }
-
-    /* 
-    .bg {
-        width: 40%;
-        background-color: brown;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-    } */
 
     .bg img {
         max-width: 100%;
@@ -79,6 +69,7 @@ Cadastro
         justify-content: center;
         align-items: flex-start;
         padding: 100px;
+
     }
 
     .carde form {
@@ -289,43 +280,38 @@ Cadastro
     }
     .imagem-upload {
         max-width: 200px;
-        /* Define a largura máxima desejada */
         max-height: 200px;
-        /* Define a altura máxima desejada */
-        /* Adicione outras propriedades de estilo conforme necessário */
     }
     .modal {
-        display: none; /* Inicialmente oculta */
-        position: fixed; /* Permanece na mesma posição na tela */
-        z-index: 1; /* Coloca a modal na frente de outros elementos */
+        display: none; 
+        position: fixed; 
+        z-index: 1;
         left: 0;
         top: 0;
-        width: 100%px; /* Largura total */
-        height: 100%px; /* Altura total */
-        overflow: auto; /* Permite rolar a página quando a modal está aberta */
-        background-color: rgba(0, 0, 0, 0.4); /* Fundo semi-transparente */
+        width: 100%px; 
+        height: 100%px;
+        overflow: auto; 
+        background-color: rgba(0, 0, 0, 0.4); 
     }
 
-    /* Estilo para o conteúdo da modal */
     .modal-content {
-        background-color: #fefefe; /* Fundo branco */
-        margin: 15% auto; /* Centraliza a modal verticalmente */
+        background-color: #fefefe;
+        margin: 15% auto; 
         padding: 20px;
         border: 1px solid #888;
-        width: 400px; /* Largura da modal */
+        width: 400px;
         height: 300px;
         align-items: center;
         justify-content: center;
     }
 
-    /* Estilo para o botão 'OK' */
     #okButton {
-        background-color: #8b0000; /* Cor de fundo verde */
-        color: white; /* Cor do texto */
-        padding: 10px 20px; /* Espaçamento interno */
-        font-size: 20px; /* Tamanho da fonte */
-        border: none; /* Remove a borda */
-        cursor: pointer; /* Muda o cursor ao passar por cima */
+        background-color: #8b0000; 
+        color: white;
+        padding: 10px 20px;
+        font-size: 20px;
+        border: none;
+        cursor: pointer; 
         width: 150px;
         border-radius: 5px;
     }
@@ -347,7 +333,9 @@ Cadastro
         color: white;
         font-size: 20px;
 }
-
+.asterisco{
+    color: rgb(211, 5, 5);
+}
 </style>
 
 <div class="container2">
@@ -357,34 +345,32 @@ Cadastro
     <div class="carde">
 
         {% if error_message %}
-            <!-- Modal -->
             <div id="myModal" class="modal">
                 <div class="modal-content">
                     <p>{{ error_message }}</p>
                     <button id="okButton">OK</button>
                 </div>
             </div>
-            <!-- Fim da Modal -->
         {% endif %}
 
         <form action="{% url 'cadastro' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <label for="{{ form.user.id_for_label }}">{{ form.user.label }}</label>
+            <label for="{{ form.user.id_for_label }}">{{ form.user.label }} <span class="asterisco">*</span></label>
             {{ form.user }}
 
-            <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+            <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }} <span class="asterisco">*</span></label>
             {{ form.first_name }}
 
-            <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+            <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }} <span class="asterisco">*</span></label>
             {{ form.last_name }}
 
-            <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+            <label for="{{ form.email.id_for_label }}">{{ form.email.label }} <span class="asterisco">*</span></label>
             {{ form.email }}
 
-            <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+            <label for="{{ form.password.id_for_label }}">{{ form.password.label }} <span class="asterisco">*</span></label>
             {{ form.password }}
 
-            <label for="{{ form.cpf.id_for_label }}">{{ form.cpf.label }}</label>
+            <label for="{{ form.cpf.id_for_label }}">{{ form.cpf.label }} <span class="asterisco">*</span></label>
             {{ form.cpf }}
 
             <label for="{{ form.foto.id_for_label }}" class="upload-label">

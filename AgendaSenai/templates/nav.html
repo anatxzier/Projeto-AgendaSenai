@@ -40,6 +40,18 @@
     transition: font-size 0.3s ease; /* Adiciona uma transição suave para o aumento do tamanho da fonte */
     }
 
+    .link img{
+        display: flex; 
+        border: 0px;
+        width: 50px; 
+        height: 50px; 
+        margin: 0; 
+        padding: 0px; 
+        border-radius: 50%; 
+        object-fit: cov;
+        margin-right: 5px;
+    }
+
     .link:hover,
     .link:focus {
         font-size: 1.1em; /* Aumenta o tamanho da fonte quando o mouse passa por cima */
@@ -52,17 +64,30 @@
     }
 
     @media (max-width: 768px) {
+
+
         .containerNAV img {
             max-width: 50%;
             padding-right: 10px;
         }
 
         .tituloNAV {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            
+
+        }
+
+        .link img{
+        width: 50px; 
+        height: 40px; 
+    }
+
+        .link{
+            font-size: 10px;
         }
     }
 
-    @media (max-width: 490px) {
+    @media (max-width: 660px) {
         .containerNAV img {
             max-width: 50%;
             align-items: center;
@@ -73,8 +98,17 @@
         .tituloNAV {
             display: none;
         }
+
+        .link img{
+        width: 50px; 
+        height: 40px; 
+    }
+
+    
     }
 </style>
+
+
 
 <nav>
     <div class="containerNAV ">
@@ -95,7 +129,6 @@
                         calendar_month
                     </span> Agenda </a>
                     <a href="/perfil/{{perfil_usuario.id}}" class="link"> <img src="{{perfil_usuario.foto_user.url}}"
-                        style="display: flex; border: 0px; width: 50px; height: 50px; margin: 0; padding: 0px; margin-right: 5px;"
                         alt="foto"> Bem-vindo, {{userr.username}}</a>
 
                     <a href="/logout" class="link"><span class="material-symbols-outlined icn">
@@ -106,7 +139,6 @@
                             calendar_month
                         </span> Agenda </a>
                     <a href="" class="link"> <img src="{{perfil_usuario.foto_user.url}}"
-                            style="display: flex; border: 0px; width: 50px; height: 50px; margin: 0; padding: 0px; margin-right: 5px;"
                             alt="foto"> Bem-vindo, {{userr.username}}</a>
 
                     <a href="logout" class="link"><span class="material-symbols-outlined icn">

@@ -250,7 +250,34 @@ Salas
         margin-left: 15px;
         cursor: pointer;
     }
+
     
+
+    @media (max-width: 660px) {
+    #mainContent {
+        justify-content: flex-start; /* Alinhar os cards à esquerda */
+        margin: 40px;
+    }
+
+    .sala-card {
+        flex: 0 0 50%; /* Fazer com que cada card ocupe metade da largura */
+        max-width: 50%; /* Limitar a largura máxima a 50% */
+    }
+}
+
+@media (max-width: 550px) {
+    #mainContent {
+        justify-content: center; /* Alinhar os cards à esquerda */
+        align-items: center;
+    }
+
+    .sala-card {
+        flex: 0 0 100%; /* Faz com que o card ocupe toda a largura */
+        max-width: 100%; /* Define a largura máxima como 100% */
+        margin-bottom: 20px; /* Adiciona espaço entre os cards */
+    }
+}
+
 </style>
 
 <body style="background-color: #f5f5f5;">
@@ -294,7 +321,7 @@ Salas
     <main id="mainContent"
         style="display: flex; justify-content: center; margin-top: 30px; flex-wrap: wrap; margin-right: 25px;">
         {% for item in dados_sala %}
-        <div class="sala-card" data-nome="{{ item.nome }}">
+        <div class="sala-card" data-nome="{{ item.nome|upper }}">
             <div class="vertical-line"></div>
             <div class="card fixed-size-card" data-bs-toggle="modal" data-bs-target="#exampleModal{{ forloop.counter }}"
                 style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; border-top-right-radius: 15px; width: 300px;">
@@ -302,118 +329,137 @@ Salas
                     style="filter: brightness(50%); width: 100%; height: 100%; object-fit: cover;">
                 <div class="card-body d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle"
                     style="z-index: 1;">
-                    <p class="card-text outfit" style="color: white; font-size: 30px; font-weight: 500;">{{ item.nome }}
-                    </p>
+                    <p class="card-text outfit" style="color: white; font-size: 30px; font-weight: 500;">{{ item.nome|upper }}</p>
                 </div>
                 <button class="card-button">Mais infos</button>
             </div>
 
-            <!-- Modal -->
+            <!-- Modal de Detalhes da Sala -->
             <div class="modal fade" id="exampleModal{{ forloop.counter }}" tabindex="-1"
                 aria-labelledby="exampleModalLabel{{ forloop.counter }}" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content" style="background-color: #d5d5d5;">
-                        <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 15px;">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel{{ forloop.counter }}"
-                                style="align-self: center;">{{ item.nome }}</h1>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel{{ forloop.counter }}">{{ item.nome|upper }}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body"
-                            style="display: flex; justify-content: center; background-color: #d5d5d5;">
+                        <div class="modal-body" style="align-self: center; justify-content: center; align-items: center;">
                             <img src="{{ item.foto_sala.url }}" class="card-img-top" alt="..."
-                                style="filter: brightness(80%); width: 50%; height: 50%; object-fit: cover; display: flex; justify-content: center; border-radius: 10px;">
-                        </div>
-                        <div
-                            style="display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; flex-direction: column;">
-                            <div style="width: 240px;">
-                                <h6>Corredor</h6>
-                                <p class="corredor">{{ item.corredor }}</p>
+                                style="filter: brightness(80%); max-width: 250px; max-height: 250px; object-fit: cover; display: flex; margin:auto; margin-bottom: 10px; border-radius: 10px; ">
+                            <div
+                                style="display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; flex-direction: column;">
+                                <div style="width: 240px;">
+                                    <h6>Corredor</h6>
+                                    <p class="corredor">{{ item.corredor|upper }}</p>
+                                </div>
+                                <div style="width: 240px;">
+                                    <h6>Descrição</h6>
+                                    <p>{{ item.descricao }}</p>
+                                </div>
+                                <div style="width: 240px;">
+                                    <h6>Capacidade</h6>
+                                    <p>{{ item.capacidade }}</p>
+                                </div>
                             </div>
-                            <div style="width: 240px;">
-                                <h6>Descrição</h6>
-                                <p>{{ item.descricao }}</p>
-                            </div>
-                            <div style="width: 240px;">
-                                <h6>Capacidade</h6>
-                                <p>{{ item.capacidade }}</p>
-                            </div>
-                        </div>
-                        <div
-                            style="display:flex; justify-content: space-between; align-items: center; margin-left: 8px">
-                            <div>
-                                <span type="button" class="material-symbols-outlined editarr" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
-                                    edit
-                                </span>
-                                <span type="button" data-bs-toggle="modal" data-bs-target="#modalExcluir{{ forloop.counter }}"
-                                    class="excluirr material-symbols-outlined">
-                                    delete
-                                </span>
-                            </div>
-                            <div style="padding: 15px; display: flex; justify-content: end; background-color: #d5d5d5;">
-                                <a href="{% url 'cadastrosala' %}" class="animated-button">
-                                    <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
-                                        </path>
-                                    </svg>
-                                    <span class="text">Agendar</span>
-                                    <span class="circle"></span>
-                                    <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
-                                        </path>
-                                    </svg>
-                                </a>
+                            <div
+                                style="display:flex; justify-content: space-between; align-items: center; margin-left: 8px">
+                                <div>
+                                    <!-- Botão para abrir a Modal de Edição -->
+                                    <span type="button" class="material-symbols-outlined editarr" data-bs-toggle="modal"
+                                        data-bs-target="#modalEditar{{ forloop.counter }}">
+                                        edit
+                                    </span>
+                                    <!-- Botão para excluir -->
+                                    <span type="button" data-bs-toggle="modal"
+                                        data-bs-target="#modalExcluir{{ forloop.counter }}"
+                                        class="excluirr material-symbols-outlined">
+                                        delete
+                                    </span>
+                                </div>
+                                <div
+                                    style="padding: 15px; display: flex; justify-content: end;">
+                                    <a href="{% url 'calendario' item.id %}" class="animated-button">
+                                        <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
+                                            </path>
+                                        </svg>
+                                        <span class="text">Agendar</span>
+                                        <span class="circle"></span>
+                                        <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="modal modal-container fade" id="modalEditar{{ forloop.counter }}" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+            <!-- Modal de Edição -->
+            <div class="modal fade" id="modalEditar{{ forloop.counter }}" tabindex="-1"
+                aria-labelledby="exampleModalLabel2{{ forloop.counter }}" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel2">Editar</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel2{{ forloop.counter }}">Editar</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                            <!-- Formulário de Edição -->
                             <form action="{% url 'atualizarsala' %}" method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
+                                <input type="hidden" name="sala_id" value="{{ item.id }}"> <!-- Passa o ID da sala -->
                                 <div class="mb-3">
-                                    <label for="{{ form.nome_sala.id_for_label }}">{{ form.nome_sala.label }}</label>
-                                    {{ form.nome_sala }}
+                                    <label for="id_nome_sala">Nome da Sala</label>
+                                    <input type="text" id="id_nome_sala" name="nome_sala" value="{{ item.nome }}"
+                                        class="form-control">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="{{ form.corredor.id_for_label }}">{{ form.corredor.label }}</label>
-                                    {{ form.corredor }}
+                                    <label for="id_corredor">Corredor</label>
+                                    <input type="text" id="id_corredor" name="corredor" value="{{ item.corredor }}"
+                                        class="form-control">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }}</label>
-                                    {{ form.descricao }}
+                                    <label for="id_descricao">Descrição</label>
+                                    <textarea id="id_descricao" name="descricao"
+                                        class="form-control">{{ item.descricao }}</textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="{{ form.capacidade.id_for_label }}">{{ form.capacidade.label }}</label>
-                                    {{ form.capacidade }}
+                                    <label for="id_capacidade">Capacidade</label>
+                                    <input type="number" id="id_capacidade" name="capacidade"
+                                        value="{{ item.capacidade }}" class="form-control">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="{{ form.foto.id_for_label }}">{{ form.foto.label }}</label>
-                                    {{ form.foto }}
+                                <div class="mb-3" style="display: flex;">
+                                    <div>
+                                        <a href="{{ item.foto_sala.url }}" id="currentPhotoLink" target="_blank"
+                                            class="btn btn-light">Foto atual</a>
+                                    </div>
+                                    <div>
+                                        <label for="{{ item.foto_sala.id_foto}}">{{ item.foto_sala.label }}</label>
+                                        <input type="file" id="id_foto" name="foto" class="form-control-file"
+                                            style="display: none;">
+                                        <button type="button" class="btn btn-light" style="margin-left: 0px;"
+                                            id="uploadButton">Escolher nova foto</button>
+                                        <span id="fileName" class="file-name"></span>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn" style="background-color: #8B0000; color: #FFFFFF;">Salvar</button>
                                 </div>
                             </form>
-                        </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="modal fade" id="modalExcluir{{ forloop.counter }}" tabindex="-1" aria-labelledby="exampleModalLabel1"
-                aria-hidden="true">
+            <div class="modal fade" id="modalExcluir{{ forloop.counter }}" tabindex="-1"
+                aria-labelledby="exampleModalLabel1" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -438,7 +484,7 @@ Salas
         {% endfor %}
 
         {% if user.is_authenticated and user_is_coordenador %}
-        <div class="sala-card">
+        <div class="sala-card efeito">
             <div class="vertical-line"></div>
             <form class="card fixed-size-card" style="color: #eee; width: 300px; height: 18rem; border-radius: 8px;"
                 action="{% url 'cadastrosala' %}" method="get">
@@ -534,15 +580,35 @@ Salas
                     $('#exampleModal{{ forloop.counter }}').modal('hide');
                 });
             });
-            
-            $(document).ready(function () {
-                $('#modalEditar{{ forloop.counter }}').on('show.bs.modal', function () {
-                    $('#exampleModal{{ forloop.counter }}').modal('hide');
-                });
+
+            $('#modalEditar{{ forloop.counter }}').on('show.bs.modal', function () {
+                $('#exampleModal{{ forloop.counter }}').modal('hide');
+            });
+
+            $('.editarr').click(function () {
+                var modalId = $(this).attr('data-bs-target');
+                $(modalId).modal('show');
+            });
+
+            const uploadButton = document.getElementById("uploadButton");
+            const inputFile = document.getElementById("id_foto");
+            const fileNameSpan = document.getElementById("fileName");
+
+            // Adiciona evento de clique no botão de upload
+            uploadButton.addEventListener("click", function () {
+                // Simula o clique no input de arquivo
+                inputFile.click();
+            });
+
+            // Quando um arquivo é selecionado, exibe o nome do arquivo no span
+            inputFile.addEventListener("change", function () {
+                if (inputFile.files.length > 0) {
+                    fileNameSpan.textContent = inputFile.files[0].name;
+                } else {
+                    fileNameSpan.textContent = "";
+                }
             });
         });
-
-
 
     </script>
 

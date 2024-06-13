@@ -6,9 +6,9 @@ Visualizar perfil
 
 {% block body %}
 <div class="seta">
-<a type="button" href="javascript:void(0)" id="backButton" style="margin-left: 30px; background-color: #f5f5f5; margin-top: 5px; size: 40px" class="material-symbols-outlined">
-    arrow_back
-</a>
+    <a type="button" href="javascript:void(0)" id="backButton" style="margin-left: 30px; background-color: #f5f5f5; margin-top: 5px; size: 40px" class="material-symbols-outlined">
+        arrow_back
+    </a>
 </div>
 <div class="containerPerfil">
     <div class="campoInfo">
@@ -31,20 +31,20 @@ Visualizar perfil
                 <label for="CPF">CPF</label>
                 <p>{{ usuario.cpf }}</p>
             </div>
-            <div>
-                <span type="button" class="material-symbols-outlined editarr" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    edit
-                </span>
-                {% if perfil_usuario.id != usuario.id %}
-                <span type="button" data-bs-toggle="modal" data-bs-target="#modalExcluir" class="excluirr material-symbols-outlined">
-                    delete
-                </span>
-                {% endif %}
-            </div>
         </div>
-        
+        <div class="action-buttons">
+            <span type="button" class="material-symbols-outlined editarr" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                edit
+            </span>
+            {% if perfil_usuario.id != usuario.id %}
+            <span type="button" data-bs-toggle="modal" data-bs-target="#modalExcluir" class="excluirr material-symbols-outlined">
+                delete
+            </span>
+            {% endif %}
+        </div>
     </div>
 </div>
+
 <!-- Modal editar -->
 <div class="modal modal-container fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -69,8 +69,13 @@ Visualizar perfil
                         {{ form.email }}
                     </div>
                     <div class="mb-3">
-                        <label for="{{ form.foto.id_for_label }}">{{ form.foto.label }}</label>
-                        {{ form.foto }}
+                        <a href="{{ usuario.foto_user.url }}" id="currentPhotoLink" target="_blank" class="btn btn-light">Foto Atual</a>
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.foto.id_for_label }}" >{{ form.foto_usuario.label }}</label>
+                        <input type="file" id="{{ form.foto.id_for_label }}" name="{{ form.foto.name }}" class="form-control-file" style="display: none;">
+                        <button type="button" class="btn btn-light" style="margin-left: 0px;" id="uploadButton">Escolher arquivo</button>
+                        <span id="fileName" class="file-name"></span>
                     </div>
                     <div>
                         {{ form.username }}
@@ -80,7 +85,6 @@ Visualizar perfil
                         <button type="submit" class="btn btn-primary">Salvar</button>
                     </div>
                 </form>
-            </div>
             </div>
         </div>
     </div>
@@ -107,36 +111,50 @@ Visualizar perfil
     </div>
 </div>
 
-
-
-
 <style>
+    .action-buttons {
+    margin-top: 10px; /* Espaço entre as informações e os botões */
+    display: flex;
+    justify-content: center; 
+    margin-bottom: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.action-buttons .editarr, .action-buttons .excluirr {
+    display: block; 
+    text-align: center; 
+    margin-top: 0px; 
+    margin-bottom: 5px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
     .seta a {
         text-decoration: none;
         color: inherit; 
     }
-    .seta{
-        
+    .seta {
         background-color: #f5f5f5;
-        gap: 20px
+        gap: 20px;
     }
-    .central{
-        justify-content: cente;
+    .central {
+        justify-content: center;
     }
-    .divft{
+    .divft {
         margin-right: 0px;
         max-width: 220px;
     }
-    .fotinha{
+    .fotinha {
         max-width: 220px;
         min-width: 220px;
         max-height: 220px;
         min-height: 220px;
+        object-fit: cover;
     }
-    .editarr{
+    .editarr {
         color: #ffffff;
     }
-    .excluirr{
+    .excluirr {
         color: red;
     }
     .containerPerfil {
@@ -154,11 +172,12 @@ Visualizar perfil
         background-color: #9B0000;
         width: 100%;
         height: 60vh;
-        position: absolute;
+        position: fixed;
         bottom: 0;
         left: 0;
         margin-bottom: 0;
         padding-bottom: 0;
+
     }
 
     .conteudo {
@@ -186,11 +205,9 @@ Visualizar perfil
         width: 100%;
         max-width: 800px;
         margin-top: 20px;
-        margin-left: 50px;
+        margin-left: 30px;
         padding: 0px;
-        
-        
-
+        margin-right: 0px;
     }
 
     .info-column {
@@ -226,38 +243,93 @@ Visualizar perfil
         width: 100%;
         margin-bottom: 7px;
     }
+
+    .form-control-file {
+        display: none;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .file-name {
+        margin-left: 10px;
+        font-style: italic;
+    }
+
+    .current-photo-link {
+        display: inline-block;
+        margin-bottom: 10px;
+        color: #007bff;
+        text-decoration: none;
+        cursor: pointer;
+        padding: 10px 20px;
+        border: 1px solid #007bff;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .current-photo-link:hover {
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+    }
+
+    .current-photo-link:hover {
+        background-color: #0056b3;
+        color: white;
+        text-decoration: none;
+    }
+
     @keyframes moveBorder {
-    0% {
-        border: 3px solid transparent;
-        border-left-color: red;
+        0% {
+            border: 3px solid transparent;
+            border-left-color: red;
+        }
+        25% {
+            border: 3px solid transparent;
+            border-top-color: red;
+        }
+        50% {
+            border: 3px solid transparent;
+            border-right-color: red;
+        }
+        75% {
+            border: 3px solid transparent;
+            border-bottom-color: red;
+        }
+        100% {
+            border: 3px solid transparent;
+            border-left-color: red;
+        }
     }
-    25% {
-        border: 3px solid transparent;
-        border-top-color: red;
-    }
-    50% {
-        border: 3px solid transparent;
-        border-right-color: red;
-    }
-    75% {
-        border: 3px solid transparent;
-        border-bottom-color: red;
-    }
-    100% {
-        border: 3px solid transparent;
-        border-left-color: red;
-    }
-}
 
-.modal-content {
-    animation: moveBorder 3s infinite ease-in-out;
-}
-
+    .modal-content {
+        animation: moveBorder 3s infinite ease-in-out;
+    }
 </style>
+
 <script>
-    document.getElementById('{{ form.foto.id_for_label }}').addEventListener('change', function (event) {
-        const fileName = event.target.files[0] ? event.target.files[0].name : 'Escolha a Foto de Perfil';
-        document.getElementById('file-name').textContent = fileName;
+    document.getElementById('uploadButton').addEventListener('click', function() {
+        document.getElementById('{{ form.foto.id_for_label }}').click();
+    });
+
+    document.getElementById('{{ form.foto.id_for_label }}').addEventListener('change', function(event) {
+        const fileName = event.target.files[0] ? event.target.files[0].name : 'Escolher arquivo';
+        document.getElementById('uploadButton').textContent = fileName;
+    });
+
+    document.getElementById('currentPhotoLink').addEventListener('click', function(event) {
+        event.preventDefault();  // Prevenir o comportamento padrão do link
+        window.open(this.href, '_blank');
     });
 
     document.getElementById('backButton').addEventListener('click', function() {

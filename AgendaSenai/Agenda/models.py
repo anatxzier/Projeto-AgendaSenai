@@ -28,11 +28,16 @@ class Login(models.Model):
 
 
 class Sala(models.Model):
-    nome = models.CharField(max_length=20)
+    nome = models.CharField(max_length=20, unique=True)
     corredor = models.TextField(max_length=50)
     descricao = models.TextField(max_length=500)
     capacidade = models.IntegerField()
     foto_sala = models.ImageField(upload_to="imgSala/" , default="imgSala/saladefault.png")
+
+    def save(self, *args, **kwargs):
+        self.nome = self.nome.upper()
+        super(Sala, self).save(*args, **kwargs)
+
 
     def __str__(self):
         return self.nome
@@ -40,14 +45,15 @@ class Sala(models.Model):
 class Agendamento(models.Model):
     nome = models.ForeignKey(User, on_delete=models.CASCADE)
     data = models.DateField(default=timezone.now)
-    # hora_inicio = models.TimeField(default=timezone.localtime().time)
-    # hora_fim = models.TimeField(default=timezone.localtime().time)
-    sala = models.ForeignKey(Sala,on_delete=models.CASCADE)
-    turma = models.TextField(max_length= 30)
-    assunto = models.TextField(max_length=200)
+    hora_inicio = models.TimeField(default=timezone.now)
+    hora_fim = models.TimeField(default=timezone.now)
+    sala = models.ForeignKey(Sala, on_delete=models.CASCADE)
+    turma = models.CharField(max_length=30)
+    assunto = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.nome
+        return self.nome.username
+
 
 class Usuario(models.Model):
     cpf = models.CharField(max_length=11,unique=True)

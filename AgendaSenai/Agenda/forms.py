@@ -17,16 +17,11 @@ class FormCadastro(forms.Form):
     foto = forms.ImageField(label="Foto de Perfil", required=False)
 
 class FormCadastroSala(forms.Form):
-    nome_sala = forms.CharField(label="Nome da Sala:", max_length=30)
-    corredor = forms.CharField(label='Corredor:', max_length= 20)
-    descricao = forms.CharField(label="Descrição:", max_length=40)
-    capacidade = forms.IntegerField(label='Capacidade:', min_value=0)
-    foto = forms.ImageField(label="Foto da Sala:", required=False)
-
-class FormsAgendarData(forms.Form):
-    data = forms.DateTimeField(label='Data e Hora do Agendamento',
-                               widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-                               input_formats=['%Y-%m-%d %H:%M:%S'])
+    nome_sala = forms.CharField(label="Nome da Sala", max_length=30)
+    corredor = forms.CharField(label='Corredor', max_length= 20)
+    descricao = forms.CharField(label="Descrição", max_length=40)
+    capacidade = forms.IntegerField(label='Capacidade', min_value=0)
+    foto = forms.ImageField(label="Foto da Sala", required=False)
 
 class FormsEdição(forms.Form):
     nome = forms.CharField(label="Nome:",max_length=15)
@@ -34,15 +29,10 @@ class FormsEdição(forms.Form):
     foto = forms.ImageField(label="Foto de usuário:", required=False)
     email = forms.EmailField(label="Email:", max_length=60)
     username = forms.CharField(widget=forms.HiddenInput())
-    
-
-
-
-
 
 class FormsAgendamento(forms.Form):
     assunto = forms.CharField(label="Assunto:", max_length=200)
-    data = forms.DateField(label='Dia do Agendamento', widget=forms.DateTimeInput(attrs={'type': 'date'}))
+    data = forms.DateField(label='Data', widget=forms.DateTimeInput(attrs={'type': 'date'}))
     hora_entrada = forms.TimeField(label="Hora de entrada", widget=forms.DateTimeInput(attrs={'type': 'time'}))
     hora_saida = forms.TimeField(label="Hora de saída", widget=forms.DateTimeInput(attrs={'type': 'time'}))
     turma = forms.CharField(label="Turma:", max_length=100)

@@ -305,6 +305,9 @@ Cadastro
         color: white;
         font-size: 18px;
 }
+.asterisco{
+    color: rgb(211, 5, 5);
+}
 
 </style>
 
@@ -315,16 +318,16 @@ Cadastro
     <div class="carde">
         <form action="{% url 'cadastrosala' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <label for="{{ form.nome_sala.id_for_label }}">{{ form.nome_sala.label }}</label>
+            <label for="{{ form.nome_sala.id_for_label }}">{{ form.nome_sala.label }} <span class="asterisco">*</span></label>
             {{ form.nome_sala }}
             
-            <label for="{{ form.corredor.id_for_label }}">{{ form.corredor.label }}</label>
+            <label for="{{ form.corredor.id_for_label }}">{{ form.corredor.label }} <span class="asterisco">*</span></label>
             {{ form.corredor }}
             
-            <label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }}</label>
+            <label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }} <span class="asterisco">*</span></label>
             {{ form.descricao }}
             
-            <label class="capacid" for="{{ form.capacidade.id_for_label }}">{{ form.capacidade.label }}</label>
+            <label class="capacid" for="{{ form.capacidade.id_for_label }}">{{ form.capacidade.label }} <span class="asterisco">*</span></label>
             {{ form.capacidade }}
 
             <label for="{{ form.foto.id_for_label }}" style="margin-top: 10px;" class="upload-label"><span id="file-name">Escolha a Foto da Sala</span></label>
