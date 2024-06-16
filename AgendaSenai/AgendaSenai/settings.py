@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Agenda'
+    'Agenda',
+    'rest_framework',
+    'AgendaApi'
 ]
 MEDIA_URL = 'media/'
 
