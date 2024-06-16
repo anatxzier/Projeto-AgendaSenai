@@ -1,19 +1,16 @@
-from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login,logout as auth_logout
 from .forms import FormLogin, FormCadastro, FormCadastroSala, FormsEdição, FormsAgendamento
 from .models import Sala, Agenda, Homepage, Usuario, Agendamento
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse 
-from django.views.decorators.cache import never_cache
 from django.core.cache import cache
 from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 from datetime import datetime
-from django.utils import timezone
-from datetime import timedelta
-
+from django.contrib.auth.decorators import user_passes_test
 
 from .forms import FormCadastro
 
@@ -45,6 +42,16 @@ def homepage(request):
     return render(request, 'homepage.html',context)
 
 
+def group_required(group_name):
+    def in_group(user):
+        if user.is_authenticated:
+            return user.groups.filter(name=group_name).exists()
+        return False
+    return user_passes_test(in_group)
+
+
+
+@login_required
 def agenda(request):
     context = {}
     dados_sala = Sala.objects.annotate(nome_lower=Lower('nome')).order_by('nome_lower')
@@ -73,6 +80,8 @@ def agenda(request):
 
     return render(request, 'agendacoor.html', context)
 
+@login_required
+@group_required('Coordenador')
 def usuarios(request):
     context = {}
     usuarios_professores = User.objects.filter(groups__name="Professor")
@@ -98,7 +107,8 @@ def usuarios(request):
     return render(request,'usuarios.html', context)
 
 
-
+@login_required
+@group_required('Coordenador')
 def atualizar(request):
     if request.method == 'POST':
         form = FormsEdição(request.POST, request.FILES)
@@ -129,7 +139,8 @@ def atualizar(request):
 
     return redirect("usuarios")
 
-
+@login_required
+@group_required('Coordenador')
 def deletar(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -144,7 +155,7 @@ def deletar(request):
 
 
 
-
+@login_required
 def perfil(request, id):
     context = {}
     dados_usuarios = Usuario.objects.all()
@@ -187,27 +198,6 @@ def perfil(request, id):
     return render(request, 'perfil.html', context)
 
 
-
-# def teste(request):
-#     context = {}
-#     if request.method == 'POST':
-#         form = FormsAgendarData(request.POST)
-#         if form.is_valid():
-#             data = form.cleaned_data['data']
-#             now = timezone.localtime(timezone.now()) 
-#             # Verifica se a data está dentro do intervalo de agora até dois meses no futuro
-#             if data <= now or data > now + timedelta(days=60):
-#                 return HttpResponse("O agendamento deve ser entre agora e daqui a dois meses.")
-#             # Verifica se a hora está entre 7 e 18 horas
-#             if data.hour < 7 or data.hour >= 18:
-#                 return HttpResponse("O agendamento deve ser entre as 7h e as 18h.")
-#             # Se tudo estiver correto, você pode prosseguir com o processamento do formulário
-#             return render(request, 'teste.html', {'form': form})
-#     else:
-#         form = FormsAgendarData()
-#         context['form'] = form
-#         return render(request, 'teste.html', context)
-
 def login(request):
     context = {}
     #dados do agendamento
@@ -247,6 +237,8 @@ def login(request):
 from django.contrib import messages
 
 
+@login_required
+@group_required('Coordenador')
 def cadastro(request):
     cache.clear()
     context = {}
@@ -320,7 +312,8 @@ def cadastro(request):
         context['form'] = form
         return render(request, "cadastro.html", context)
     
-
+@login_required
+@group_required('Coordenador')
 def cadastroSala(request):
     context = {}
     context["dados_agenda"] = Agenda.objects.all()
@@ -371,8 +364,8 @@ def cadastroSala(request):
         context['form'] = form
         return render(request, "cadastroSala.html", context)
     
-
-
+@login_required
+@group_required('Coordenador')
 def atualizarsala(request):
     if request.method == 'POST':
         form = FormCadastroSala(request.POST, request.FILES)
@@ -399,7 +392,8 @@ def atualizarsala(request):
 
     return redirect("agenda")
 
-
+@login_required
+@group_required('Coordenador')
 def deletarsala(request):
     if request.method == 'POST':
         nome_sala = request.POST.get('nome_sala')
@@ -412,12 +406,13 @@ def deletarsala(request):
 
     return redirect("agenda")
 
-
+@login_required
 def logout(request):
     auth_logout(request)
     return redirect("home")
     #return render(request, "teste.html")
 
+@login_required
 def agendarsala(request):
     context = {}
     dados_agenda = Agenda.objects.all()
@@ -482,7 +477,7 @@ def agendarsala(request):
 
 
 
-
+@login_required
 ##calendario
 def calendario(request, id):
     context = {}
@@ -514,6 +509,7 @@ def calendario(request, id):
     context['form'] = form
     return render(request,'calendar.html',context)
 
+@login_required
 def deletaragendamento(request):
     if request.method == 'POST':
         id_evento = request.POST.get('evento_id')
@@ -530,6 +526,7 @@ def deletaragendamento(request):
 
     return redirect(f"calendario/{id_sala}")
 
+@login_required
 def atualizaragendamento(request):
     if request.method == 'POST':
 
@@ -568,6 +565,7 @@ def atualizaragendamento(request):
 
     return redirect(f'calendario/{sala_id}')
 
+@login_required
 @require_GET  # Certifica-se de que essa view só aceita requisições GET
 def eventos(request, sala_id):
     if request.user.is_authenticated:
@@ -599,7 +597,7 @@ def eventos(request, sala_id):
 
 ##calendario
 
-
+@login_required
 def detalhes_evento(request, evento_id):
     evento = get_object_or_404(Agendamento, id=evento_id)
 

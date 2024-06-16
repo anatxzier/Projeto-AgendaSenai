@@ -1,5 +1,4 @@
 from django import forms
-from django.utils import timezone
 from datetime import timedelta
 from django.core.exceptions import ValidationError
 from .models import Agendamento

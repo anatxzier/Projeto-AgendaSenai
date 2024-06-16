@@ -140,13 +140,13 @@
                         logout
                     </span> </a>
                 {% else %}
-                    <a href="agenda" class="link"><span class="material-symbols-outlined icn">
+                    <a href="/agenda" class="link"><span class="material-symbols-outlined icn">
                             calendar_month
                         </span> Agenda </a>
-                    <a href="" class="link"> <img src="{{perfil_usuario.foto_user.url}}"
+                    <a href="/perfil/{{perfil_usuario.id}}" class="link"> <img src="{{perfil_usuario.foto_user.url}}"
                             alt="foto"> Bem-vindo, {{userr.username}}</a>
 
-                    <a href="logout" class="link"><span class="material-symbols-outlined icn">
+                    <a href="/logout" class="link"><span class="material-symbols-outlined icn">
                             logout
                         </span> </a>
                 {% endif %}
