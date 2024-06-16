@@ -5,6 +5,15 @@ Calendário - {{ sala.nome }}
 {% endblock %}
 
 {% block body %}
+{% if messages %}
+    <div class="alert alert-danger" role="alert">
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
 <div style="display: flex; flex-direction: row;;">
 
     <div class="seta">
@@ -57,6 +66,265 @@ Calendário - {{ sala.nome }}
 </form>
 
 <style>
+    .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .icones {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .botaoo {
+        width: 120px;
+        height: 50px;
+        border: 2px solid #000000;
+        border-radius: 45px;
+        transition: all 0.3s;
+        cursor: pointer;
+        background: white;
+        font-size: 15px;
+        font-weight: 550;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .botaoo:hover {
+        background: #8b0000;
+        color: white;
+        font-size: 20px;
+    }
+
+    .ContainerAg {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .contAgendar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+    }
+
+    .cont2 h1 {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        text-align: center;
+        margin-bottom: 20%;
+    }
+
+    .sidebar {
+        width: 40%;
+        height: 100vh;
+        background: linear-gradient(45deg, #A2000F, #790404, #dd0d22);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        overflow: hidden;
+    }
+
+    .sidebar img {
+        max-width: 350px;
+        max-height: 350px;
+        z-index: 4;
+
+
+
+    }
+
+    .sidebar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 40%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0));
+        mix-blend-mode: overlay;
+    }
+
+    .sidebar::after {
+        content: '';
+        position: absolute;
+        top: -50px;
+        left: -50px;
+        width: 150px;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        filter: blur(50px);
+    }
+
+    .sidebar::before {
+        clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+        background: linear-gradient(45deg, #8b0000, rgb(165, 4, 4), #e41d1d);
+
+    }
+
+    .cont2 form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .form-pair {
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+    }
+
+    .form-group {
+        width: 48%;
+        display: flex;
+        flex-direction: column;
+        color: #000;
+    }
+
+    .form-group label {
+        margin-bottom: 5px;
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .form-group input {
+        border: none;
+        border-radius: 5px;
+        background-color: #d9d9d9;
+        padding: 10px 0;
+        font-size: 16px;
+        width: 100%;
+        margin-bottom: 7px;
+    }
+
+    .form-group input[name='assunto'] {
+        width: 210%;
+
+    }
+
+    .form-group span .btn {
+        background-color: #8b0000;
+        border: none;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 120px;
+        color: #000;
+    }
+
+    .animated-button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 5px 36px;
+        border: 4px solid;
+        border-color: transparent;
+        font-size: 16px;
+        background-color: inherit;
+        border-radius: 100px;
+        font-weight: 600;
+        color: rgb(0, 0, 0);
+        box-shadow: 0 0 0 2px rgb(0, 0, 0);
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button svg {
+        position: absolute;
+        width: 24px;
+        fill: rgb(0, 0, 0);
+        z-index: 9;
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button .arr-1 {
+        right: 16px;
+    }
+
+    .animated-button .arr-2 {
+        left: -25%;
+    }
+
+    .animated-button .circle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 5px;
+        opacity: 0;
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button .text {
+        position: relative;
+        z-index: 1;
+        transform: translateX(-12px);
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button:hover {
+        box-shadow: 0 0 0 12px transparent;
+        color: #212121;
+        border-radius: 5px;
+    }
+
+    .animated-button:hover .arr-1 {
+        right: -25%;
+    }
+
+    .animated-button:hover .arr-2 {
+        left: 16px;
+    }
+
+    .animated-button:hover .text {
+        transform: translateX(12px);
+    }
+
+    .animated-button:hover svg {
+        fill: #212121;
+    }
+
+    .animated-button:active {
+        scale: 0.95;
+        box-shadow: 0 0 0 4px rgb(0, 0, 0);
+    }
+
+    .animated-button:hover .circle {
+        width: 220px;
+        height: 220px;
+        opacity: 1;
+    }
+
+    .btnagenda {
+        display: flex;
+        flex-direction: row-reverse;
+
+        gap: 20px;
+    }
+
+    @media screen and (max-width: 400px) {
+        .sidebar {
+            display: none;
+        }
+
+        .contAgendar {
+            margin: 50px;
+        }
+
+    }
     .seta a {
         text-decoration: none;
         color: inherit;
@@ -401,6 +669,114 @@ Calendário - {{ sala.nome }}
                                             <div class="event-class">
                                                 <span class="event-class">${evento.turma}</span>
                                             </div>
+                                             <div class="action-buttons">
+                                                ${(evento.user_is_coordenador || evento.username) ? `
+                                                <span type="button" class="material-symbols-outlined editarr" data-bs-toggle="modal" data-bs-target="#exampleModal_${evento.id}" data-id="${evento.id}">
+                                                    edit
+                                                </span>
+                                                <span type="button" data-bs-toggle="modal" data-bs-target="#modalExcluir_${evento.id}" class="excluirr material-symbols-outlined">
+                                                    delete
+                                                </span>` : ''}
+                                            </div>
+                                            <!-- Modal editar -->
+                                            <div class="modal modal-container fade" id="exampleModal_${evento.id}" tabindex="-1" aria-labelledby="exampleModalLabel_${evento.id}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{% url 'atualizaragendamento' %}" method="post" enctype="multipart/form-data">
+                                                                {% csrf_token %}
+
+                                                                <div class="form-pair">
+                                                                    <div class="form-group">
+                                                                        <div>
+                                                                            <label for="{{ form.data.id_for_label }}">{{ form.data.label }}</label>
+                                                                        </div>
+                                                                        {{ form.data }}
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="{{ form.turma.id_for_label }}">{{ form.turma.label }}</label>
+                                                                        {{ form.turma }}
+                                                                    </div>
+                                                                    <div>
+                                                                        {{ form.sala }}
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-pair">
+                                                                    <div class="form-group">
+                                                                        <label for="{{ form.assunto.id_for_label }}">{{ form.assunto.label }}</label>
+                                                                        {{ form.assunto }}
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-pair">
+                                                                    <div class="form-group">
+                                                                        <label for="{{ form.hora_entrada.id_for_label }}">{{ form.hora_entrada.label }}</label>
+                                                                        {{ form.hora_entrada }}
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="{{ form.hora_saida.id_for_label }}">{{ form.hora_saida.label }}</label>
+                                                                        {{ form.hora_saida }}
+                                                                    </div>
+                                                                </div>
+                                                                <input type="hidden" id="agendamento_id" name="agendamento_id" value=${evento.id}>
+                                                                
+                                                                <div class="btnagenda">
+                                                                    <button type="submit" class="animated-button">
+                                                                        <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
+                                                                            <path
+                                                                                d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                        <span class="text">Salvar</span>
+                                                                        <span class="circle"></span>
+                                                                        <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
+                                                                            <path
+                                                                                d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </button>
+
+                                                                    <button class="botaoo" type="button" href="javascript:void(0)" id="backButton">
+                                                                        Cancelar
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal do excluir -->
+                                            <div class="modal fade" id="modalExcluir_${evento.id}" tabindex="-1" aria-labelledby="exampleModalLabel1_${evento.id}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel1_${evento.id}">Excluir</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form id="deleteForm" action="{% url 'deletaragendamento' %}" method="POST">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" name="evento_id" value="${evento.id}">
+                                                                <input type="hidden" name="sala_id" value="{{ sala.id}}">
+                                                                
+                                                                <p>Tem certeza de que deseja excluir este agedamento?</p>
+                                                                <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>`;
                         });
                     } else {
@@ -413,6 +789,38 @@ Calendário - {{ sala.nome }}
                     eventsContainer.innerHTML = `<div class="no-event"><h3>Erro ao carregar eventos</h3></div>`;
                 });
         }
+
+        /////////////////////////////////
+        $(document).on('show.bs.modal', '.modal', function (event) {
+            var button = $(event.relatedTarget); // Botão que disparou o modal
+            var eventoId = button.data('id'); // ID do evento a ser editado ou excluído
+
+            if (button.hasClass('excluirr')) {
+                // Fazer requisição AJAX para buscar detalhes do evento (se necessário)
+                // Atualmente, os detalhes para exclusão são passados diretamente no HTML gerado
+            } else {
+                // Fazer requisição AJAX para buscar detalhes do evento para edição
+                $.ajax({
+                    url: `/detalhes_evento/${eventoId}/`, // URL da view Django para detalhes do evento
+                    method: 'GET',
+                    success: function (data) {
+                        // Preencher os campos do formulário no modal com os dados recebidos
+                        $('#exampleModal_' + eventoId + ' #id_assunto').val(data.assunto);
+                        $('#exampleModal_' + eventoId + ' #id_data').val(data.data);
+                        $('#exampleModal_' + eventoId + ' #id_hora_entrada').val(data.hora_inicio);
+                        $('#exampleModal_' + eventoId + ' #id_hora_saida').val(data.hora_fim);
+                        $('#exampleModal_' + eventoId + ' #id_turma').val(data.turma);
+                        $('#exampleModal_' + eventoId + ' #id_sala').val(data.sala);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Erro ao carregar detalhes do evento:', error);
+                        // Tratar erros conforme necessário
+                    }
+                });
+            }
+        });
+        
+        /////////////////////////////
 
         function getActiveDay(date) {
             const day = new Date(year, month, date);
@@ -449,9 +857,6 @@ Calendário - {{ sala.nome }}
     document.getElementById('backButton').addEventListener('click', function () {
         window.history.back();
     });
-
-
-
 
 
 </script>

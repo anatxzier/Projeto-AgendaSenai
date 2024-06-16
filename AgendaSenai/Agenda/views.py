@@ -450,8 +450,10 @@ def agendarsala(request):
             form_inicial = {
                 'sala': sala_id
             }
+            form = FormsAgendamento(initial=form_inicial)
+        else:
+            form = FormsAgendamento(request.POST)
         
-        form = FormsAgendamento(request.POST)
         if form.is_valid():
             var_salaid = form.cleaned_data['sala']
             var_data = form.cleaned_data['data']
@@ -459,7 +461,7 @@ def agendarsala(request):
             var_hora_entrada = form.cleaned_data['hora_entrada']
             var_hora_saida = form.cleaned_data['hora_saida']
             var_turma = form.cleaned_data['turma']
-
+            
             sala = get_object_or_404(Sala, id=var_salaid)
 
             agendamento = Agendamento(nome=user, data=var_data, hora_inicio=var_hora_entrada, hora_fim=var_hora_saida, sala=sala, turma=var_turma, assunto=var_assunto)
@@ -467,6 +469,7 @@ def agendarsala(request):
             
             return redirect(f'calendario/{var_salaid}')
         else:
+            print("caiu para cá")
             context["form"] = form
             return render(request, 'agendarsala.html', context)
     else:
@@ -488,7 +491,7 @@ def calendario(request, id):
     if request.user.is_authenticated:
         user = request.user
         context["userr"] = user
-        
+        print(type(user.username))
         # Buscar o perfil do usuário autenticado
         perfil_usuario = get_object_or_404(Usuario, nome=user)
         context['perfil_usuario'] = perfil_usuario
@@ -507,13 +510,69 @@ def calendario(request, id):
     context['sala']= sala
     agendamentos = Agendamento.objects.filter(sala=sala)
     context['agendamentos'] = agendamentos
-
+    form = FormsAgendamento()
+    context['form'] = form
     return render(request,'calendar.html',context)
 
+def deletaragendamento(request):
+    if request.method == 'POST':
+        id_evento = request.POST.get('evento_id')
+        id_sala = request.POST.get('sala_id')
+        print(f'id evento--->{id_evento}')
+        print(type(id_evento))
+        print(f'id sala----> {id_sala}')
+        try:
+            agendamento = get_object_or_404(Agendamento, id = id_evento)
+            agendamento.delete()
+            
+        except Agendamento.DoesNotExist:
+            print("agendamento não existe")
 
+    return redirect(f"calendario/{id_sala}")
+
+def atualizaragendamento(request):
+    if request.method == 'POST':
+
+        agendamento_id = request.POST.get('agendamento_id')
+        sala_id = request.POST.get('sala')
+        form = FormsAgendamento(request.POST)
+        if form.is_valid():
+            try:
+                var_salaid = form.cleaned_data['sala']
+                var_data = form.cleaned_data['data']
+                var_assunto = form.cleaned_data['assunto']
+                var_hora_entrada = form.cleaned_data['hora_entrada']
+                var_hora_saida = form.cleaned_data['hora_saida']
+                var_turma = form.cleaned_data['turma']
+                sala = get_object_or_404(Sala, id=var_salaid)
+                
+                agendamento = get_object_or_404(Agendamento, id=agendamento_id)
+                
+                agendamento.data = var_data
+                agendamento.hora_inicio = var_hora_entrada
+                agendamento.hora_fim = var_hora_saida
+                agendamento.assunto = var_assunto
+                agendamento.turma = var_turma
+                agendamento.save()
+
+                messages.success(request, 'Agendamento atualizado com sucesso!')
+                return redirect(f"calendario/{var_salaid}")
+            except Sala.DoesNotExist:
+                messages.error(request, 'A sala não existe.')
+                return redirect("agenda")
+        else:
+            # Se o formulário não for válido, exibir erros específicos do formulário
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'{field}: {error}')
+
+    return redirect(f'calendario/{sala_id}')
 
 @require_GET  # Certifica-se de que essa view só aceita requisições GET
 def eventos(request, sala_id):
+    if request.user.is_authenticated:
+        user = request.user
+        user_is_coordenador = user.groups.filter(name='Coordenador').exists()
     data = request.GET.get('data')  # Obtém a data dos parâmetros da URL
     if data:
         try:
@@ -523,12 +582,15 @@ def eventos(request, sala_id):
         
         agendamentos = Agendamento.objects.filter(sala__id=sala_id, data=data)  # Filtra os agendamentos pela sala e data
         eventos = [
-            {
+            {   
+                'id': agendamento.id,    
                 'nome': agendamento.nome.username,
                 'hora_inicio': agendamento.hora_inicio.strftime('%H:%M'),
                 'hora_fim': agendamento.hora_fim.strftime('%H:%M'),
                 'assunto': agendamento.assunto,
                 'turma': agendamento.turma,
+                'username': (agendamento.nome.username == user.username),
+                'user_is_coordenador': user_is_coordenador
             }
             for agendamento in agendamentos
         ]  # Constrói uma lista de eventos para retornar como JSON
@@ -536,3 +598,19 @@ def eventos(request, sala_id):
     return JsonResponse({'error': 'No date provided'}, status=400)  # Retorna um erro se a data não for fornecida
 
 ##calendario
+
+
+def detalhes_evento(request, evento_id):
+    evento = get_object_or_404(Agendamento, id=evento_id)
+
+    detalhes = {
+        'assunto': evento.assunto,
+        'data': evento.data.strftime('%Y-%m-%d'),  # Formato da data como string
+        'hora_inicio': evento.hora_inicio.strftime('%H:%M'),  # Formato da hora de início como string
+        'hora_fim': evento.hora_fim.strftime('%H:%M'),  # Formato da hora de fim como string
+        'turma': evento.turma,
+        'sala': evento.sala.id,
+        # Adicione outros campos conforme necessário
+    }
+
+    return JsonResponse(detalhes)

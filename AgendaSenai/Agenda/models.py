@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 class Agenda (models.Model):
@@ -53,6 +54,24 @@ class Agendamento(models.Model):
 
     def __str__(self):
         return self.nome.username
+    
+    # def clean(self):
+    #     # Check for conflicting bookings
+    #     overlapping_agendamentos = Agendamento.objects.filter(
+    #         sala=self.sala,
+    #         data=self.data
+    #     ).exclude(
+    #         pk=self.pk  # Exclude self in case of update
+    #     ).filter(
+    #         hora_inicio__lt=self.hora_fim,
+    #         hora_fim__gt=self.hora_inicio
+    #     )
+    #     if overlapping_agendamentos.exists():
+    #         raise ValidationError("Já existe um agendamento nesse horário para a sala selecionada.")
+
+    # def save(self, *args, **kwargs):
+    #     self.clean()
+    #     super().save(*args, **kwargs)
 
 
 class Usuario(models.Model):

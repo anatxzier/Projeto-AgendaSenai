@@ -68,15 +68,6 @@ AgendarSala
                         </div>
                         {% endif %}
                     </div>
-                    {% if form.assunto.value %}
-                    {% if form.data.value and form.hora_entrada.value and form.hora_saida.value %}
-                    {% if form.hora_entrada.errors or form.hora_saida.errors %}
-                    <div class="error-message">
-                        Já existe um agendamento para essa sala nesse horário.
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endif %}
                 </div>
 
                 <div class="form-pair">
