@@ -1,6 +1,7 @@
+<!-- Estilização da página -->
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-
+    /* Definições do container da nav */
     .containerNAV {
         background-color: #fff;
         width: 100%;
@@ -10,7 +11,7 @@
         align-items: center;
         border-bottom: 3px solid red;
     }
-
+    /* Definições da imagem (logo) da nav */
     .containerNAV img {
         margin-left: 3rem;
         width: 70%;
@@ -19,7 +20,7 @@
         padding-right: 25px;
 
     }
-
+    /* Definições do título da nav */
     .tituloNAV {
         flex-direction: row;
         width: 40%;
@@ -30,7 +31,7 @@
     
 
     }
-
+    /* Botões nav */
     .link {
     color: #000;
     text-decoration: none;
@@ -63,7 +64,7 @@
     .icn{
         margin-right: 8px;
     }
-
+    /* Responsividade */
     @media (max-width: 768px) {
 
 
@@ -114,18 +115,22 @@
 </style>
 
 
-
+<!-- HTML NAV -->
 <nav>
+    <!-- Container da nav -->
     <div class="containerNAV ">
+        <!-- DIV para o canto esquerdo da nav, onde fica o titulo e a logo, que são alocados no banco de dados -->
         <div class="d-flex flex-direction-row">
             <a class="navbar-brand d-flex align-items-center" href="/">
                 <img src="{{ dados_agenda.0.logo.url }}" alt="Logo" class="d-inline-block align-text-top">
             </a>
             <p class="tituloNAV">{{ dados_agenda.0.titulo }}</p>
         </div>
-
+        <!-- DIV das informações do lado direito da nav  -->
         <div style="margin-right: 3rem; display: flex; flex-direction: row; gap: 10px">
+            <!-- IF para mudar a nav conforme a autenticação, caso não esteja autenticado aparecerá "Entrar" -->
             {% if user.is_authenticated %}
+            <!-- Se estiver autenticado como coordenador aparecerá botão para a pág instrutores e agenda, e ao lado o seu perfil -->
                 {% if user_is_coordenador %}
                     <a href="/usuarios" class="link"><span class="material-symbols-outlined icn">
                         manage_accounts
@@ -139,6 +144,7 @@
                     <a href="/logout" class="link"><span class="material-symbols-outlined icn">
                         logout
                     </span> </a>
+                <!-- Caso esteja autenticado como professor aparecerá apenas a agenda e o perfil -->
                 {% else %}
                     <a href="/agenda" class="link"><span class="material-symbols-outlined icn">
                             calendar_month

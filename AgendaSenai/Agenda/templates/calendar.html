@@ -198,7 +198,7 @@ Calendário - {{ sala.nome }}
         border: none;
         border-radius: 5px;
         background-color: #d9d9d9;
-        padding: 10px 0;
+        padding: 10px 10px;
         font-size: 16px;
         width: 100%;
         margin-bottom: 7px;
@@ -508,6 +508,35 @@ Calendário - {{ sala.nome }}
         font-size: 1em;
         /* Tamanho da fonte das informações do evento */
     }
+    @keyframes moveBorder {
+        0% {
+            border: 3px solid transparent;
+            border-left-color: red;
+        }
+        25% {
+            border: 3px solid transparent;
+            border-top-color: red;
+        }
+        50% {
+            border: 3px solid transparent;
+            border-right-color: red;
+        }
+        75% {
+            border: 3px solid transparent;
+            border-bottom-color: red;
+        }
+        100% {
+            border: 3px solid transparent;
+            border-left-color: red;
+        }
+    }
+
+    .modal-content {
+        animation: moveBorder 3s infinite ease-in-out;
+    }
+    .modal-title {
+        color: #000
+    }
 </style>
 
 <script>
@@ -706,7 +735,7 @@ Calendário - {{ sala.nome }}
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="form-pair">
+                                                                <div class="form-pair" >
                                                                     <div class="form-group">
                                                                         <label for="{{ form.assunto.id_for_label }}">{{ form.assunto.label }}</label>
                                                                         {{ form.assunto }}
@@ -725,7 +754,7 @@ Calendário - {{ sala.nome }}
                                                                 </div>
                                                                 <input type="hidden" id="agendamento_id" name="agendamento_id" value=${evento.id}>
                                                                 
-                                                                <div class="btnagenda">
+                                                                <div class="btnagenda mt-4">
                                                                     <button type="submit" class="animated-button">
                                                                         <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
                                                                             <path
@@ -741,13 +770,9 @@ Calendário - {{ sala.nome }}
                                                                         </svg>
                                                                     </button>
 
-                                                                    <button class="botaoo" type="button" href="javascript:void(0)" id="backButton">
+                                                                    <button class="botaoo" type="button" href="javascript:void(0)" id="backButton" data-bs-dismiss="modal">
                                                                         Cancelar
                                                                     </button>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                                    <button type="submit" class="btn btn-primary">Salvar</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -760,7 +785,7 @@ Calendário - {{ sala.nome }}
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="exampleModalLabel1_${evento.id}">Excluir</h1>
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel1_${evento.id}" style="color: #000000;">Excluir</h1>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
@@ -769,9 +794,27 @@ Calendário - {{ sala.nome }}
                                                                 <input type="hidden" name="evento_id" value="${evento.id}">
                                                                 <input type="hidden" name="sala_id" value="{{ sala.id}}">
                                                                 
-                                                                <p>Tem certeza de que deseja excluir este agedamento?</p>
-                                                                <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                <p style="color:#000000;">Tem certeza de que deseja excluir este agedamento?</p>
+
+                                                                <div class="btnagenda mt-4">
+                                                                    <button type="submit" class="animated-button">
+                                                                        <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
+                                                                            <path
+                                                                                d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                        <span class="text">Excluir</span>
+                                                                        <span class="circle"></span>
+                                                                        <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
+                                                                            <path
+                                                                                d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </button>
+
+                                                                    <button class="botaoo" type="button" href="javascript:void(0)" id="backButton" data-bs-dismiss="modal">
+                                                                        Cancelar
+                                                                    </button>
                                                             </form>
                                                         </div>
                                                     </div>

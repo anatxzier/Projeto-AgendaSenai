@@ -255,7 +255,7 @@ Salas
         margin-bottom: 10px;
     }
 
-    ::-webkit-file-upload-button{
+    ::-webkit-file-upload-button {
         border: none;
         padding: 6px 12px;
         border-radius: 5px;
@@ -263,39 +263,75 @@ Salas
 
     }
 
-    ::-webkit-file-upload-button:hover{
+    ::-webkit-file-upload-button:hover {
         border: none;
         padding: 6px 12px;
         border-radius: 5px;
         background-color: #d3d4d5;
     }
-    
+
+    @keyframes moveBorder {
+        0% {
+            border: 3px solid transparent;
+            border-left-color: red;
+        }
+
+        25% {
+            border: 3px solid transparent;
+            border-top-color: red;
+        }
+
+        50% {
+            border: 3px solid transparent;
+            border-right-color: red;
+        }
+
+        75% {
+            border: 3px solid transparent;
+            border-bottom-color: red;
+        }
+
+        100% {
+            border: 3px solid transparent;
+            border-left-color: red;
+        }
+    }
+
+    .modal-content2 {
+        animation: moveBorder 3s infinite ease-in-out;
+    }
 
     @media (max-width: 660px) {
-    #mainContent {
-        justify-content: flex-start; /* Alinhar os cards à esquerda */
-        margin: 40px;
+        #mainContent {
+            justify-content: flex-start;
+            /* Alinhar os cards à esquerda */
+            margin: 40px;
+        }
+
+        .sala-card {
+            flex: 0 0 50%;
+            /* Fazer com que cada card ocupe metade da largura */
+            max-width: 50%;
+            /* Limitar a largura máxima a 50% */
+        }
     }
 
-    .sala-card {
-        flex: 0 0 50%; /* Fazer com que cada card ocupe metade da largura */
-        max-width: 50%; /* Limitar a largura máxima a 50% */
-    }
-}
+    @media (max-width: 550px) {
+        #mainContent {
+            justify-content: center;
+            /* Alinhar os cards à esquerda */
+            align-items: center;
+        }
 
-@media (max-width: 550px) {
-    #mainContent {
-        justify-content: center; /* Alinhar os cards à esquerda */
-        align-items: center;
+        .sala-card {
+            flex: 0 0 100%;
+            /* Faz com que o card ocupe toda a largura */
+            max-width: 100%;
+            /* Define a largura máxima como 100% */
+            margin-bottom: 20px;
+            /* Adiciona espaço entre os cards */
+        }
     }
-
-    .sala-card {
-        flex: 0 0 100%; /* Faz com que o card ocupe toda a largura */
-        max-width: 100%; /* Define a largura máxima como 100% */
-        margin-bottom: 20px; /* Adiciona espaço entre os cards */
-    }
-}
-
 </style>
 
 <body style="background-color: #f5f5f5;">
@@ -323,7 +359,8 @@ Salas
                         {% endfor %}
                     </select>
                 </form>
-                <a class="navbar-brand" href="{% url 'agenda' %}" style="color: #FFFFFF; font-size: 18px; padding-left: 20px;">Salas</a>
+                <a class="navbar-brand" href="{% url 'agenda' %}"
+                    style="color: #FFFFFF; font-size: 18px; padding-left: 20px;">Salas</a>
             </div>
             {% if user.is_authenticated %}
             {% if user_is_coordenador %}
@@ -361,7 +398,8 @@ Salas
                             <h1 class="modal-title fs-5" id="exampleModalLabel{{ forloop.counter }}">{{ item.nome|upper }}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body" style="align-self: center; justify-content: center; align-items: center;">
+                        <div class="modal-body"
+                            style="align-self: center; justify-content: center; align-items: center;">
                             <img src="{{ item.foto_sala.url }}" class="card-img-top" alt="..."
                                 style="filter: brightness(80%); max-width: 250px; max-height: 250px; object-fit: cover; display: flex; margin:auto; margin-bottom: 10px; border-radius: 10px; ">
                             <div
@@ -379,12 +417,14 @@ Salas
                                     <p>{{ item.capacidade }}</p>
                                 </div>
                             </div>
-                            <div
-                                style="display:flex; justify-content: space-between; align-items: center; margin-left: 8px">
-                                <div>
+
+                            <div style="display:flex; align-items: center; justify-content: center;">
+                                {% if user.is_authenticated %}
+                                {% if user_is_coordenador %}
+                                <div style="padding-right: 30px">
                                     <!-- Botão para abrir a Modal de Edição -->
                                     <span type="button" class="material-symbols-outlined editarr" data-bs-toggle="modal"
-                                        data-bs-target="#modalEditar{{ forloop.counter }}">
+                                        data-bs-target="#modalEditar{{ item.id }}">
                                         edit
                                     </span>
                                     <!-- Botão para excluir -->
@@ -394,8 +434,9 @@ Salas
                                         delete
                                     </span>
                                 </div>
-                                <div
-                                    style="padding: 15px; display: flex; justify-content: end;">
+                                {% endif %}
+                                {% endif %}
+                                <div style="padding: 10px; display: flex; align-self: center;">
                                     <a href="{% url 'calendario' item.id %}" class="animated-button">
                                         <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -417,18 +458,20 @@ Salas
                 </div>
             </div>
 
+            {% if user.is_authenticated %}
+            {% if user_is_coordenador %}
             <!-- Modal de Edição -->
-            <div class="modal fade" id="modalEditar{{ forloop.counter }}" tabindex="-1"
+            <!-- <div class="modal fade" id="modalEditar{{ forloop.counter }}" tabindex="-1"
                 aria-labelledby="exampleModalLabel2{{ forloop.counter }}" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel2{{ forloop.counter }}">Editar sala</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel2{{ forloop.counter }}">Editar sala {{item.nome}}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body imgfile">
+                        <div class="modal-body imgfile"> -->
                             <!-- Formulário de Edição -->
-                            <form action="{% url 'atualizarsala' %}" method="post" enctype="multipart/form-data">
+                            <!-- <form action="{% url 'atualizarsala' %}" method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="mb-3">
                                     <label for="id_corredor">Corredor</label>
@@ -447,23 +490,78 @@ Salas
                                 </div>
                                 <div class="mb-3">
                                     <div>
-                                    <label>Visualize a foto atual:</label>
+                                        <label>Visualize a foto atual:</label>
                                     </div>
                                     <div>
-                                    <a href="{{ item.foto_sala.url }}" id="currentPhotoLink" target="_blank"
-                                        class="btn btn-light">Foto atual</a>
+                                        <a href="{{ item.foto_sala.url }}" id="currentPhotoLink" target="_blank"
+                                            class="btn btn-light">Foto atual</a>
                                     </div>
                                 </div>
                                 <div class="filefoto">
                                     <label>Escolha uma nova foto:</label>
                                     <label for="id_foto_{{ item.foto_sala.id_foto }}">{{ item.foto_sala.label }}</label>
-                                    <input type="file" id="id_foto_{{ item.foto_sala.id_foto }}" name="foto" class="form-control-file">
+                                    <input type="file" id="id_foto_{{ item.foto_sala.id_foto }}" name="foto"
+                                        class="form-control-file">
                                     <span class="fileName file-name"></span>
                                 </div>
-                               
+
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn"
+                                        style="background-color: #8B0000; color: #FFFFFF;">Salvar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="modal fade" id="modalEditar{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel2{{ item.id }}"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel2{{ item.id }}">Editar sala {{ item.nome }}</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body imgfile">
+                            <!-- Formulário de Edição -->
+                            <form id="formEditar{{ item.id }}" action="{% url 'atualizarsala' %}" method="post"
+                                enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="sala_id" value="{{ item.id }}">
+                                <div class="mb-3">
+                                    <label for="id_corredor">Corredor</label>
+                                    <input type="text" id="id_corredor" name="corredor" value="{{ item.corredor }}"
+                                        class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_descricao">Descrição</label>
+                                    <textarea id="id_descricao" name="descricao" class="form-control">{{ item.descricao }}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_capacidade">Capacidade</label>
+                                    <input type="number" id="id_capacidade" name="capacidade" value="{{ item.capacidade }}"
+                                        class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <div>
+                                        <label>Visualize a foto atual:</label>
+                                    </div>
+                                    <div>
+                                        <a href="{{ item.foto_sala.url }}" id="currentPhotoLink" target="_blank"
+                                            class="btn btn-light">Foto atual</a>
+                                    </div>
+                                </div>
+                                <div class="filefoto">
+                                    <label>Escolha uma nova foto:</label>
+                                    <input type="file" id="id_foto_{{ item.id }}" name="foto" class="form-control-file">
+                                    <span class="fileName file-name"></span>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                     <button type="submit" class="btn" style="background-color: #8B0000; color: #FFFFFF;">Salvar</button>
                                 </div>
                             </form>
@@ -475,9 +573,9 @@ Salas
             <div class="modal fade" id="modalExcluir{{ forloop.counter }}" tabindex="-1"
                 aria-labelledby="exampleModalLabel1" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content modal-content2">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel1">Excluir</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel1">Excluir sala {{item.nome}}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -485,7 +583,7 @@ Salas
                                 {% csrf_token %}
                                 <input type="hidden" name="nome_sala" value="{{ item.nome }}">
                                 <p>Tem certeza de que deseja excluir esta sala?</p>
-                                <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+                                <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
                                 <button type="button" class="btn btn-secondary"
                                     data-bs-dismiss="modal">Cancelar</button>
                             </form>
@@ -493,8 +591,10 @@ Salas
                     </div>
                 </div>
             </div>
-
+            {% endif %}
+            {% endif %}
         </div>
+
         {% endfor %}
 
         {% if user.is_authenticated and user_is_coordenador %}
@@ -595,10 +695,13 @@ Salas
                 });
             });
 
-            $('.editarr').click(function () {
-                var modalId = $(this).attr('data-bs-target');
-                $(modalId).modal('show');
+            $(document).ready(function () {
+                $('.editarr').click(function () {
+                    var modalId = $(this).attr('data-bs-target');
+                    $(modalId).modal('show');
+                });
             });
+
 
             const uploadButton = document.getElementById("uploadButton");
             const inputFile = document.getElementById("id_foto");

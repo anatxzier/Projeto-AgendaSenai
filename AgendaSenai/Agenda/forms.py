@@ -40,6 +40,8 @@ class FormsAgendamento(forms.Form):
     sala = forms.CharField(widget=forms.HiddenInput())
     agendamento_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
 
+
+
     def clean_data(self):
         data = self.cleaned_data['data']
         hoje = datetime.now().date()

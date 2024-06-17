@@ -363,6 +363,37 @@ def cadastroSala(request):
         context['form'] = form
         return render(request, "cadastroSala.html", context)
     
+# @login_required
+# @group_required('Coordenador')
+# def atualizarsala(request):
+#     if request.method == 'POST':
+#         form = FormCadastroSala(request.POST, request.FILES)
+#         if form.is_valid():
+#             try:
+#                 sala = get_object_or_404(Sala, nome=form.cleaned_data['nome'])
+#                 sala.nome = form.cleaned_data['nome']
+#                 sala.corredor = form.cleaned_data['corredor']
+#                 sala.descricao = form.cleaned_data['descricao']
+#                 sala.capacidade = form.cleaned_data['capacidade']
+                
+#                 # Atualiza a foto da sala, se fornecida
+#                 if 'foto' in request.FILES:
+#                     sala.foto_sala = form.cleaned_data['foto']
+                
+#                 # Salva a sala atualizada
+#                 sala.save() 
+                
+#                 return redirect("agenda")
+#             except Sala.DoesNotExist:
+#                 print("A sala não existe")
+#                 return redirect("agenda")
+#         else:
+#             print(form.errors)  # Imprime os erros de validação
+#     else:
+#         print("Algum erro foi encontrado, método não é POST")
+
+#     return redirect("agenda")
+
 @login_required
 @group_required('Coordenador')
 def atualizarsala(request):
@@ -370,24 +401,26 @@ def atualizarsala(request):
         form = FormCadastroSala(request.POST, request.FILES)
         if form.is_valid():
             try:
-                sala = get_object_or_404(Sala, nome=form.cleaned_data['nome_sala'])
-                sala.nome = form.cleaned_data['nome_sala']
+                sala_id = form.cleaned_data['sala_id']
+                sala = get_object_or_404(Sala, id=sala_id)
+
                 sala.corredor = form.cleaned_data['corredor']
                 sala.descricao = form.cleaned_data['descricao']
                 sala.capacidade = form.cleaned_data['capacidade']
-                
+
                 if 'foto' in request.FILES:
-                    sala.foto_sala = form.cleaned_data['foto']
-                sala.save() 
+                    sala.foto_sala = request.FILES['foto']
+
+                sala.save()
 
                 return redirect("agenda")
             except Sala.DoesNotExist:
                 print("A sala não existe")
                 return redirect("agenda")
         else:
-            print(form.errors)  # Imprimir os erros de validação
+            print(form.errors)  # Imprime os erros de validação
     else:
-        print("Algum erro foi encontrado, método não é POST")
+        print("Método não é POST")
 
     return redirect("agenda")
 

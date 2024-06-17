@@ -400,7 +400,7 @@ Cadastro
             {{ form.foto }}
 
             <div class="botoes">
-                <button class="botaoo" type="button" href="javascript:void(0)" id="backButton">
+                <button class="botaoo" type="button" id="backButton"  onclick="voltarParaUsers()">
                     Cancelar
                 </button>
                 <button type="submit" class="animated-button">
@@ -456,9 +456,9 @@ Cadastro
     }
 </script>
 <script>
-    document.getElementById('backButton').addEventListener('click', function() {
-        window.history.back();
-    });
+     function voltarParaUsers() {
+        window.location.href = "{% url 'usuarios' %}";
+    }
 </script>
 
 {% endblock %}
