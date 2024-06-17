@@ -121,7 +121,6 @@ def atualizar(request):
                 user.save() 
                 
                 
-                print("request.FILES:", request.FILES)
                 if 'foto' in request.FILES:
                     usuario = get_object_or_404(Usuario, nome=user) 
                     usuario.foto_user = form.cleaned_data['foto']
