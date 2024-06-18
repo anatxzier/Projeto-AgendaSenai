@@ -7,7 +7,7 @@ Cadastro
 {% block body %}
 {% load static%}
 
-
+<!-- Estilização -->
 <style>
     .container2 {
         display: flex;
@@ -320,6 +320,7 @@ Cadastro
         height: 60px;
         border: 3px solid #8b0000;
         border-radius: 45px;
+        color: #8b0000;
         transition: all 0.3s;
         cursor: pointer;
         background: white;
@@ -358,13 +359,15 @@ Cadastro
         }
     }
 </style>
-
+<!-- Container da pág -->
 <div class="container2">
+    <!-- Lado esquerdo vermelho com foto padrão -->
     <div class="bg">
         <img src="{% static 'admin/img/default.jpg' %}" alt="Imagem Padrão">
     </div>
+    <!-- DIV do forms de cadastro de users -->
     <div class="carde">
-
+        <!-- Modal que aparecerá caso alguma info seja inválida -->
         {% if error_message %}
             <div id="myModal" class="modal">
                 <div class="modal-content">
@@ -398,7 +401,7 @@ Cadastro
                 <span id="file-name">Escolha a Foto de Perfil</span>
             </label>
             {{ form.foto }}
-
+            <!-- cancela e volta pra pág anterior -->
             <div class="botoes">
                 <button class="botaoo" type="button" id="backButton"  onclick="voltarParaUsers()">
                     Cancelar
@@ -421,6 +424,7 @@ Cadastro
         </form>
     </div>
 </div>
+<!-- Scripts -->
 <script>
     document.getElementById('{{ form.foto.id_for_label }}').addEventListener('change', function (event) {
         const fileName = event.target.files[0] ? event.target.files[0].name : 'Escolha a Foto de Perfil';
@@ -455,6 +459,7 @@ Cadastro
         }
     }
 </script>
+<!-- Faz voltar para a pag usuarios-->
 <script>
      function voltarParaUsers() {
         window.location.href = "{% url 'usuarios' %}";

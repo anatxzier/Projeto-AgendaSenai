@@ -7,14 +7,17 @@
 {% block body %}
 
 <style>
+    /* Importa a fonte 'Inter' do Google Fonts com variações de peso de 100 a 900 */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
-    .geralcont{
+    /* Estilos para o contêiner geral, centralizando o conteúdo */
+    .geralcont {
         display: flex;
         justify-content: center;
         margin-top: 4%;
     }
 
+    /* Estilos para o contêiner do formulário de login */
     .login-container {
         display: flex;
         flex-direction: column;
@@ -26,6 +29,7 @@
         text-align: center;
     }
 
+    /* Estilos para os títulos dentro do contêiner de login */
     .login-container h1 {
         font-size: 1.5rem;
         font-family: 'Inter', sans-serif;
@@ -33,36 +37,7 @@
         width: 100%;
     }
 
-    .login-container form {
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        
-    }
-
-    /* .login-container form label {
-        width: 112%;
-        text-align: left;
-        margin-bottom: 5px;
-    }
-
-    .login-container form input {
-        background-color: #e0e0e0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        width: 100%; 
-        font-size: 16px;
-        margin-bottom: 10px; 
-        margin-left: 0;
-    }
-    .login-container .input-group {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-left: 0;
-    } */
+    /* Estilos para o formulário dentro do contêiner de login */
     .login-container form {
         margin-bottom: 20px;
         display: flex;
@@ -70,88 +45,96 @@
         align-items: center;
     }
 
+    /* Estilos para rótulos (labels) dentro do formulário */
     .login-container form label {
-        width: 100%; 
-        text-align: left;
-        margin-bottom: 5px;
+        width: 100%; /* O rótulo ocupa toda a largura disponível */
+        text-align: left; /* Texto alinhado à esquerda */
+        margin-bottom: 5px; /* Margem inferior de 5px */
     }
 
+    /* Estilos para campos de entrada (inputs) dentro do formulário */
     .login-container form input {
-        background-color: #e0e0e0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        border-top-left-radius: 5px;
-        padding: 10px;
-        width: 100%; 
-        font-size: 16px;
-        margin-bottom: 10px;
-        display: flex;
-        justify-self: center;
+        background-color: #e0e0e0; /* Cor de fundo cinza claro */
+        border: 1px solid #ccc; /* Borda cinza */
+        border-radius: 5px; /* Bordas arredondadas */
+        border-top-left-radius: 5px; /* Arredonda apenas o canto superior esquerdo */
+        padding: 10px; /* Preenchimento interno de 10px */
+        width: 100%; /* Ocupa toda a largura disponível */
+        font-size: 16px; /* Tamanho da fonte de 16px */
+        margin-bottom: 10px; /* Margem inferior de 10px */
+        display: flex; /* Exibe como flex container */
+        justify-self: center; /* Centraliza horizontalmente */
     }
 
+    /* Estilos para o grupo de inputs (input-group) dentro do formulário */
     .login-container .input-group {
-        width: 70%; 
-        margin-bottom: 10px; 
+        width: 70%; /* Largura de 70% */
+        margin-bottom: 10px; /* Margem inferior de 10px */
     }
 
+    /* Estilos para o botão de submit (btn-primary) dentro do formulário */
     .login-container .btn-primary {
-        width: 50%;
+        background-color: #d9534f; /* Cor de fundo vermelho */
+        border: none; /* Sem borda */
+        width: 50%; /* Largura de 50% */
+        padding: 10px; /* Preenchimento interno de 10px */
+        font-size: 16px; /* Tamanho da fonte de 16px */
+        border-radius: 5px; /* Bordas arredondadas */
+        cursor: pointer; /* Cursor do mouse de ponteiro */
+        margin-top: 20px; /* Margem superior de 20px */
     }
 
-    .login-container .form-group input::placeholder {
-        color: #888;
-    }
-
-    .login-container .btn-primary {
-        background-color: #d9534f;
-        border: none;
-        width: 50%;
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 20px;
-        
-    }
-
+    /* Estilos para o botão de submit (btn-primary) quando hover (sobreposição) */
     .login-container .btn-primary:hover {
-        background-color: #c9302c;
+        background-color: #c9302c; /* Cor de fundo vermelho mais escura */
     }
 
+    /* Media query para telas menores ou iguais a 768px */
     @media (max-width: 768px) {
-    .login-container {
-        max-width: 60%; 
-        padding: 20px; 
+        .login-container {
+            max-width: 60%; /* Largura máxima de 60% */
+            padding: 20px; /* Preenchimento de 20px */
+        }
 
-    }
         .login-container h1 {
-        font-size: 1.2rem;
-
-
-   
+            font-size: 1.2rem; /* Tamanho da fonte de 1.2rem para títulos h1 */
+        }
     }
-}
 </style>
 
 <div class="geralcont">
-<div class="login-container">
-    <h1>Bem-vindo!</h1>
-    <h1>Digite seu email e senha para começarmos</h1>
-    <form action="login" method="post">
-        {% csrf_token %}
-        <div class="input-group"> 
-            <label for="{{ form.user.id_for_label }}">{{ form.user.label }}</label>
-            {{ form.user }} 
-        </div> 
-        <div class="input-group"> 
-            <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
-            {{ form.password }} 
-        </div> 
-        <button type="submit" class="btn btn-primary">Entrar</button>
-    </form>
-    {% if error %}
-        <p>{{ error }}</p>
-    {% endif %}
+    <div class="login-container">
+        <!-- Título de boas-vindas -->
+        <h1>Bem-vindo!</h1>
+        
+        <!-- Subtítulo -->
+        <h1>Digite seu email e senha para começarmos</h1>
+        
+        <!-- Formulário de login -->
+        <form action="login" method="post">
+            {% csrf_token %} <!-- Tag do Django para proteção contra CSRF -->
+            
+            <!-- Campo para o usuário -->
+            <div class="input-group">
+                <label for="{{ form.user.id_for_label }}">{{ form.user.label }}</label>
+                {{ form.user }} <!-- Renderiza o campo de entrada do usuário -->
+            </div>
+            
+            <!-- Campo para a senha -->
+            <div class="input-group">
+                <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+                {{ form.password }} <!-- Renderiza o campo de entrada da senha -->
+            </div>
+            
+            <!-- Botão de submissão do formulário -->
+            <button type="submit" class="btn btn-primary">Entrar</button>
+        </form>
+        
+        <!-- Exibe mensagem de erro, se houver -->
+        {% if error %}
+            <p>{{ error }}</p>
+        {% endif %}
+    </div>
 </div>
-</div>
+
 {% endblock %}

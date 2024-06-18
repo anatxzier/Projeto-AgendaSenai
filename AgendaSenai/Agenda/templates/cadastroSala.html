@@ -7,7 +7,7 @@ Cadastro
 {% block body %}
 {% load static%}
 
-
+<!-- Estilização -->
 <style>
     .container2 {
         display: flex;
@@ -312,7 +312,7 @@ Cadastro
         background: white;
         font-size: 15px;
         font-weight: 550;
-        color: #000000;
+        color: #8b0000;
         font-family: 'Montserrat', sans-serif;
         text-decoration: none;
     }
@@ -350,7 +350,7 @@ Cadastro
         ;
         border-color: #8b0000;
     }
-
+    /* Responsividade */
     @media only screen and (max-width: 768px) {
         .container2 {
             flex-direction: column;
@@ -376,11 +376,13 @@ Cadastro
         }
     }
 </style>
-
+<!--  Container  da pág -->
 <div class="container2">
+    <!-- Lado esquerdo da pág com cor vermelha e uma ft -->
     <div class="bg">
         <img src="{% static 'admin/img/saladefault.png' %}" alt="Imagem Padrão">
     </div>
+    <!-- Forms de cadastro da sala -->
     <div class="carde">
         <form action="{% url 'cadastrosala' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -439,6 +441,7 @@ Cadastro
         </form>
     </div>
 </div>
+<!-- Script  -->
 <script>
     document.getElementById('{{ form.foto.id_for_label }}').addEventListener('change', function (event) {
         const fileName = event.target.files[0] ? event.target.files[0].name : 'Escolha a Foto Sala';

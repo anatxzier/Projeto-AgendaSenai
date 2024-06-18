@@ -9,13 +9,14 @@ Homepage
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
+     
+    /* Estilos para o container principal */
     .container_home {
         display: flex;
         background-color: white;
         overflow: hidden;
         max-width: 100%;
-        min-height: 100vh;
-        max-width: 100%;
+        min-height: 100vh; /* Define a altura mínima para ocupar toda a tela verticalmente */
     }
 
     .text,
@@ -23,31 +24,32 @@ Homepage
         color:  #A2000F;
         text-decoration: none;
     }
-    .left {
-    position: relative;
-    background-color: #A2000F;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 50px;
-    width: 50%;
-    overflow: hidden;
-    z-index: 1; /* Adicionado para garantir que o pseudo-elemento fique por baixo do texto */
-}
+     /* Estilos para o lado esquerdo do container */
+     .left {
+        position: relative;
+        background-color: #A2000F; /* Cor de fundo do lado esquerdo */
+        color: white; /* Cor do texto */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 50px; /* Espaçamento interno */
+        width: 50%; /* Largura do lado esquerdo */
+        overflow: hidden;
+        z-index: 1; /* Z-index para gerenciar a sobreposição do pseudo-elemento */
+    }
 
-.left::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 70%; /* Aumentado para cobrir mais área */
-    height: 120%; /* Aumentado para cobrir mais área */
-    background-color: #8b0000;
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
-    z-index: -1; /* Mantido para garantir que o pseudo-elemento fique por baixo do texto */
-}
-
+    /* Pseudo-elemento para criar o efeito de canto vermelho no lado esquerdo */
+    .left::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 70%; /* Largura do pseudo-elemento */
+        height: 120%; /* Altura do pseudo-elemento para cobrir uma área maior */
+        background-color: #8b0000; /* Cor do efeito do canto */
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%); /* Clip-path para moldar o pseudo-elemento */
+        z-index: -1; /* Coloca o pseudo-elemento por baixo do conteúdo */
+    }
     /* .left {
         position: relative;
         background-color: #A2000F;
@@ -59,32 +61,37 @@ Homepage
         width: 50%;
     } */
 
-    .title {
+   /* Estilos para o título no lado esquerdo */
+   .title {
         display: flex;
         flex-wrap: wrap;
         font-size: 65px;
-        margin-bottom: 20px;
+        margin-bottom: 20px; /* Espaçamento inferior do título */
     }
 
+    /* Estilos para a descrição no lado esquerdo */
     .description {
         font-size: 20px;
         text-align: center;
-        line-height: 30px;
+        line-height: 30px; /* Altura da linha */
     }
 
+    /* Estilos para o lado direito do container */
     .right {
-        padding: 50px;
+        padding: 50px; /* Espaçamento interno */
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 50%;
+        width: 50%; /* Largura do lado direito */
     }
 
-    .right img {
-        max-width: 100%;
-        height: auto;
+     /* Estilos para a imagem no lado direito */
+     .right img {
+        max-width: 100%; /* Garante que a imagem não ultrapasse a largura máxima */
+        height: auto; /* Mantém a proporção da imagem */
     }
+
 
     .button {
         margin-top: 20px;
@@ -103,7 +110,8 @@ Homepage
         font-optical-sizing: auto;
         font-style: normal;
     }
-
+       
+    /* Estilos para o botão animado */
     .animated-button {
         position: relative;
         display: flex;
@@ -123,6 +131,7 @@ Homepage
         transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
+    /* Estilos para o ícone SVG dentro do botão animado */
     .animated-button svg {
         position: absolute;
         width: 24px;
@@ -132,7 +141,7 @@ Homepage
     }
 
     .animated-button .arr-1 {
-        right: 16px;
+        right: 16px; /* Move o ícone para a direita ao passar o mouse */
     }
 
     .animated-button .arr-2 {
@@ -159,6 +168,7 @@ Homepage
         transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
+    /* Efeitos de hover para o botão animado */
     .animated-button:hover {
         box-shadow: 0 0 0 12px transparent;
         color: #FFFFFF;
@@ -174,12 +184,12 @@ Homepage
     }
 
     .animated-button:hover .text {
-        transform: translateX(12px);
-        color: #FFFFFF;
+        transform: translateX(12px); /* Move o texto para a direita ao passar o mouse */
+        color: #FFFFFF; /* Muda a cor do texto ao passar o mouse */
     }
 
     .animated-button:hover svg {
-        fill: #FFFFFF;
+        fill: #FFFFFF; /* Muda a cor de preenchimento do ícone ao passar o mouse */
     }
 
     .animated-button:active {
@@ -195,26 +205,27 @@ Homepage
 
     @media screen and (max-width: 768px){
 
+          /* Estilos específicos para telas menores que 768px de largura */
         .container_home {
-            background-color: rgb(255, 255, 255);
+            background-color: rgb(255, 255, 255);  /* Altera a cor de fundo para branco */
         }
 
         .title {
-        font-size: 50px;
+        font-size: 50px; /* Reduz o tamanho do título */
     }
 
     .description {
-        font-size: 16px;
+        font-size: 16px; /* Reduz o tamanho da descrição */
     }
 
     .animated-button {
-        padding: 12px 25px;
-        font-size: 14px;
+        padding: 12px 25px; /* Reduz o espaçamento interno do botão */
+        font-size: 14px; /* Reduz o tamanho da fonte do botão */
     }
 
     
     .animated-button svg {
-        width: 18px;
+        width: 18px; /* Reduz o tamanho do ícone SVG */
 
         
     }
@@ -222,70 +233,76 @@ Homepage
 
     }
     @media screen and (max-width: 412px){
+    /* Estilos específicos para telas menores que 412px de largura */
 
-.container_home {
-    background-color: rgb(255, 255, 255);
-}
+        .container_home {
+            background-color: rgb(255, 255, 255);
+        }
 
-.title {
-font-size: 30px;
-}
+        .title {
+        font-size: 30px;
+        }
 
-.description {
-font-size: 10px;
-}
+        .description {
+        font-size: 10px;
+        }
 
-.animated-button {
-padding: 10px 30px;
+        .animated-button {
+        padding: 10px 30px;
 
-font-size: 10px;
-}
-
-
-.animated-button svg {
-width: 25px;
-}
-
-.right img{
-    width: 150px;
-    height: 100px;
-}
+        font-size: 10px;
+        }
 
 
-}
+        .animated-button svg {
+        width: 25px;
+        }
 
+        .right img{
+            width: 150px;
+            height: 100px;
+        }
 
+    }
 
 </style>
 
+<!-- Início do conteúdo dinâmico da página -->
 <div class="container_home">
+    <!-- Lado esquerdo com título e descrição dinâmicos do Django -->
     <div class="left">
-        <div class="title outfit" style="align-self: center;">{{dados_home.0.titulo}}</div>
+        <div class="title outfit" style="align-self: center;">{{ dados_home.0.titulo }}</div>
         <div class="description outfit" style="align-self: center;">
-            {{dados_home.0.texto}}
+            {{ dados_home.0.texto }}
         </div>
     </div>
+
+    <!-- Lado direito com imagem e botão dinâmicos do Django -->
     <div class="right">
-        <img src="{{dados_home.0.imagem.url}}" alt="Calendário">
+        <img src="{{ dados_home.0.imagem.url }}" alt="Calendário">
+
+        <!-- Botão animado com lógica condicional para exibir link de agendar ou entrar -->
         <button class="animated-button">
             <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
-                </path>
+                <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
             </svg>
+
+            <!-- Lógica condicional para exibir o link "Agendar" ou "Entrar" -->
             {% if user.is_authenticated %}
-            <a class="text" href="/agenda">Agendar</a>
+                <a class="text" href="/agenda">Agendar</a>
             {% else %}
-            <a class="text" href="/login">Entrar</a>
+                <a class="text" href="/login">Entrar</a>
             {% endif %}
+
+            <!-- Elemento de círculo animado no hover -->
             <span class="circle"></span>
+
             <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
-                </path>
+                <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
             </svg>
         </button>
-        
     </div>
 </div>
+<!-- Fim do conteúdo dinâmico da página -->
+
 {% endblock %}

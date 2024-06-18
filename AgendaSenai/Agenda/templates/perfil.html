@@ -5,12 +5,14 @@ Visualizar perfil
 {% endblock %}
 
 {% block body %}
+<!-- Seta pra voltar -->
 <div class="seta">
     <a type="button" href="javascript:void(0)" id="backButton" class="material-symbols-outlined">
         arrow_back
     </a>
     <p>Voltar</p>
 </div>
+<!-- Container para a ft e infos de cada perfil -->
 <div class="containerPerfil">
     <div class="campoInfo">
     </div>
@@ -149,6 +151,7 @@ Visualizar perfil
     </div>
 </div>
 
+<!-- Estilização pág -->
 <style>
     .action-buttons {
     margin-top: 10px; /* Espaço entre as informações e os botões */
@@ -208,7 +211,7 @@ Visualizar perfil
         color: #ffffff;
     }
     .excluirr {
-        color: red;
+        color: #ffffff;
     }
     .containerPerfil {
         background-color: #f5f5f5;
@@ -484,7 +487,9 @@ Visualizar perfil
     }
 </style>
 
+<!-- Scripts -->
 <script>
+    // Botão de upload ft
     document.getElementById('uploadButton').addEventListener('click', function() {
         document.getElementById('{{ form.foto.id_for_label }}').click();
     });
@@ -493,12 +498,12 @@ Visualizar perfil
         const fileName = event.target.files[0] ? event.target.files[0].name : 'Escolher arquivo';
         document.getElementById('uploadButton').textContent = fileName;
     });
-
+    // Foto atual
     document.getElementById('currentPhotoLink').addEventListener('click', function(event) {
         event.preventDefault();  // Prevenir o comportamento padrão do link
         window.open(this.href, '_blank');
     });
-
+    // Botão de voltar para a pág anterior
     document.getElementById('backButton').addEventListener('click', function() {
         window.history.back();
     });
