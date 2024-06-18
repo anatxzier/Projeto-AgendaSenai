@@ -489,7 +489,7 @@ Salas
                                 <!-- Token CSRF para segurança -->
                                 {% csrf_token %}
                                 <div class="mb-3">
-                                    <label for="id_nome_sala">Nome da sala</label>
+                                    <label for="id_nome_sala">Nome da sala</label><p style="color:#00000079; font-size: 10px;">*Este campo não pode ser alterado</p>
                                     <input type="text" id="id_nome_sala" name="nome_sala" value="{{ item.nome }}" class="form-control" readonly>
                                 </div>
 

@@ -17,19 +17,21 @@ Calendário - {{ sala.nome }}
 {% endif %}
 <!--  -->
 <div style="display: flex; flex-direction: row;;">
-
+    <!-- Seta para voltar para a página anterior -->
     <div class="seta">
         <a type="button" href="javascript:void(0)" id="backButton" class="material-symbols-outlined">
             arrow_back
         </a>
         <p>Voltar</p>
     </div>
+    <!-- Aparecer nome da sala no topo da tela -->
     <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
         <div style="padding-top: 10px; font-size: 17px;">
             <h1 style="text-align: center; margin-right: 50px;" >Sala {{ sala.nome }}</h1>
         </div>
     </div>
 </div>
+<!-- Calendario -->
 <div class="container">
     <div class="calendar">
         <div class="month">
@@ -66,7 +68,7 @@ Calendário - {{ sala.nome }}
     <input type="hidden" name="selected_date" id="selected_date">
     <input type="hidden" name="sala_id" id="sala_id" value="{{sala.id}}">
 </form>
-
+<!-- Estilização -->
 <style>
     .error-message {
         color: red;
@@ -316,7 +318,7 @@ Calendário - {{ sala.nome }}
 
         gap: 20px;
     }
-
+    /* Responsividade */
     @media screen and (max-width: 400px) {
         .sidebar {
             display: none;
@@ -510,6 +512,7 @@ Calendário - {{ sala.nome }}
         font-size: 1em;
         /* Tamanho da fonte das informações do evento */
     }
+    /* Borda vermelha das modais */
     @keyframes moveBorder {
         0% {
             border: 3px solid transparent;
@@ -540,8 +543,10 @@ Calendário - {{ sala.nome }}
         color: #000
     }
 </style>
-
+<!-- Scripts -->
 <script>
+
+    // Captura 
     document.addEventListener("DOMContentLoaded", function () {
         const calendar = document.querySelector(".calendar"),
             date = document.querySelector(".date"),
